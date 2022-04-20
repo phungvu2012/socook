@@ -1,0 +1,11 @@
+// Reset CSS
+@use './normalize';
+
+//Add Fonts
+@use './add-font';
+
+// Bootstrap
+@use './custom';
+
+// General File
+@use './general';

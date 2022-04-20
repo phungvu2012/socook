@@ -1,0 +1,33 @@
+@use "sass:map";
+@use './variable' as *;
+
+// Media > 1400px
+@mixin screenXXL() {
+    @media (max-width: #{map.get($screenSize, 'xxl')}) {
+        @content;
+    }
+}
+
+@mixin screenXL() {
+    @media (max-width: #{map.get($screenSize, 'xl')}) {
+        @content;
+    }
+}
+
+@mixin screenLG() {
+    @media (max-width: #{map.get($screenSize, 'lg')}) {
+        @content;
+    }
+}
+
+@mixin screenMD() {
+    @media (max-width: #{map.get($screenSize, 'md')}) {
+        @content;
+    }
+}
+
+@mixin screenSM() {
+    @media (max-width: #{map.get($screenSize, 'sm')}) {
+        @content;
+    }
+}
