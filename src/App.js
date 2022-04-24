@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import GlobalStyles from './components/GlobalStyles'
 import Auth from './components/Authentication';
 import PublicRoute from './features/PublicRoute';
@@ -11,6 +11,10 @@ import Verify from './components/Authentication/Verify';
 import Header from './components/Header';
 import BasePage from './components/BasePage';
 import Home from './components/HomePage';
+import User from './components/User/User';
+import UserInfo from './components/UserInfo/UserInfo'
+import ChangePassword from './components/ChangePassword/ChangePassword';
+import Collection from './components/User/Collection/Collection';
 
 function App() {
   return (
@@ -38,6 +42,12 @@ function App() {
                 <Route path='/verify' element={<Auth />}>
                   <Route path='' element={ < Verify/>} />
                 </Route>  
+                <Route path='/user' element={<User />} >
+                  <Route index element={< Navigate to='user-info'/>} />
+                  <Route path='user-info' element={<UserInfo />}></Route>
+                  <Route path='change-password' element={<ChangePassword />}></Route>
+                  <Route path='collection' element={<Collection />} />
+                </Route>
               </Route>
             </Routes>
           </Router>

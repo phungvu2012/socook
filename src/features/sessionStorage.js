@@ -14,7 +14,7 @@ export const setUserSession = (token, user) => {
   sessionStorage.setItem("userInfo", JSON.stringify(user));
 }
 
-export const removeUserSession = (token, user) => {
-  sessionStorage.removeItem("tokenAccess", token);
-  sessionStorage.removeItem("userInfo", user);
+export const removeUserSession = () => {
+  sessionStorage.removeItem("tokenAccess");
+  sessionStorage.removeItem("userInfo");
 }

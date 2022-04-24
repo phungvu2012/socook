@@ -45,13 +45,14 @@ const LoginForm = () => {
       setErrMsg('Thông tin không hợp lệ');
       return;
     }
+
     auth.login(user, pwd)
     .then(function (response) {
-      // console.log(response);
-      // console.log(response?.data);
-      // console.log(typeof (response?.data?.messageCode));
+      console.log(response);
+      console.log(response?.data);
+      console.log(typeof (response?.data?.messageCode));
       if(response?.data?.messageCode !== 1) {
-        throw response
+        throw { response };
       };
       setUserSession(response?.data?.accessToken, response?.data?.user);
       setLoading(false);
@@ -59,7 +60,7 @@ const LoginForm = () => {
       setUser('');
       setPwd('');
       if(response?.data?.status !== undefined && response?.data?.status === 1) navigation('/');
-      else navigation('/w-active');
+      else navigation('/activeEmail');
     })
     .catch(function (err) {
       if (!err?.response) {
@@ -78,7 +79,7 @@ const LoginForm = () => {
   return (
     <div className='form-box'>
       <form onSubmit={handleSubmit} className='form-auth'>
-        <img src={fullLogoImage} className='logo-image my-2'></img>
+        <img src={fullLogoImage} className='logo-image my-2' alt=""></img>
         <h2 className='form-auth__title m-0'>Đăng nhập</h2>
         <div className={'form-auth__input-field ' + (!validName && user && 'invalid')}>
           <FontAwesomeIcon icon={faEnvelope} className='form-auth__input-icon' />
