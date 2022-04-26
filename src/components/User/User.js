@@ -63,7 +63,7 @@ function User() {
       .post("https://socook.herokuapp.com/api/user/avatar", fd, config)
       .then((res) => {
         if (res.data.user) {
-          console.log(typeof res.data.user);
+          console.log(res.data);
           setUserSession(token, res.data.user);
           setUserInfo({ ...getUser() });
         }

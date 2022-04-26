@@ -15,6 +15,7 @@ import User from './components/User/User';
 import UserInfo from './components/UserInfo/UserInfo'
 import ChangePassword from './components/ChangePassword/ChangePassword';
 import Collection from './components/User/Collection/Collection';
+import CollectionDisplay from './components/User/CollectionDisplay/CollectionDiplay';
 
 function App() {
   return (
@@ -46,7 +47,9 @@ function App() {
                   <Route index element={< Navigate to='user-info'/>} />
                   <Route path='user-info' element={<UserInfo />}></Route>
                   <Route path='change-password' element={<ChangePassword />}></Route>
-                  <Route path='collection' element={<Collection />} />
+                  <Route path='collection' element={<Collection />}> 
+                  </Route>
+                  <Route path='collection/:collectionIda' element={ <CollectionDisplay />} />
                 </Route>
               </Route>
             </Routes>
