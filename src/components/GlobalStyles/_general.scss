@@ -1,0 +1,52 @@
+@use "./variable"as *;
+@use "./mixin"as *;
+
+:root {
+  --color-1: #{$dark-orange};
+  --color-2: #{$chocolate};
+  --color-3: #{$tomato};
+  --color-4: #{$crimson};
+  --color-5: #{$light-pink};
+  --font-1: #{$font-family-poppins};
+  --font-2: #{$font-family-noto};
+  --font-3: #{$font-family-nunito};
+  --box-shadow-sm: #{$box-shadow-sm};
+  --box-shadow-lg: #{$box-shadow-lg};
+  --box-shadow: #{$box-shadow};
+  --box-shadow-inset: #{$box-shadow-inset};
+}
+
+body {
+  color: $black;
+  background-color: $white;
+  font-family: var(--font-3);
+  font-weight: 300;
+  line-height: 1.5;
+}
+
+html {
+  font-size: 100%;
+  box-sizing: border-box;
+}
+
+a {
+  color: var(--bs-blue);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--bs-blue);
+}
+
+@include screenLG() {
+  ::-webkit-scrollbar {
+    width: 10px;
+    background-color: var(--bs-gray-100);
+  }
+
+  ::-webkit-scrollbar-thumb {
+    border-radius: 10px;
+    background: linear-gradient(left, var(--bs-gray-100), var(--bs-gray-500));
+    box-shadow: inset 0 0 1px 1px var(--bs-gray-500);
+  }
+}
