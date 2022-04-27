@@ -126,5 +126,6 @@
 }
 
 .is-display {
-  display: flex;
+  display: flex !important;
+  z-index: 10;
 }

@@ -215,7 +215,7 @@ function Collection() {
         </form>
       </div>
       <div className={`delete-collection-confirm-notice ${isDeleteCollection ? "is-display" : ""}`} >
-        <p>Bạn có chắc chắn muốn xóa bộ sưu tập này không không ?</p>
+        <p>Bạn có chắc chắn muốn xóa bộ sưu tập này không ?</p>
         <div className="delete-collection-button-action">
           <button className="btn btn-light" onClick={() => setIsDeleteCollection(false)}>Không</button>
           <button className="btn btn-primary" onClick={confirmDeleteCollection}>Có</button>
