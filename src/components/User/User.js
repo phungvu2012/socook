@@ -8,7 +8,7 @@ import axiosClient from "./../../api/axiosClient";
 import { getUser } from "./../../features/sessionStorage";
 import { setUserSession } from "./../../features/sessionStorage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faClipboardList, faUser, faLock } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faUser, faLock, faFilePen } from '@fortawesome/free-solid-svg-icons';
 
 function User() {
   const token = getToken();
@@ -127,6 +127,18 @@ function User() {
                       }}
                     >
                       Bộ sưu tập
+                    </span>
+                  </Link>
+                </div>
+                <div className={`user-function-button ${userHeader === 'Công thức của tôi' ? 'user-function-button--active' : ''}`}>
+                  <Link to="my-recipe" className="user-function-button-link">
+                    <FontAwesomeIcon className="user-function-button-icon" icon={faFilePen} />
+                    <span
+                      onClick={(e) => {
+                        setUserHeader(e.target.innerHTML);
+                      }}
+                    >
+                      Công thức của tôi
                     </span>
                   </Link>
                 </div>

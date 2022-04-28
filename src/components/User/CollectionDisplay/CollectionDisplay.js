@@ -104,11 +104,11 @@ function CollectionDisplay() {
                       <div className="collection-recipe-detail">
                         <span>
                           <FontAwesomeIcon icon={faClock} />
-                          {recipe.cooking_time} phút
+                          {` ${recipe.cooking_time}`} phút
                         </span>
                         <span>
                           <FontAwesomeIcon icon={faEye} />
-                          {recipe.total_views}
+                          {` ${recipe.total_views}`}
                         </span>
                       </div>
                     </div>
