@@ -191,7 +191,7 @@ function Collection() {
             className="btn btn-success update-collection-button"
             onClick={handleUpdateCollection}
           >
-            Cập nhật
+            {isCreateCollection ? 'Tạo' : 'Cập nhật'}
           </button>
           <button
             className="btn btn-danger update-collection-button"
