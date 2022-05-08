@@ -14,12 +14,14 @@ import styles from "./header.module.scss";
 import logo from "./../../assets/image/logo/Logo_SoCook_vertical_3.png";
 import avatar from "./../../assets/image/login/pexels-pixabay-357573.jpg";
 import { removeUserSession } from "./../../features/sessionStorage";
-import { useState } from "react";
+import { useRef, useState } from "react";
 
 import searchApi from "../../api/searchApi";
 
 const Header = () => {
   const [suggestionSearch, setSuggestionSearch] = useState([]);
+  const [keyword, setKeyword] = useState('')
+  const searchInput = useRef()
   const allPopUp = document.getElementsByClassName(styles.popUp);
 
   const hanlePopup = (event) => {
@@ -43,6 +45,7 @@ const Header = () => {
   };
 
   const handleSuggestionSearch = (e) => {
+    setKeyword(e.target.value)
     if (e.target.value) {
       searchApi
         .getSearchSuggestions(e.target.value)
@@ -54,6 +57,11 @@ const Header = () => {
       setSuggestionSearch([])
     }
   };
+
+  const handleResetInput = () => {
+    setKeyword("")
+    setSuggestionSearch([])
+  }
 
   return (
     <header className={styles.header}>
@@ -72,10 +80,11 @@ const Header = () => {
                 <form className={styles.formSearch}>
                   <input
                     type="text"
+                    value={keyword}
                     className={styles.formSearch__Input}
                     onChange={handleSuggestionSearch}
+                    ref={searchInput}
                   />
-                  {console.log(suggestionSearch)}
                   <button className={styles.formSearch__Btn}>
                     <FontAwesomeIcon
                       icon={faMagnifyingGlass}
@@ -84,10 +93,10 @@ const Header = () => {
                   </button>
                 </form>
                 <ul className={styles.suggestionSearchResult}>
-                  {suggestionSearch.map((suggestion, index) => {
+                  {suggestionSearch.slice(0,10).map((suggestion, index) => {
                     return (
                       <li key={index} className={styles.suggestionSearchItem}>
-                        <Link to={`search/${suggestion}`}>{suggestion}</Link>
+                        <Link to={`search/${suggestion}`} onClick={handleResetInput}>{suggestion}</Link>
                       </li>
                     );
                   })}

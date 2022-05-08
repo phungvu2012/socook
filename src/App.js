@@ -25,6 +25,7 @@ import CollectionDisplay from "./components/User/CollectionDisplay/CollectionDis
 import MyRecipe from "./components/User/MyRecipe/MyRecipe";
 import CollectionSave from "./components/User/CollectionSave/CollectionSave";
 import SearchPage from "./components/SearchPage/SearchPage";
+import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 // import ThemeTest from './ThemeTest'
 
 function App() {
@@ -76,6 +77,7 @@ function App() {
                   <Route path="collection-save" element={<CollectionSave />}></Route>
                 </Route>
                 <Route path="search/:keyword" element={<SearchPage />}></Route>
+                <Route path="collection/:collectionId" element={ <CollectionSaveDisplay />}></Route>
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

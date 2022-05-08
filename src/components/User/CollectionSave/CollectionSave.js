@@ -1,18 +1,18 @@
 import "./CollectionSave.scss";
 import { getToken } from "./../../../features/sessionStorage";
+import { getUser } from "./../../../features/sessionStorage";
 import { useState, useEffect } from "react";
 import collection from "../../../api/collection";
 import noImgCollection from "./../../../assets/image/noImageCollection/no-image-collection.png";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFilePen, faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 function CollectionSave() {
-  const [isDeleteCollection, setIsDeleteCollection] = useState(false);
-  const [idCollectionDelete, setIdCollectionDelete] = useState();
   const [saveCollection, setSaveCollection] = useState([]);
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
   const token = getToken();
+  const userInfo = getUser();
   const capitalize = (str) => {
     if (!str) return str;
     let strings = str.split(" ");
@@ -48,9 +48,12 @@ function CollectionSave() {
           {saveCollection.map((collection, index) => {
             return (
               <Link
-                to={`/user/collection/${collection.id}`}
+                to={userInfo.user_name === collection.userName ? `/user/collection/${collection.id}` : `/collection/${collection.id}`}
                 className="col-3"
                 key={collection.id}
+                state={{
+                  collectionName: capitalize(collection.name)
+                }}
               >
                 {console.log(saveCollection)}
                 <div className="collection-wrapper">

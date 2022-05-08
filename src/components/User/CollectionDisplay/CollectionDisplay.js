@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./CollectionDisplay.scss";
 import { getToken } from "../../../features/sessionStorage";
-import { useParams, Link } from "react-router-dom";
+import { useParams, Link, useLocation } from "react-router-dom";
 import recipeApi from "../../../api/recipeApi";
 import collection from "../../../api/collection";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -17,6 +17,7 @@ function CollectionDisplay() {
   const [idRecipeDelete, setIdRecipeDelete] = useState();
   const token = getToken();
   const { collectionId } = useParams();
+  const location = useLocation()
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
@@ -47,7 +48,7 @@ function CollectionDisplay() {
   useEffect(() => {
     async function getRecipes() {
       await recipeApi
-        .getRecipeInCollection(token, collectionId)
+        .getRecipeInCollection(collectionId)
         .then((res) => setRecipes([...res.data.data]))
         .catch((err) => console.log("F: ", err));
     }
@@ -56,6 +57,10 @@ function CollectionDisplay() {
   return (
     <div className="collection-display-container">
       <div className="container">
+        <h3 className="collection-display-title">{location.state.collectionName}</h3>
+        {!recipes[0] ? (
+          <h4>Chưa có công thức nào trong bộ sưu tập</h4>
+        ) : (
         <div className="row">
           {recipes.map((recipe) => {
             return (
@@ -83,14 +88,17 @@ function CollectionDisplay() {
                         {recipe.title}
                       </h5>
                       <div className="collection-recipe-detail">
-                        <span>
-                          <FontAwesomeIcon icon={faClock} />
-                          {` ${recipe.cooking_time}`} phút
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faEye} />
-                          {` ${recipe.total_views}`}
-                        </span>
+                        <div className="collection-recipe-detail-number">
+                          <span>
+                            <FontAwesomeIcon icon={faClock} />
+                            {` ${recipe.cooking_time}`} phút
+                          </span>
+                          <span>
+                            <FontAwesomeIcon icon={faEye} />
+                            {` ${recipe.total_views}`}
+                          </span>
+                        </div>
+                        <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
                       </div>
                     </div>
                     {console.log(recipes[0])}
@@ -126,6 +134,7 @@ function CollectionDisplay() {
             </div>
           </div>
         </div>
+        )}
       </div>
     </div>
   );

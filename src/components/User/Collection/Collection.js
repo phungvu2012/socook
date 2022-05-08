@@ -151,6 +151,9 @@ function Collection() {
                 to={`${collection.id}`}
                 className="col-3"
                 key={collection.id}
+                state={{
+                  collectionName: capitalize(collection.name)
+                }}
               >
                 {console.log(userCollection)}
                 {console.log(saveCollection)}

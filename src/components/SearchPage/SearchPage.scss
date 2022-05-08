@@ -1,0 +1,16 @@
+.recipes-search-result-container {
+  margin: 24px 0;
+  .container {
+    border-bottom: 2px solid #333;
+  }
+}
+
+.collections-search-result-container {
+  margin-bottom: 36px;
+}
+
+.collection-search-result-detail {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.75rem;
+}

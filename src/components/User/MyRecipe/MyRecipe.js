@@ -20,7 +20,6 @@ function MyRecipe() {
     e.preventDefault();
     console.log(idDelete);
     setIdRecipeDelete(idDelete);
-    
   };
 
   const cancelDeleteRecipeCollection = () => {
@@ -29,21 +28,22 @@ function MyRecipe() {
 
   const confirmDeleteRecipeCollection = () => {
     async function deleteRecipe() {
-      await recipeApi.deleteRecipe(token, idRecipeDelete)
+      await recipeApi
+        .deleteRecipe(token, idRecipeDelete)
         .then((res) => {
-            console.log(res.data)
-            setIdRecipeDelete(0);
-            setIsReRender(prevState => !prevState);
-          }
-        )
-        .catch((err) => console.log(err)); 
+          console.log(res.data);
+          setIdRecipeDelete(0);
+          setIsReRender((prevState) => !prevState);
+        })
+        .catch((err) => console.log(err));
     }
     deleteRecipe();
   };
 
   useEffect(() => {
     async function getMyRecipe() {
-      await recipeApi.getMyRecipe(token)
+      await recipeApi
+        .getMyRecipe(token)
         .then((res) => {
           console.log(res.data.myListRecipe);
           setMyRecipe([...res.data.myListRecipe]);
@@ -51,12 +51,12 @@ function MyRecipe() {
         .catch((err) => console.log("F: ", err));
     }
     getMyRecipe();
-  },[isReRender]);
+  }, [isReRender]);
   return (
     <div className="collection-display-container">
       <div className="container">
         <div className="row">
-          {console.log('rerender because: ', idRecipeDelete)}
+          {console.log("rerender because: ", idRecipeDelete)}
           {console.log(idRecipeDelete)}
           {myRecipe.map((recipe) => {
             return (
@@ -84,20 +84,23 @@ function MyRecipe() {
                         {recipe.title}
                       </h5>
                       <div className="collection-recipe-detail">
-                        <span>
-                          <FontAwesomeIcon icon={faClock} />
-                          {` ${recipe.cooking_time}`} phút
-                        </span>
-                        <span>
-                          <FontAwesomeIcon icon={faEye} />
-                          {` ${recipe.total_views}`}
-                        </span>
+                        <div className="collection-recipe-detail-number">
+                          <span>
+                            <FontAwesomeIcon icon={faClock} />
+                            {` ${recipe.cooking_time}`} phút
+                          </span>
+                          <span>
+                            <FontAwesomeIcon icon={faEye} />
+                            {` ${recipe.total_views}`}
+                          </span>
+                        </div>
+                        <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
                       </div>
                     </div>
                   </Link>
-                  <a href="/" className="collection-recipe-owner" style={{textAlign: 'left'}}>
-                    <span> {recipe.short_description} </span>
-                  </a>
+                  <p className="collection-recipe-short-des">
+                    {recipe.short_description}
+                  </p>
                 </div>
               </div>
             );

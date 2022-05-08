@@ -16,13 +16,9 @@ class RecipeApi {
       },
     });
   };
-  getRecipeInCollection = (token, idCollection) => {
+  getRecipeInCollection = (idCollection) => {
     const COLLECTION_URL = process.env.REACT_APP_GET_RECIPE_IN_COLLECTIOn_URL + `/?id=${idCollection}`;
-    return axiosHost1.get(COLLECTION_URL, {
-      headers: {
-        token: `Bearer ${token}`,
-      },
-    });
+    return axiosHost1.get(COLLECTION_URL);
   };
 }
 
