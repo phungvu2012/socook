@@ -8,6 +8,7 @@ import {
   faTrash,
   faFilePen,
   faCirclePlus,
+  faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
@@ -19,6 +20,8 @@ function Collection() {
   const [collectionNameUpdate, setCollectionNameUpdate] = useState("");
   const [collectionPrivacy, setCollectionPrivacy] = useState(1);
   const [isCreateCollection, setIsCreateCollection] = useState(false);
+  const [saveCollection, setSaveCollection] = useState([]);
+  const [isInteractionCollection, setIsInteractionCollection] = useState(false)
   const token = getToken();
   const capitalize = (str) => {
     if (!str) return str;
@@ -92,13 +95,44 @@ function Collection() {
     updateCollection();
   };
 
+  const handleSaveCollection = (e, collectionId) => {
+    e.preventDefault();
+    console.log(e.target.dataset.isSave);
+    if (e.target.dataset.isSave === "1") {
+      collection
+        .unsaveCollection(token, collectionId)
+        .then(res => {
+          console.log(res)
+          setIsInteractionCollection(prevState => !prevState)
+        })
+        .catch(err => console.log(err));
+    } else {
+      collection
+        .saveCollection(token, collectionId)
+        .then(res => {
+          console.log(res)
+          setIsInteractionCollection(prevState => !prevState)
+        })
+        .catch(err => console.log(err));
+    }
+  };
+
   useEffect(() => {
     async function getCollection() {
       const res = await collection.getCollection(token);
       setUserCollection([...res.data]);
     }
     getCollection();
-  }, [idCollectionUpdate, isCreateCollection, idCollectionDelete]);
+  }, [idCollectionUpdate, isCreateCollection, idCollectionDelete, isInteractionCollection]);
+
+  useEffect(() => {
+    async function getCollectionSave() {
+      await collection
+        .getCollectionSave(token)
+        .then((res) => setSaveCollection(res.data));
+    }
+    getCollectionSave();
+  }, [isInteractionCollection]);
 
   return (
     <div className="collection-container">
@@ -120,11 +154,44 @@ function Collection() {
               >
                 {console.log(userCollection)}
                 <div className="collection-wrapper">
-                  <img
-                    src={noImgCollection}
-                    alt={collection.name}
-                    className="collection-image"
-                  />
+                  <div className="collection-image-wrapper">
+                    <div className="image-overlay"></div>
+                    <img
+                      src={noImgCollection}
+                      alt={collection.name}
+                      className="collection-image"
+                    />
+                    <span className="collection-save">
+                      {collection.totalLikes}
+                      <span
+                        className={`collection-save-icon-wrapper ${
+                          saveCollection.filter(
+                            (col) => col.id === collection.id
+                          )[0]
+                            ? "is-save-collection"
+                            : ""
+                        }`}
+                      >
+                        <div
+                          className="collection-save-overlay"
+                          onClick={(e) =>
+                            handleSaveCollection(e, collection.id)
+                          }
+                          data-is-save={
+                            saveCollection.filter(
+                              (col) => col.id === collection.id
+                            )[0]
+                              ? 1
+                              : 0
+                          }
+                        ></div>
+                        <FontAwesomeIcon
+                          icon={faHeart}
+                          className="collection-save-icon"
+                        />
+                      </span>
+                    </span>
+                  </div>
                   <div className="collection-name">
                     {capitalize(collection.name)}
                   </div>
@@ -191,7 +258,7 @@ function Collection() {
             className="btn btn-success update-collection-button"
             onClick={handleUpdateCollection}
           >
-            {isCreateCollection ? 'Tạo' : 'Cập nhật'}
+            {isCreateCollection ? "Tạo" : "Cập nhật"}
           </button>
           <button
             className="btn btn-danger update-collection-button"

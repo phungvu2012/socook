@@ -18,10 +18,63 @@
   color: #333;
 }
 
-.collection-image {
+.collection-image-wrapper {
   width: 100%;
+  height: 100%;
+  position: relative;
   margin-bottom: 16px;
 }
+
+.collection-image-wrapper:hover .image-overlay {
+  opacity: 0.3;
+}
+
+.collection-image {
+  width: 100%;
+  height: 100%;
+  border-radius: 8px;
+}
+
+.collection-save {
+  position: absolute;
+  min-width: 60px;
+  font-size: 1.25rem;
+  bottom: 0;
+  right: 0;
+  padding-right: 4px;
+  z-index: 100;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+.collection-save:hover .collection-save-icon {
+  color: red;
+}
+
+.collection-save-icon-wrapper {
+  margin-left: 4px;
+  color: #5c5959a8;
+  z-index: 100;
+  position: relative;
+}
+
+.collection-save-overlay {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.collection-save-icon {
+  z-index: 20;
+}
+
+.is-save-collection {
+  color: red;
+}
+
 .collection-name {
   font-weight: bold;
 }
