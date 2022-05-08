@@ -23,6 +23,7 @@ import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Collection from "./components/User/Collection/Collection";
 import CollectionDisplay from "./components/User/CollectionDisplay/CollectionDisplay";
 import MyRecipe from "./components/User/MyRecipe/MyRecipe";
+import CollectionSave from "./components/User/CollectionSave/CollectionSave";
 // import ThemeTest from './ThemeTest'
 
 function App() {
@@ -71,6 +72,7 @@ function App() {
                     element={<CollectionDisplay />}
                   />
                   <Route path="my-recipe" element={<MyRecipe />}></Route>
+                  <Route path="collection-save" element={<CollectionSave />}></Route>
                 </Route>
               </Route>
             </Route>

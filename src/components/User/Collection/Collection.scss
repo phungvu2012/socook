@@ -48,6 +48,12 @@
   justify-content: flex-end;
 }
 
+.collection-total-save {
+  position: relative;
+  top: -1px;
+  font-weight: 600;
+}
+
 .collection-save:hover .collection-save-icon {
   color: red;
 }

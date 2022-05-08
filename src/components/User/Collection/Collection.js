@@ -153,6 +153,7 @@ function Collection() {
                 key={collection.id}
               >
                 {console.log(userCollection)}
+                {console.log(saveCollection)}
                 <div className="collection-wrapper">
                   <div className="collection-image-wrapper">
                     <div className="image-overlay"></div>
@@ -162,7 +163,7 @@ function Collection() {
                       className="collection-image"
                     />
                     <span className="collection-save">
-                      {collection.totalLikes}
+                      <span className="collection-total-save">{collection.totalLikes}</span>
                       <span
                         className={`collection-save-icon-wrapper ${
                           saveCollection.filter(

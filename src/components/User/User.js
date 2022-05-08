@@ -11,6 +11,7 @@ import {
   faUser,
   faLock,
   faFilePen,
+  faBookmark
 } from "@fortawesome/free-solid-svg-icons";
 
 function User() {
@@ -163,6 +164,29 @@ function User() {
                       Công thức của tôi
                     </span>
                   </Link>
+
+                </div>
+                <div
+                  className={`user-function-button ${
+                    userHeader === "Công thức của tôi"
+                      ? "user-function-button--active"
+                      : ""
+                  }`}
+                >
+                  <Link to="collection-save" className="user-function-button-link">
+                    <FontAwesomeIcon
+                      className="user-function-button-icon"
+                      icon={faBookmark}
+                    />
+                    <span
+                      onClick={(e) => {
+                        setUserHeader(e.target.innerHTML);
+                      }}
+                    >
+                      Bộ sưu tập đã lưu
+                    </span>
+                  </Link>
+                  
                 </div>
               </div>
             </div>
