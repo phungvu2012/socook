@@ -48,7 +48,7 @@ function CollectionSave() {
           {saveCollection.map((collection, index) => {
             return (
               <Link
-                to={`${collection.id}`}
+                to={`/user/collection/${collection.id}`}
                 className="col-3"
                 key={collection.id}
               >
