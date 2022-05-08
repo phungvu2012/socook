@@ -57,7 +57,7 @@ function CollectionSave() {
                   <div className="collection-image-wrapper">
                     <div className="image-overlay"></div>
                     <img
-                      src={noImgCollection}
+                      src={collection.imageUrl || noImgCollection}
                       alt={collection.name}
                       className="collection-image"
                     />
@@ -82,7 +82,7 @@ function CollectionSave() {
                   </div>
                   <div className="collection-save-detail">
                     <span>{collection.recipeIds.length} công thức</span>
-                    <span>{collection.username || "username"}</span>
+                    <span>{collection.userName || "username"}</span>
                   </div>
                 </div>
               </Link>

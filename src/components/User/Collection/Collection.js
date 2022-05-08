@@ -158,7 +158,7 @@ function Collection() {
                   <div className="collection-image-wrapper">
                     <div className="image-overlay"></div>
                     <img
-                      src={noImgCollection}
+                      src={collection.imageUrl || noImgCollection}
                       alt={collection.name}
                       className="collection-image"
                     />
