@@ -1,0 +1,80 @@
+.user-page-container {
+  padding: 16px;
+  background-color: #e9ebee;
+  min-height: 100vh;
+}
+
+.user-page-profile-header-container {
+  height: 360px;
+  display: flex;
+  border-radius: 16px;
+  background-color: #fff;
+  padding: 0;
+}
+
+.user-page-profile-header-info {
+  width: 25%;
+  height: 100%;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+}
+
+.user-page-profile-avatar {
+  width: 120px;
+  height: 120px;
+  border-radius: 50%;
+  margin: 0 auto;
+}
+
+.user-page-profile-full-name {
+  margin: 8px auto;
+}
+
+.user-page-profile-amount-follow {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 20px;
+  span:last-child {
+    font-weight: 700;
+  }
+}
+
+.user-page-profile-amount-recipe {
+  display: flex;
+  justify-content: space-between;
+  padding: 4px 20px;
+  span:last-child {
+    font-weight: 700;
+  }
+}
+
+.user-page-follow-button {
+  margin: 4px auto;
+  color: #fff;
+  button {
+    background-color: #428bca;
+    border-radius: 8px;
+    color: inherit;
+    border: none;
+    padding: 4px 12px;
+    min-width: 60px;
+  }
+
+  button:hover {
+    background-color: #c70808;
+    color: inherit;
+  }
+  
+  .disable-follow-button, .disable-follow-button:hover {
+    background-color: #ccc;
+    cursor: text;
+  }
+}
+
+.user-page-profile-header-background-image {
+  flex: 1;
+  border-top-right-radius: 16px;
+  border-bottom-right-radius: 16px;
+  background-size: contain;
+}
