@@ -3,53 +3,18 @@ import "./SearchPage.scss";
 import { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import searchApi from "../../api/searchApi";
-import noImgCollection from "./../../assets/image/noImageCollection/no-image-collection.png";
-import collection from "../../api/collection";
-import { getToken } from "../../features/sessionStorage";
-import { getUser } from "../../features/sessionStorage";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faClock } from "@fortawesome/free-regular-svg-icons";
-import {faHeart} from "@fortawesome/free-solid-svg-icons";
+import CollectionsSearchResult from "./CollectionSearchResult/CollectionSearchResult";
+// import {faHeart} from "@fortawesome/free-solid-svg-icons";
 
 function SearchPage() {
   const params = useParams();
+  // const token = getToken()
   const [recipesSearchResult, setRecipesSearchResult] = useState([]);
   const [collectionsSearchResult, setCollectionsSearchResult] = useState([]);
-  const [saveCollection, setSaveCollection] = useState([]);
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
-  const userInfo = getUser();
-
-  const token = getToken();
-  const capitalize = (str) => {
-    if (!str) return str;
-    let strings = str.split(" ");
-    return strings
-      .map((string) => string.charAt(0).toLocaleUpperCase() + string.slice(1))
-      .join(" ");
-  };
-
-  const handleSaveCollection = (e, collectionId) => {
-    e.preventDefault();
-    console.log(e.target.dataset.isSave);
-    if (e.target.dataset.isSave === "1") {
-      collection
-        .unsaveCollection(token, collectionId)
-        .then((res) => {
-          console.log(res);
-          setIsInteractionCollection((prevState) => !prevState);
-        })
-        .catch((err) => console.log(err));
-    } else {
-      collection
-        .saveCollection(token, collectionId)
-        .then((res) => {
-          console.log(res);
-          setIsInteractionCollection((prevState) => !prevState);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
 
   useEffect(() => {
     searchApi
@@ -67,18 +32,9 @@ function SearchPage() {
       .catch((err) => console.log(err));
   }, [params.keyword, isInteractionCollection]);
 
-  useEffect(() => {
-    async function getCollectionSave() {
-      await collection
-        .getCollectionSave(token)
-        .then((res) => setSaveCollection(res.data));
-    }
-    getCollectionSave();
-  }, [isInteractionCollection]);
   return (
     <>
-      {console.log("recipes: ", recipesSearchResult)}
-      {console.log("collections: ", collectionsSearchResult)}
+      {console.log("parent rerender")}
       {!recipesSearchResult[0] && !collectionsSearchResult[0] ? (
         <div className="container">
           <div className="row">
@@ -151,68 +107,12 @@ function SearchPage() {
                   <h4>Bộ sưu tập tìm được</h4>
                   {collectionsSearchResult.map((collection) => {
                     return (
-                      <Link
-                        to={
-                          userInfo.user_name === collection.userName
-                            ? `/user/collection/${collection.id}`
-                            : `/collection/${collection.id}`
-                        }
-                        state={{
-                          collectionName: capitalize(collection.name)
-                        }}
-                        className="col-2"
+                      <CollectionsSearchResult
                         key={collection.id}
-                      >
-                        <div className="collection-wrapper">
-                          <div className="collection-image-wrapper">
-                            <div className="image-overlay"></div>
-                            <img
-                              src={collection.imageUrl || noImgCollection}
-                              alt={collection.name}
-                              className="collection-image"
-                            />
-                            <span className="collection-save">
-                              <span className="collection-total-save">
-                                {collection.totalLikes}
-                              </span>
-                              <span
-                                className={`collection-save-icon-wrapper ${
-                                  saveCollection.filter(
-                                    (col) => col.id === collection.id
-                                  )[0]
-                                    ? "is-save-collection"
-                                    : ""
-                                }`}
-                              >
-                                <div
-                                  className="collection-save-overlay"
-                                  onClick={(e) =>
-                                    handleSaveCollection(e, collection.id)
-                                  }
-                                  data-is-save={
-                                    saveCollection.filter(
-                                      (col) => col.id === collection.id
-                                    )[0]
-                                      ? 1
-                                      : 0
-                                  }
-                                ></div>
-                                <FontAwesomeIcon
-                                  icon={faHeart}
-                                  className="collection-save-icon"
-                                />
-                              </span>
-                            </span>
-                          </div>
-                          <div className="collection-name">
-                            {capitalize(collection.name)}
-                          </div>
-                          <div className="collection-search-result-detail">
-                            <span>{collection.recipeIds.length} công thức</span>
-                            <span>{collection.userName}</span>
-                          </div>
-                        </div>
-                      </Link>
+                        collection={collection}
+                        setIsInteractionCollection={setIsInteractionCollection}
+                        isInteractionCollection={isInteractionCollection}
+                      />
                     );
                   })}
                 </div>

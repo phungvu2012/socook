@@ -6,7 +6,7 @@ import userPageApi from "../../api/userPageApi";
 import { getToken } from "../../features/sessionStorage";
 import { getUser } from "../../features/sessionStorage";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUserPlus } from "@fortawesome/free-solid-svg-icons";
+import { faUserPlus, faCheck } from "@fortawesome/free-solid-svg-icons";
 
 function UserPage() {
   const token = getToken();
@@ -16,32 +16,41 @@ function UserPage() {
   const [userInfo, setUserInfo] = useState();
   const [userCollections, setUserCollections] = useState();
   const [userRecipes, setUserRecipes] = useState();
+  const [isInteract, setInteract] = useState(false);
 
   const handleFollowUser = (e) => {
     e.preventDefault();
     if (token) {
-      if (userInfo.user_id !== userLoginInfo.user_id) {
-        userPageApi
-          .followUser(token, { followed_user_id: userInfo.user_id })
-          .then((res) => {
-            if (res.data.messageCode === 1) {
-              setUserInfo({
-                ...userInfo,
-                countFollow: userInfo.countFollow + 1
-              })
-            }
-          })
-          .catch((err) => console.log("F: ", err));
-      }
+      userPageApi
+        .followUser(token, { followed_user_id: userInfo.user_id })
+        .then((res) => {
+          if (res.data.messageCode === 1) {
+            setInteract((prev) => !prev);
+          }
+        })
+        .catch((err) => console.log("F: ", err));
     } else {
       navigation("/login");
     }
   };
 
+  const handleUnfollowUser = (e) => {
+    e.preventDefault();
+    userPageApi
+      .unfollowUser(token, { followed_user_id: userInfo.user_id })
+      .then((res) => {
+        if (res.data.messageCode === 1) {
+          setInteract((prev) => !prev);
+        }
+      })
+      .catch((err) => console.log("F: ", err));
+  };
+
   useEffect(() => {
     userPageApi
-      .getUserInfo(user_name)
+      .getUserInfo(token, user_name)
       .then((res) => {
+        console.log(res);
         setUserInfo({ ...res.data.user });
       })
       .catch((err) => console.log("F: ", err));
@@ -58,6 +67,16 @@ function UserPage() {
       })
       .catch((err) => console.log(err));
   }, [user_name]);
+
+  useEffect(() => {
+    userPageApi
+      .getUserInfo(token, user_name)
+      .then((res) => {
+        console.log(res);
+        setUserInfo({ ...res.data.user });
+      })
+      .catch((err) => console.log("F: ", err));
+  }, [isInteract]);
 
   return (
     <div className="user-page-container">
@@ -85,17 +104,22 @@ function UserPage() {
                 <span>{userRecipes?.length}</span>
               </div>
               <div className="user-page-follow-button">
-                <button
-                  className={`${
-                    userInfo?.user_id === userLoginInfo?.user_id
-                      ? "disable-follow-button"
-                      : ""
-                  }`}
-                  onClick={handleFollowUser}
-                >
-                  <FontAwesomeIcon icon={faUserPlus} className="me-1" />
-                  Theo dõi
-                </button>
+                {userInfo?.user_id === userLoginInfo?.user_id ? (
+                  <button className="disable-follow-button">
+                    <FontAwesomeIcon icon={faUserPlus} className="me-1" />
+                    Theo dõi
+                  </button>
+                ) : userInfo?.followed ? (
+                  <button onClick={handleUnfollowUser}>
+                    <FontAwesomeIcon icon={faCheck} className="me-1" />
+                    Đã theo dõi
+                  </button>
+                ) : (
+                  <button onClick={handleFollowUser}>
+                    <FontAwesomeIcon icon={faUserPlus} className="me-1" />
+                    Theo dõi
+                  </button>
+                )}
               </div>
             </div>
             <div
