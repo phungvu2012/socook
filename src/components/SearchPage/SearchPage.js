@@ -1,7 +1,7 @@
 import "./SearchPage.scss";
 
 import { useEffect, useState } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import searchApi from "../../api/searchApi";
 
 import CollectionsSearchResult from "./CollectionSearchResult/CollectionSearchResult";
@@ -71,7 +71,6 @@ function SearchPage() {
                     return (
                       <div className="col-2" key={collection.id}>
                         <CollectionsSearchResult
-                          key={collection.id}
                           collection={collection}
                           setIsInteractionCollection={
                             setIsInteractionCollection

@@ -27,7 +27,7 @@ function CollectionsSearchResult(props) {
         .unsaveCollection(token, collectionId)
         .then((res) => {
           console.log(res);
-          props.setIsInteractionCollection((prevState) => !prevState);
+          props?.setIsInteractionCollection((prevState) => !prevState);
         })
         .catch((err) => console.log(err));
     } else {
@@ -35,7 +35,7 @@ function CollectionsSearchResult(props) {
         .saveCollection(token, collectionId)
         .then((res) => {
           console.log(res);
-          props.setIsInteractionCollection((prevState) => !prevState);
+          props?.setIsInteractionCollection((prevState) => !prevState);
         })
         .catch((err) => console.log(err));
     }
