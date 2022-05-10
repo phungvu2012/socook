@@ -16,6 +16,9 @@
   border: 1px solid #eee;
   border-radius: 4px;
   color: #333;
+  a {
+    color: inherit;
+  }
 }
 
 .collection-image-wrapper {

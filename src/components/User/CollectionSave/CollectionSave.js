@@ -45,50 +45,57 @@ function CollectionSave() {
     <div className="collection-container">
       <div className="container">
         <div className="row">
-          {saveCollection.map((collection, index) => {
+          {saveCollection.map((collection) => {
             return (
-              <Link
-                to={userInfo.user_name === collection.userName ? `/user/collection/${collection.id}` : `/collection/${collection.id}`}
-                className="col-3"
-                key={collection.id}
-                state={{
-                  collectionName: capitalize(collection.name)
-                }}
-              >
-                {console.log(saveCollection)}
+              <div className="col-3" key={collection.id}>
                 <div className="collection-wrapper">
-                  <div className="collection-image-wrapper">
-                    <div className="image-overlay"></div>
-                    <img
-                      src={collection.imageUrl || noImgCollection}
-                      alt={collection.name}
-                      className="collection-image"
-                    />
-                    <span className="collection-save">
-                    <span className="collection-total-save">{collection.totalLikes}</span>
-                      <span className="collection-save-icon-wrapper is-save-collection">
-                        <div
-                          className="collection-save-overlay"
-                          onClick={(e) =>
-                            handleSaveCollection(e, collection.id)
-                          }
-                        ></div>
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          className="collection-save-icon"
-                        />
+                  <Link
+                    to={
+                      userInfo.user_name === collection.userName
+                        ? `/user/collection/${collection.id}`
+                        : `/collection/${collection.id}`
+                    }
+                    state={{
+                      collectionName: capitalize(collection.name),
+                    }}
+                  >
+                    <div className="collection-image-wrapper">
+                      <div className="image-overlay"></div>
+                      <img
+                        src={collection.imageUrl || noImgCollection}
+                        alt={collection.name}
+                        className="collection-image"
+                      />
+                      <span className="collection-save">
+                        <span className="collection-total-save">
+                          {collection.totalLikes}
+                        </span>
+                        <span className="collection-save-icon-wrapper is-save-collection">
+                          <div
+                            className="collection-save-overlay"
+                            onClick={(e) =>
+                              handleSaveCollection(e, collection.id)
+                            }
+                          ></div>
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            className="collection-save-icon"
+                          />
+                        </span>
                       </span>
-                    </span>
-                  </div>
-                  <div className="collection-name">
-                    {capitalize(collection.name)}
-                  </div>
+                    </div>
+                    <div className="collection-name">
+                      {capitalize(collection.name)}
+                    </div>
+                  </Link>
                   <div className="collection-save-detail">
                     <span>{collection.recipeIds.length} công thức</span>
-                    <span>{collection.userName || "username"}</span>
+                    <Link to={`/user-page/${collection.userName}`}>
+                      {collection.userName}
+                    </Link>
                   </div>
                 </div>
-              </Link>
+              </div>
             );
           })}
         </div>

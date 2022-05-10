@@ -13,4 +13,10 @@
   display: flex;
   justify-content: space-between;
   font-size: 0.75rem;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  a {
+    font-weight: 700;
+  }
 }

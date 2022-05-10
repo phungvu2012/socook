@@ -51,20 +51,17 @@ function CollectionsSearchResult(props) {
   }, [props.isInteractionCollection]);
 
   return (
-    <Link
-      to={
-        userInfo.user_name === props.collection.userName
-          ? `/user/collection/${props.collection.id}`
-          : `/collection/${props.collection.id}`
-      }
-      state={{
-        collectionName: capitalize(props.collection.name),
-      }}
-      className="col-2"
-      key={props.collection.id}
-    >
-      {console.log("data in children rerender ")}
-      <div className="collection-wrapper">
+    <div className="collection-wrapper">
+      <Link
+        to={
+          userInfo.user_name === props.collection.userName
+            ? `/user/collection/${props.collection.id}`
+            : `/collection/${props.collection.id}`
+        }
+        state={{
+          collectionName: capitalize(props.collection.name),
+        }}
+      >
         <div className="collection-image-wrapper">
           <div className="image-overlay"></div>
           <img
@@ -106,12 +103,12 @@ function CollectionsSearchResult(props) {
         <div className="collection-name">
           {capitalize(props.collection.name)}
         </div>
-        <div className="collection-search-result-detail">
-          <span>{props.collection.recipeIds.length} công thức</span>
-          <span>{props.collection.userName}</span>
-        </div>
+      </Link>
+      <div className="collection-search-result-detail">
+        <span>{props.collection.recipeIds.length} công thức</span>
+        <Link to={`/user-page/${props.collection.userName}`}>{props.collection.userName}</Link>
       </div>
-    </Link>
+    </div>
   );
 }
 

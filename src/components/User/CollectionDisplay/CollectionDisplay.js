@@ -103,9 +103,9 @@ function CollectionDisplay() {
                     </div>
                     {console.log(recipes[0])}
                   </Link>
-                  <a href="/" className="collection-recipe-owner">
+                  <Link to={`/user-page/${recipe.user_name}`} className="collection-recipe-owner">
                     <span>Người tạo:</span> {recipe.user_name}
-                  </a>
+                  </Link>
                 </div>
               </div>
             );
