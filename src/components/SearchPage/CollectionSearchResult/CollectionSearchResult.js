@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { getToken } from "../../../features/sessionStorage";
 import { getUser } from "../../../features/sessionStorage";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import noImgCollection from "./../../../assets/image/noImageCollection/no-image-collection.png";
@@ -11,6 +11,7 @@ import collection from "../../../api/collection";
 function CollectionsSearchResult(props) {
   const token = getToken();
   const userInfo = getUser();
+  const navigate = useNavigate()
   const capitalize = (str) => {
     if (!str) return str;
     let strings = str.split(" ");
@@ -22,30 +23,40 @@ function CollectionsSearchResult(props) {
 
   const handleSaveCollection = (e, collectionId) => {
     e.preventDefault();
-    if (e.target.dataset.isSave === "1") {
-      collection
-        .unsaveCollection(token, collectionId)
-        .then((res) => {
-          console.log(res);
-          props?.setIsInteractionCollection((prevState) => !prevState);
-        })
-        .catch((err) => console.log(err));
+    if (token) {
+      if (e.target.dataset.isSave === "1") {
+        if (token) {
+          collection
+            .unsaveCollection(token, collectionId)
+            .then((res) => {
+              console.log(res);
+              props?.setIsInteractionCollection((prevState) => !prevState);
+            })
+            .catch((err) => console.log(err));
+        }
+      } else {
+        if (token) {
+          collection
+            .saveCollection(token, collectionId)
+            .then((res) => {
+              console.log(res);
+              props?.setIsInteractionCollection((prevState) => !prevState);
+            })
+            .catch((err) => console.log(err));
+        }
+      }
     } else {
-      collection
-        .saveCollection(token, collectionId)
-        .then((res) => {
-          console.log(res);
-          props?.setIsInteractionCollection((prevState) => !prevState);
-        })
-        .catch((err) => console.log(err));
+      navigate('/login')
     }
   };
 
   useEffect(() => {
     async function getCollectionSave() {
-      await collection
-        .getCollectionSave(token)
-        .then((res) => setSaveCollection(res.data));
+      if (token) {
+        await collection
+          .getCollectionSave(token)
+          .then((res) => setSaveCollection(res.data));
+      }
     }
     getCollectionSave();
   }, [props.isInteractionCollection]);
@@ -54,9 +65,9 @@ function CollectionsSearchResult(props) {
     <div className="collection-wrapper">
       <Link
         to={
-          userInfo.user_name === props.collection.userName
-            ? `/user/collection/${props.collection.id}`
-            : `/collection/${props.collection.id}`
+          !userInfo || userInfo?.user_name !== props.collection.userName
+            ? `/collection/${props.collection.id}`
+            : `/user/collection/${props.collection.id}`
         }
         state={{
           collectionName: capitalize(props.collection.name),
@@ -75,22 +86,24 @@ function CollectionsSearchResult(props) {
             </span>
             <span
               className={`collection-save-icon-wrapper ${
-                saveCollection.filter(
+                !saveCollection[0] ||
+                !saveCollection.filter(
                   (col) => col.id === props.collection.id
                 )[0]
-                  ? "is-save-collection"
-                  : ""
+                  ? ""
+                  : "is-save-collection"
               }`}
             >
               <div
                 className="collection-save-overlay"
                 onClick={(e) => handleSaveCollection(e, props.collection.id)}
                 data-is-save={
-                  saveCollection.filter(
+                  !saveCollection[0] ||
+                  !saveCollection.filter(
                     (col) => col.id === props.collection.id
                   )[0]
-                    ? 1
-                    : 0
+                    ? 0
+                    : 1
                 }
               ></div>
               <FontAwesomeIcon
@@ -106,7 +119,9 @@ function CollectionsSearchResult(props) {
       </Link>
       <div className="collection-search-result-detail">
         <span>{props.collection.recipeIds.length} công thức</span>
-        <Link to={`/user-page/${props.collection.userName}`}>{props.collection.userName}</Link>
+        <Link to={`/user-page/${props.collection.userName}`}>
+          {props.collection.userName}
+        </Link>
       </div>
     </div>
   );

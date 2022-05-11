@@ -39,6 +39,8 @@ function App() {
             <Route path="" element={<BasePage />}>
               <Route index element={<Home />} />
               <Route path="user-page/:user_name" element={ <UserPage /> } />
+              <Route path="search/:keyword" element={<SearchPage />}></Route>
+              <Route path="collection/:collectionId" element={ <CollectionSaveDisplay />}></Route>
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
@@ -78,8 +80,7 @@ function App() {
                   <Route path="my-recipe" element={<MyRecipe />}></Route>
                   <Route path="collection-save" element={<CollectionSave />}></Route>
                 </Route>
-                <Route path="search/:keyword" element={<SearchPage />}></Route>
-                <Route path="collection/:collectionId" element={ <CollectionSaveDisplay />}></Route>
+                
                 
               </Route>
             </Route>
