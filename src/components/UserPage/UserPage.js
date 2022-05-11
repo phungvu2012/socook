@@ -242,7 +242,7 @@ function UserPage() {
                                 icon={faCity}
                                 className="me-1 user-page-user-info-field-icon"
                               />
-                              Thành phố:
+                              Tỉnh/Thành phố:
                             </span>
                             <p>{userInfo.city}</p>
                           </div>

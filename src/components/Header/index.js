@@ -22,6 +22,7 @@ const Header = () => {
   const [suggestionSearch, setSuggestionSearch] = useState([]);
   const [keyword, setKeyword] = useState('')
   const searchInput = useRef()
+  const navigate = useNavigate()
   const allPopUp = document.getElementsByClassName(styles.popUp);
 
   const hanlePopup = (event) => {
@@ -45,6 +46,7 @@ const Header = () => {
   };
 
   const handleSuggestionSearch = (e) => {
+    e.preventDefault()
     setKeyword(e.target.value)
     if (e.target.value) {
       searchApi
@@ -57,6 +59,13 @@ const Header = () => {
       setSuggestionSearch([])
     }
   };
+
+  const handleSubmitSearchKeyword = (e) => {
+    e.preventDefault()
+    navigate(`search/${keyword}`)
+    setKeyword("")
+    setSuggestionSearch([])
+  }
 
   const handleResetInput = () => {
     setKeyword("")
@@ -77,7 +86,7 @@ const Header = () => {
                 />
               </div>
               <div className={styles.headerLeft__Search}>
-                <form className={styles.formSearch}>
+                <form className={styles.formSearch} onSubmit={handleSubmitSearchKeyword}>
                   <input
                     type="text"
                     value={keyword}
