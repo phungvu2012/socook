@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import "./User.scss";
 import userApi from "../../api/userApi";
-import { Link, Outlet } from "react-router-dom";
+import { Link, Outlet, useLocation } from "react-router-dom";
 import { getToken } from "./../../features/sessionStorage";
 import { getUser } from "./../../features/sessionStorage";
 import { setUserSession } from "./../../features/sessionStorage";
@@ -17,9 +17,29 @@ import {
 
 function User() {
   const token = getToken();
+  const location = useLocation();
+  window.onpopstate = () => {
+    console.log('back')
+    setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)))
+  }
   const [userInfo, setUserInfo] = useState(getUser());
-  const [userHeader, setUserHeader] = useState("Thông tin cá nhân");
-
+  const mapUserHeader = (header) => {
+    switch (header) {
+      case "cover-image":
+        return "Ảnh bìa";
+      case "change-password":
+        return "Đổi mật khẩu";
+      case "collection":
+        return "Bộ sưu tập";
+      case "my-recipe":
+        return "Công thức của tôi";
+      case "collection-save":
+        return "Bộ sưu tập đã lưu";
+      default:
+        return "Thông tin cá nhân";
+    }
+  };
+  const [userHeader, setUserHeader] = useState(mapUserHeader(location.pathname.split("/").at(-1)));
   const handleChangeAvatar = (e) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
@@ -146,7 +166,7 @@ function User() {
                 </div>
                 <div
                   className={`user-function-button ${
-                    userHeader === "Công thức của tôi"
+                    userHeader === "Bộ sưu tập đã lưu"
                       ? "user-function-button--active"
                       : ""
                   }`}
@@ -170,7 +190,7 @@ function User() {
                 </div>
                 <div
                   className={`user-function-button ${
-                    userHeader === "Công thức của tôi"
+                    userHeader === "Ảnh bìa"
                       ? "user-function-button--active"
                       : ""
                   }`}
@@ -195,7 +215,6 @@ function User() {
 
           <div className="col-9">
             <div className="user-container">
-              <h3 className="user-header">{userHeader}</h3>
               <Outlet />
             </div>
           </div>

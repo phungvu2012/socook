@@ -8,6 +8,7 @@ import userApi from "../../api/userApi";
 function UserInfo() {
   const token = getToken();
   const [userInfo, setUserInfo] = useState(getUser());
+  const [userHeader, setUserHeader] = useState('Thông tin cá nhân');
   const citys = [
     "Hà Nội",
     "Hà Giang",
@@ -134,79 +135,82 @@ function UserInfo() {
     });
   };
   return (
-    <form className="user-info" onSubmit={handleSubmitUserForm}>
-      <div className="user-content">
-        <div className="user-field">
-          <label className="user-field-name">Giới thiệu</label>
-          <textarea
-            value={userInfo.introduction}
-            name="user-intro"
-            rows="6"
-            className="user-field-detail user-intro"
-            onChange={handleIntroChange}
-          ></textarea>
-        </div>
-        <div className="user-field">
-          <label className="user-field-name">Họ tên</label>
-          <input
-            value={userInfo.full_name}
-            type="text"
-            className="user-field-detail user-name"
-            onChange={handleNameChange}
-          />
-        </div>
-        <div className="user-field">
-          <label className="user-field-name">Email</label>
-          <span className="user-field-detail user-mail">{userInfo.email}</span>
-        </div>
-        <div className="user-field">
-          <label className="user-field-name">Ngày sinh</label>
-          <input
-            value={userInfo.date_of_birth}
-            type="date"
-            className="user-field-detail user-date"
-            onChange={handleDateChange}
-          />
-        </div>
-        <div className="user-field">
-          <label className="user-field-name">Giới tính</label>
-          <select
-            value={userInfo.gender}
-            className="user-field-detail user-gender"
-            onChange={handleGenderChange}
-          >
-            <option value="">--Giới tính --</option>
-            <option value="0">Nam</option>
-            <option value="1">Nữ</option>
-            <option value="2">Khác</option>
-          </select>
-        </div>
-        <div className="user-field">
-          <label className="user-field-name">Tỉnh/Thành phố</label>
-          <select
-            value={userInfo.city}
-            className="user-field-detail user-city"
-            onChange={handleCityChange}
-          >
-            <option value="">--Chọn Tỉnh/Thành phố--</option>
-            {citys.map((city, index) => {
-              return (
-                <option value={city} key={index}>
-                  {city}
-                </option>
-              );
-            })}
-          </select>
-        </div>
+    <>
+      <h3 className="user-header">{userHeader}</h3>
+      <form className="user-info" onSubmit={handleSubmitUserForm}>
+        <div className="user-content">
+          <div className="user-field">
+            <label className="user-field-name">Giới thiệu</label>
+            <textarea
+              value={userInfo.introduction}
+              name="user-intro"
+              rows="6"
+              className="user-field-detail user-intro"
+              onChange={handleIntroChange}
+            ></textarea>
+          </div>
+          <div className="user-field">
+            <label className="user-field-name">Họ tên</label>
+            <input
+              value={userInfo.full_name}
+              type="text"
+              className="user-field-detail user-name"
+              onChange={handleNameChange}
+            />
+          </div>
+          <div className="user-field">
+            <label className="user-field-name">Email</label>
+            <span className="user-field-detail user-mail">{userInfo.email}</span>
+          </div>
+          <div className="user-field">
+            <label className="user-field-name">Ngày sinh</label>
+            <input
+              value={userInfo.date_of_birth}
+              type="date"
+              className="user-field-detail user-date"
+              onChange={handleDateChange}
+            />
+          </div>
+          <div className="user-field">
+            <label className="user-field-name">Giới tính</label>
+            <select
+              value={userInfo.gender}
+              className="user-field-detail user-gender"
+              onChange={handleGenderChange}
+            >
+              <option value="">--Giới tính --</option>
+              <option value="0">Nam</option>
+              <option value="1">Nữ</option>
+              <option value="2">Khác</option>
+            </select>
+          </div>
+          <div className="user-field">
+            <label className="user-field-name">Tỉnh/Thành phố</label>
+            <select
+              value={userInfo.city}
+              className="user-field-detail user-city"
+              onChange={handleCityChange}
+            >
+              <option value="">--Chọn Tỉnh/Thành phố--</option>
+              {citys.map((city, index) => {
+                return (
+                  <option value={city} key={index}>
+                    {city}
+                  </option>
+                );
+              })}
+            </select>
+          </div>
 
-        <div className="user-field">
-          <label className="user-field-name"></label>
-          <button type="submit" className="user-form-submit">
-            Lưu thay đổi
-          </button>
+          <div className="user-field">
+            <label className="user-field-name"></label>
+            <button type="submit" className="user-form-submit">
+              Lưu thay đổi
+            </button>
+          </div>
         </div>
-      </div>
-    </form>
+      </form>
+    </>
   );
 }
 

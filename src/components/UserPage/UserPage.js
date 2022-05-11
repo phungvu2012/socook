@@ -139,8 +139,9 @@ function UserPage() {
             </div>
             <div
               className="user-page-profile-header-background-image"
-              style={{ backgroundImage: `url(${userInfo?.cover_image})` }}
-            ></div>
+            >
+              <img src={userInfo?.cover_image} alt="Background" />
+            </div>
           </div>
 
           <div className="user-page-detail-container">

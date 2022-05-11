@@ -64,16 +64,22 @@
   color: #555;
 }
 
-/* .user-function-button--active {
+ .user-function-button--active {
   color: #000;
   border-bottom: 1px solid #777;
-} */
+  .user-function-button-link .user-function-button-icon {
+    color: #c70808;
+  }
+  .user-function-button-link span {
+    font-weight: 600;
+  }
+} 
 
 .user-function-button-link {
   display: flex;
   align-items: center;
   color: inherit;
-  font-weight: 500;
+  font-weight: 400;
 }
 
 .user-function-button-icon {

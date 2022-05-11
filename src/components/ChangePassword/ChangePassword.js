@@ -9,6 +9,7 @@ function ChangePassword() {
   const [oldPassword, setOldPassword] = useState("");
   const [newPassword, setNewPassword] = useState("");
   const [newPasswordAgain, setNewPasswordAgain] = useState("");
+  const [userHeader, setUserHeader] = useState("Đổi mật khẩu");
   const token = getToken();
   const navigation = useNavigate();
   // const PWD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[!@#$%]).{8,24}$/;
@@ -29,6 +30,7 @@ function ChangePassword() {
   };
   return (
     <>
+      <h3 className="user-header">{userHeader}</h3>
       <form className="change-password" onSubmit={handleSubmitChangePassword}>
         <div className="user-field">
           <label className="user-field-name">Mật khẩu cũ</label>

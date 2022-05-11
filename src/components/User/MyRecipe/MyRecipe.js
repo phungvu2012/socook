@@ -14,6 +14,7 @@ function MyRecipe() {
   const [myRecipe, setMyRecipe] = useState([]);
   const [isReRender, setIsReRender] = useState(false);
   const [idRecipeDelete, setIdRecipeDelete] = useState();
+  const [userHeader, setUserHeader] = useState("Công thức của tôi");
   const token = getToken();
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
@@ -53,84 +54,87 @@ function MyRecipe() {
     getMyRecipe();
   }, [isReRender]);
   return (
-    <div className="collection-display-container">
-      <div className="container">
-        <div className="row">
-          {console.log("rerender because: ", idRecipeDelete)}
-          {console.log(idRecipeDelete)}
-          {myRecipe.map((recipe) => {
-            return (
-              <div className="col-3" key={recipe.id}>
-                <div className="collection-recipe-container">
-                  <Link to="/" className="collection-recipe-wrapper">
-                    <span
-                      className="collection-recipe-delete-icon"
-                      onClick={(e) =>
-                        handleDeleteRecipeCollection(e, recipe.id)
-                      }
-                    >
-                      <FontAwesomeIcon icon={faCircleXmark} />
-                    </span>
-                    <div className="collection-recipe-image-wrapper">
-                      <div className="image-overlay"></div>
-                      <img
-                        src={recipe.main_image_url}
-                        alt={recipe.title}
-                        className="collection-recipe-image"
-                      />
-                    </div>
-                    <div className="collection-recipe-info">
-                      <h5 className="collection-recipte-title">
-                        {recipe.title}
-                      </h5>
-                      <div className="collection-recipe-detail">
-                        <div className="collection-recipe-detail-number">
-                          <span>
-                            <FontAwesomeIcon icon={faClock} />
-                            {` ${recipe.cooking_time}`} phút
-                          </span>
-                          <span>
-                            <FontAwesomeIcon icon={faEye} />
-                            {` ${recipe.total_views}`}
-                          </span>
-                        </div>
-                        <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
+    <>
+      <h3 className="user-header">{userHeader}</h3>
+      <div className="collection-display-container">
+        <div className="container">
+          <div className="row">
+            {console.log("rerender because: ", idRecipeDelete)}
+            {console.log(idRecipeDelete)}
+            {myRecipe.map((recipe) => {
+              return (
+                <div className="col-3" key={recipe.id}>
+                  <div className="collection-recipe-container">
+                    <Link to="/" className="collection-recipe-wrapper">
+                      <span
+                        className="collection-recipe-delete-icon"
+                        onClick={(e) =>
+                          handleDeleteRecipeCollection(e, recipe.id)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faCircleXmark} />
+                      </span>
+                      <div className="collection-recipe-image-wrapper">
+                        <div className="image-overlay"></div>
+                        <img
+                          src={recipe.main_image_url}
+                          alt={recipe.title}
+                          className="collection-recipe-image"
+                        />
                       </div>
-                    </div>
-                  </Link>
-                  <p className="collection-recipe-short-des">
-                    {recipe.short_description}
-                  </p>
+                      <div className="collection-recipe-info">
+                        <h5 className="collection-recipte-title">
+                          {recipe.title}
+                        </h5>
+                        <div className="collection-recipe-detail">
+                          <div className="collection-recipe-detail-number">
+                            <span>
+                              <FontAwesomeIcon icon={faClock} />
+                              {` ${recipe.cooking_time}`} phút
+                            </span>
+                            <span>
+                              <FontAwesomeIcon icon={faEye} />
+                              {` ${recipe.total_views}`}
+                            </span>
+                          </div>
+                          <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
+                        </div>
+                      </div>
+                    </Link>
+                    <p className="collection-recipe-short-des">
+                      {recipe.short_description}
+                    </p>
+                  </div>
                 </div>
+              );
+            })}
+            <div
+              className={`delete-recipe-collection-confirm-notice ${
+                idRecipeDelete ? "is-display" : ""
+              }`}
+            >
+              <p>
+                Bạn có chắc chắn muốn xóa công thức này khỏi bộ sưu tập không ?
+              </p>
+              <div className="delete-recipe-collection-button-action">
+                <button
+                  className="btn btn-light"
+                  onClick={cancelDeleteRecipeCollection}
+                >
+                  Không
+                </button>
+                <button
+                  className="btn btn-primary"
+                  onClick={confirmDeleteRecipeCollection}
+                >
+                  Có
+                </button>
               </div>
-            );
-          })}
-          <div
-            className={`delete-recipe-collection-confirm-notice ${
-              idRecipeDelete ? "is-display" : ""
-            }`}
-          >
-            <p>
-              Bạn có chắc chắn muốn xóa công thức này khỏi bộ sưu tập không ?
-            </p>
-            <div className="delete-recipe-collection-button-action">
-              <button
-                className="btn btn-light"
-                onClick={cancelDeleteRecipeCollection}
-              >
-                Không
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={confirmDeleteRecipeCollection}
-              >
-                Có
-              </button>
             </div>
           </div>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 

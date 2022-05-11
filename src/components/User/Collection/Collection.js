@@ -21,7 +21,8 @@ function Collection() {
   const [collectionPrivacy, setCollectionPrivacy] = useState(1);
   const [isCreateCollection, setIsCreateCollection] = useState(false);
   const [saveCollection, setSaveCollection] = useState([]);
-  const [isInteractionCollection, setIsInteractionCollection] = useState(false)
+  const [isInteractionCollection, setIsInteractionCollection] = useState(false);
+  const [userHeader, setUserHeader] = useState("Bộ sưu tập");
   const token = getToken();
   const capitalize = (str) => {
     if (!str) return str;
@@ -101,19 +102,19 @@ function Collection() {
     if (e.target.dataset.isSave === "1") {
       collection
         .unsaveCollection(token, collectionId)
-        .then(res => {
-          console.log(res)
-          setIsInteractionCollection(prevState => !prevState)
+        .then((res) => {
+          console.log(res);
+          setIsInteractionCollection((prevState) => !prevState);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     } else {
       collection
         .saveCollection(token, collectionId)
-        .then(res => {
-          console.log(res)
-          setIsInteractionCollection(prevState => !prevState)
+        .then((res) => {
+          console.log(res);
+          setIsInteractionCollection((prevState) => !prevState);
         })
-        .catch(err => console.log(err));
+        .catch((err) => console.log(err));
     }
   };
 
@@ -123,7 +124,12 @@ function Collection() {
       setUserCollection([...res.data]);
     }
     getCollection();
-  }, [idCollectionUpdate, isCreateCollection, idCollectionDelete, isInteractionCollection]);
+  }, [
+    idCollectionUpdate,
+    isCreateCollection,
+    idCollectionDelete,
+    isInteractionCollection,
+  ]);
 
   useEffect(() => {
     async function getCollectionSave() {
@@ -135,162 +141,174 @@ function Collection() {
   }, [isInteractionCollection]);
 
   return (
-    <div className="collection-container">
-      <button
-        className="btn btn-info create-collection-button"
-        onClick={() => setIsCreateCollection(true)}
-      >
-        <FontAwesomeIcon icon={faCirclePlus} />
-        <span>Tạo bộ sưu tập</span>
-      </button>
-      <div className="container">
-        <div className="row">
-          {userCollection.map((collection, index) => {
-            return (
-              <Link
-                to={`${collection.id}`}
-                className="col-3"
-                key={collection.id}
-                state={{
-                  collectionName: capitalize(collection.name)
-                }}
-              >
-                {console.log(userCollection)}
-                {console.log(saveCollection)}
-                <div className="collection-wrapper">
-                  <div className="collection-image-wrapper">
-                    <div className="image-overlay"></div>
-                    <img
-                      src={collection.imageUrl || noImgCollection}
-                      alt={collection.name}
-                      className="collection-image"
-                    />
-                    <span className="collection-save">
-                      <span className="collection-total-save">{collection.totalLikes}</span>
-                      <span
-                        className={`collection-save-icon-wrapper ${
-                          saveCollection.filter(
-                            (col) => col.id === collection.id
-                          )[0]
-                            ? "is-save-collection"
-                            : ""
-                        }`}
-                      >
-                        <div
-                          className="collection-save-overlay"
-                          onClick={(e) =>
-                            handleSaveCollection(e, collection.id)
-                          }
-                          data-is-save={
+    <>
+      <h3 className="user-header">{userHeader}</h3>
+      <div className="collection-container">
+        <button
+          className="btn btn-info create-collection-button"
+          onClick={() => setIsCreateCollection(true)}
+        >
+          <FontAwesomeIcon icon={faCirclePlus} />
+          <span>Tạo bộ sưu tập</span>
+        </button>
+        <div className="container">
+          <div className="row">
+            {userCollection.map((collection, index) => {
+              return (
+                <Link
+                  to={`${collection.id}`}
+                  className="col-3"
+                  key={collection.id}
+                  state={{
+                    collectionName: capitalize(collection.name),
+                  }}
+                >
+                  {console.log(userCollection)}
+                  {console.log(saveCollection)}
+                  <div className="collection-wrapper">
+                    <div className="collection-image-wrapper">
+                      <div className="image-overlay"></div>
+                      <img
+                        src={collection.imageUrl || noImgCollection}
+                        alt={collection.name}
+                        className="collection-image"
+                      />
+                      <span className="collection-save">
+                        <span className="collection-total-save">
+                          {collection.totalLikes}
+                        </span>
+                        <span
+                          className={`collection-save-icon-wrapper ${
                             saveCollection.filter(
                               (col) => col.id === collection.id
                             )[0]
-                              ? 1
-                              : 0
-                          }
-                        ></div>
-                        <FontAwesomeIcon
-                          icon={faHeart}
-                          className="collection-save-icon"
-                        />
+                              ? "is-save-collection"
+                              : ""
+                          }`}
+                        >
+                          <div
+                            className="collection-save-overlay"
+                            onClick={(e) =>
+                              handleSaveCollection(e, collection.id)
+                            }
+                            data-is-save={
+                              saveCollection.filter(
+                                (col) => col.id === collection.id
+                              )[0]
+                                ? 1
+                                : 0
+                            }
+                          ></div>
+                          <FontAwesomeIcon
+                            icon={faHeart}
+                            className="collection-save-icon"
+                          />
+                        </span>
                       </span>
+                    </div>
+                    <div className="collection-name">
+                      {capitalize(collection.name)}
+                    </div>
+                    <span className="collection-number-of-recipe">
+                      {collection.recipeIds.length} công thức
                     </span>
+                    <div className="collection-action">
+                      <button
+                        className="btn btn-success collection-update"
+                        onClick={(e) =>
+                          updateCollection(e, collection.id, index)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faTrash} />
+                        Chỉnh sửa
+                      </button>
+                      <button
+                        className="btn btn-danger collection-delete"
+                        onClick={(e) =>
+                          handleDeleteCollection(e, collection.id)
+                        }
+                      >
+                        <FontAwesomeIcon icon={faFilePen} />
+                        Xóa
+                      </button>
+                    </div>
                   </div>
-                  <div className="collection-name">
-                    {capitalize(collection.name)}
-                  </div>
-                  <span className="collection-number-of-recipe">
-                    {collection.recipeIds.length} công thức
-                  </span>
-                  <div className="collection-action">
-                    <button
-                      className="btn btn-success collection-update"
-                      onClick={(e) => updateCollection(e, collection.id, index)}
-                    >
-                      <FontAwesomeIcon icon={faTrash} />
-                      Chỉnh sửa
-                    </button>
-                    <button
-                      className="btn btn-danger collection-delete"
-                      onClick={(e) => handleDeleteCollection(e, collection.id)}
-                    >
-                      <FontAwesomeIcon icon={faFilePen} />
-                      Xóa
-                    </button>
-                  </div>
-                </div>
-              </Link>
-            );
-          })}
-        </div>
-      </div>
-      <div
-        className={`update-form-modal ${
-          idCollectionUpdate || isCreateCollection || isDeleteCollection
-            ? "is-display"
-            : ""
-        }`}
-      ></div>
-      <div
-        className={`update-form-container ${
-          idCollectionUpdate || isCreateCollection ? "is-display" : ""
-        }`}
-      >
-        <form className={`update-form`}>
-          <div>
-            <p>Tên bộ sưu tập</p>
-            <input
-              type="text"
-              className="collection-name-input"
-              value={capitalize(collectionNameUpdate)}
-              onChange={(e) => setCollectionNameUpdate(e.target.value)}
-              placeholder="Nhập tên bộ sưu tập..."
-            />
+                </Link>
+              );
+            })}
           </div>
-          <div>
-            <p>Quyền riêng tư</p>
-            <select
-              className="collection-name-select"
-              value={collectionPrivacy}
-              onChange={(e) => setCollectionPrivacy(e.target.value)}
+        </div>
+        <div
+          className={`update-form-modal ${
+            idCollectionUpdate || isCreateCollection || isDeleteCollection
+              ? "is-display"
+              : ""
+          }`}
+        ></div>
+        <div
+          className={`update-form-container ${
+            idCollectionUpdate || isCreateCollection ? "is-display" : ""
+          }`}
+        >
+          <form className={`update-form`}>
+            <div>
+              <p>Tên bộ sưu tập</p>
+              <input
+                type="text"
+                className="collection-name-input"
+                value={capitalize(collectionNameUpdate)}
+                onChange={(e) => setCollectionNameUpdate(e.target.value)}
+                placeholder="Nhập tên bộ sưu tập..."
+              />
+            </div>
+            <div>
+              <p>Quyền riêng tư</p>
+              <select
+                className="collection-name-select"
+                value={collectionPrivacy}
+                onChange={(e) => setCollectionPrivacy(e.target.value)}
+              >
+                <option value={1}>Công khai</option>
+                <option value={0}>Chỉ mình tôi</option>
+              </select>
+            </div>
+            <button
+              className="btn btn-success update-collection-button"
+              onClick={handleUpdateCollection}
             >
-              <option value={1}>Công khai</option>
-              <option value={0}>Chỉ mình tôi</option>
-            </select>
+              {isCreateCollection ? "Tạo" : "Cập nhật"}
+            </button>
+            <button
+              className="btn btn-danger update-collection-button"
+              onClick={handleCancelUpdateCollection}
+            >
+              Hủy
+            </button>
+          </form>
+        </div>
+        <div
+          className={`delete-collection-confirm-notice ${
+            isDeleteCollection ? "is-display" : ""
+          }`}
+        >
+          <p>Bạn có chắc chắn muốn xóa bộ sưu tập này không ?</p>
+          <div className="delete-collection-button-action">
+            <button
+              className="btn btn-light"
+              onClick={() => setIsDeleteCollection(false)}
+            >
+              Không
+            </button>
+            <button
+              className="btn btn-primary"
+              onClick={confirmDeleteCollection}
+            >
+              Có
+            </button>
           </div>
-          <button
-            className="btn btn-success update-collection-button"
-            onClick={handleUpdateCollection}
-          >
-            {isCreateCollection ? "Tạo" : "Cập nhật"}
-          </button>
-          <button
-            className="btn btn-danger update-collection-button"
-            onClick={handleCancelUpdateCollection}
-          >
-            Hủy
-          </button>
-        </form>
-      </div>
-      <div
-        className={`delete-collection-confirm-notice ${
-          isDeleteCollection ? "is-display" : ""
-        }`}
-      >
-        <p>Bạn có chắc chắn muốn xóa bộ sưu tập này không ?</p>
-        <div className="delete-collection-button-action">
-          <button
-            className="btn btn-light"
-            onClick={() => setIsDeleteCollection(false)}
-          >
-            Không
-          </button>
-          <button className="btn btn-primary" onClick={confirmDeleteCollection}>
-            Có
-          </button>
         </div>
       </div>
-    </div>
+    </>
   );
 }
 
