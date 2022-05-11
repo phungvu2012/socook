@@ -10,6 +10,7 @@ import {
   faClock,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import Pagination from "../../Pagination/Pagination";
 
 function CollectionDisplay() {
   const [recipes, setRecipes] = useState([]);
@@ -17,7 +18,13 @@ function CollectionDisplay() {
   const [idRecipeDelete, setIdRecipeDelete] = useState();
   const token = getToken();
   const { collectionId } = useParams();
-  const location = useLocation()
+  const location = useLocation();
+  const [currentPage, setCurrentPage] = useState(1);
+  const limitItemInPage = 8;
+
+  const receiveValuePagination = (curPage) => {
+    setCurrentPage(curPage);
+  };
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
@@ -55,88 +62,110 @@ function CollectionDisplay() {
     getRecipes();
   }, [isReRender]);
   return (
-    <div className="collection-display-container">
-      <div className="container">
-        <h3 className="collection-display-title">{location.state.collectionName}</h3>
-        {!recipes[0] ? (
-          <h4>Chưa có công thức nào trong bộ sưu tập</h4>
-        ) : (
-        <div className="row">
-          {recipes.map((recipe) => {
-            return (
-              <div className="col-3" key={recipe.id}>
-                <div className="collection-recipe-container">
-                  <Link to="/" className="collection-recipe-wrapper">
-                    <span
-                      className="collection-recipe-delete-icon"
-                      onClick={(e) =>
-                        handleDeleteRecipeCollection(e, recipe.id)
-                      }
-                    >
-                      <FontAwesomeIcon icon={faCircleXmark} />
-                    </span>
-                    <div className="collection-recipe-image-wrapper">
-                      <div className="image-overlay"></div>
-                      <img
-                        src={recipe.main_image_url}
-                        alt={recipe.title}
-                        className="collection-recipe-image"
-                      />
-                    </div>
-                    <div className="collection-recipe-info">
-                      <h5 className="collection-recipte-title">
-                        {recipe.title}
-                      </h5>
-                      <div className="collection-recipe-detail">
-                        <div className="collection-recipe-detail-number">
-                          <span>
-                            <FontAwesomeIcon icon={faClock} />
-                            {` ${recipe.cooking_time}`} phút
+    <>
+      <div className="collection-display-container">
+        <div className="container">
+          <h3 className="collection-display-title">
+            {location.state.collectionName}
+          </h3>
+          {!recipes[0] ? (
+            <h4>Chưa có công thức nào trong bộ sưu tập</h4>
+          ) : (
+            <div className="row">
+              {recipes
+                .slice(
+                  (currentPage - 1) * limitItemInPage,
+                  currentPage * limitItemInPage
+                )
+                .map((recipe) => {
+                  return (
+                    <div className="col-3" key={recipe.id}>
+                      <div className="collection-recipe-container">
+                        <Link to="/" className="collection-recipe-wrapper">
+                          <span
+                            className="collection-recipe-delete-icon"
+                            onClick={(e) =>
+                              handleDeleteRecipeCollection(e, recipe.id)
+                            }
+                          >
+                            <FontAwesomeIcon icon={faCircleXmark} />
                           </span>
-                          <span>
-                            <FontAwesomeIcon icon={faEye} />
-                            {` ${recipe.total_views}`}
-                          </span>
-                        </div>
-                        <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
+                          <div className="collection-recipe-image-wrapper">
+                            <div className="image-overlay"></div>
+                            <img
+                              src={recipe.main_image_url}
+                              alt={recipe.title}
+                              className="collection-recipe-image"
+                            />
+                          </div>
+                          <div className="collection-recipe-info">
+                            <h5 className="collection-recipte-title">
+                              {recipe.title}
+                            </h5>
+                            <div className="collection-recipe-detail">
+                              <div className="collection-recipe-detail-number">
+                                <span>
+                                  <FontAwesomeIcon icon={faClock} />
+                                  {` ${recipe.cooking_time}`} phút
+                                </span>
+                                <span>
+                                  <FontAwesomeIcon icon={faEye} />
+                                  {` ${recipe.total_views}`}
+                                </span>
+                              </div>
+                              <p>
+                                Khẩu phần ăn: {recipe.amount_of_people} người
+                              </p>
+                            </div>
+                          </div>
+                          {console.log(recipes[0])}
+                        </Link>
+                        <Link
+                          to={`/user-page/${recipe.user_name}`}
+                          className="collection-recipe-owner"
+                        >
+                          <span>Người tạo:</span> {recipe.user_name}
+                        </Link>
                       </div>
                     </div>
-                    {console.log(recipes[0])}
-                  </Link>
-                  <Link to={`/user-page/${recipe.user_name}`} className="collection-recipe-owner">
-                    <span>Người tạo:</span> {recipe.user_name}
-                  </Link>
+                  );
+                })}
+              <div
+                className={`delete-recipe-collection-confirm-notice ${
+                  idRecipeDelete > 0 ? "is-display" : ""
+                }`}
+              >
+                <p>
+                  Bạn có chắc chắn muốn xóa công thức này khỏi bộ sưu tập không
+                  ?
+                </p>
+                <div className="delete-recipe-collection-button-action">
+                  <button
+                    className="btn btn-light"
+                    onClick={cancelDeleteRecipeCollection}
+                  >
+                    Không
+                  </button>
+                  <button
+                    className="btn btn-primary"
+                    onClick={confirmDeleteRecipeCollection}
+                  >
+                    Có
+                  </button>
                 </div>
               </div>
-            );
-          })}
-          <div
-            className={`delete-recipe-collection-confirm-notice ${
-              idRecipeDelete > 0 ? "is-display" : ""
-            }`}
-          >
-            <p>
-              Bạn có chắc chắn muốn xóa công thức này khỏi bộ sưu tập không ?
-            </p>
-            <div className="delete-recipe-collection-button-action">
-              <button
-                className="btn btn-light"
-                onClick={cancelDeleteRecipeCollection}
-              >
-                Không
-              </button>
-              <button
-                className="btn btn-primary"
-                onClick={confirmDeleteRecipeCollection}
-              >
-                Có
-              </button>
             </div>
-          </div>
+          )}
         </div>
-        )}
       </div>
-    </div>
+      {recipes[0] && (
+        <Pagination
+          itemArray={recipes}
+          limitItemInPage={limitItemInPage}
+          passValuePagination={receiveValuePagination}
+        />
+      )}
+    </>
   );
 }
 

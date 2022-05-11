@@ -16,6 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import RecipeSearchResult from "./../SearchPage/RecipeSearchResult/RecipeSearchResult";
 import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/CollectionSearchResult";
+import Pagination from "../Pagination/Pagination";
 
 function UserPage() {
   const token = getToken();
@@ -28,6 +29,12 @@ function UserPage() {
   const [isInteract, setInteract] = useState(false);
   const [activeTab, setActiveTab] = useState("recipe");
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const limitItemInPage = 12;
+
+  const receiveValuePagination = (curPage) => {
+    setCurrentPage(curPage);
+  };
 
   const handleFollowUser = (e) => {
     e.preventDefault();
@@ -137,9 +144,7 @@ function UserPage() {
                 )}
               </div>
             </div>
-            <div
-              className="user-page-profile-header-background-image"
-            >
+            <div className="user-page-profile-header-background-image">
               <img src={userInfo?.cover_image} alt="Background" />
             </div>
           </div>
@@ -185,34 +190,44 @@ function UserPage() {
                   <div className="container">
                     <div className="row">
                       {activeTab === "recipe" ? (
-                        userRecipes?.map((recipe) => {
-                          return (
-                            <div className="col-2" key={recipe.id}>
-                              <RecipeSearchResult
-                                recipe={{
-                                  ...recipe,
-                                  user_name,
-                                }}
-                              />
-                            </div>
-                          );
-                        })
+                        userRecipes
+                          ?.slice(
+                            (currentPage - 1) * limitItemInPage,
+                            currentPage * limitItemInPage
+                          )
+                          .map((recipe) => {
+                            return (
+                              <div className="col-2" key={recipe.id}>
+                                <RecipeSearchResult
+                                  recipe={{
+                                    ...recipe,
+                                    user_name,
+                                  }}
+                                />
+                              </div>
+                            );
+                          })
                       ) : activeTab === "collection" ? (
-                        userCollections?.map((collection) => {
-                          return (
-                            <div className="col-2" key={collection.id}>
-                              <CollectionsSearchResult
-                                collection={collection}
-                                setIsInteractionCollection={
-                                  setIsInteractionCollection
-                                }
-                                isInteractionCollection={
-                                  isInteractionCollection
-                                }
-                              />
-                            </div>
-                          );
-                        })
+                        userCollections
+                          ?.slice(
+                            (currentPage - 1) * limitItemInPage,
+                            currentPage * limitItemInPage
+                          )
+                          .map((collection) => {
+                            return (
+                              <div className="col-2" key={collection.id}>
+                                <CollectionsSearchResult
+                                  collection={collection}
+                                  setIsInteractionCollection={
+                                    setIsInteractionCollection
+                                  }
+                                  isInteractionCollection={
+                                    isInteractionCollection
+                                  }
+                                />
+                              </div>
+                            );
+                          })
                       ) : (
                         <div className="user-page-user-info">
                           {console.log("U:", userInfo)}
@@ -224,7 +239,7 @@ function UserPage() {
                               />
                               Giới thiệu:
                             </span>
-                            <p>{userInfo.introduction}</p>
+                            <p>{userInfo?.introduction}</p>
                           </div>
                           <div className="user-page-user-info-field">
                             <span>
@@ -234,7 +249,7 @@ function UserPage() {
                               />
                               Họ tên:
                             </span>
-                            <p>{userInfo.full_name}</p>
+                            <p>{userInfo?.full_name}</p>
                           </div>
                           <div className="user-page-user-info-field">
                             <span>
@@ -244,7 +259,7 @@ function UserPage() {
                               />
                               Tỉnh/Thành phố:
                             </span>
-                            <p>{userInfo.city}</p>
+                            <p>{userInfo?.city}</p>
                           </div>
                           <div className="user-page-user-info-field">
                             <span>
@@ -255,9 +270,9 @@ function UserPage() {
                               Giới tính:
                             </span>
                             <p>
-                              {userInfo.gender === 0
+                              {userInfo?.gender === 0
                                 ? "Nam"
-                                : userInfo.gender === 1
+                                : userInfo?.gender === 1
                                 ? "Nữ"
                                 : "Khác"}
                             </p>
@@ -265,6 +280,33 @@ function UserPage() {
                         </div>
                       )}
                     </div>
+                    {/* {activeTab === "recipe" ? (
+                      userRecipes && <Pagination
+                        itemArray={userRecipes}
+                        limitItemInPage={limitItemInPage}
+                        passValuePagination={receiveValuePagination}
+                      />
+                    ) : (activeTab === "collection" ? (
+                      <Pagination
+                        itemArray={userCollections}
+                        limitItemInPage={limitItemInPage}
+                        passValuePagination={receiveValuePagination}
+                      />
+                    ) : (<></>))} */}
+                    {activeTab === "recipe" && userRecipes && (
+                      <Pagination
+                        itemArray={userRecipes}
+                        limitItemInPage={limitItemInPage}
+                        passValuePagination={receiveValuePagination}
+                      />
+                    )}
+                    {activeTab === "collection" && userCollections && (
+                      <Pagination
+                        itemArray={userCollections}
+                        limitItemInPage={limitItemInPage}
+                        passValuePagination={receiveValuePagination}
+                      />
+                    )}
                   </div>
                 </div>
               </div>

@@ -3,6 +3,7 @@ import { getToken } from "./../../../features/sessionStorage";
 import { useState, useEffect } from "react";
 import collection from "../../../api/collection";
 import noImgCollection from "./../../../assets/image/noImageCollection/no-image-collection.png";
+import Pagination from "../../Pagination/Pagination";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faTrash,
@@ -23,6 +24,8 @@ function Collection() {
   const [saveCollection, setSaveCollection] = useState([]);
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
   const [userHeader, setUserHeader] = useState("Bộ sưu tập");
+  const [currentPage, setCurrentPage] = useState(1);
+  const limitItemInPage = 8;
   const token = getToken();
   const capitalize = (str) => {
     if (!str) return str;
@@ -49,7 +52,6 @@ function Collection() {
     collection
       .deleteCollection(token, idCollectionDelete)
       .then((res) => {
-        console.log(res);
         setIsDeleteCollection(false);
         setIdCollectionDelete("");
       })
@@ -69,7 +71,7 @@ function Collection() {
     async function updateCollection() {
       if (isCreateCollection) {
         await collection
-          .updateCollection(token, {
+          .createCollection(token, {
             name: collectionNameUpdate,
             isPublic: collectionPrivacy,
           })
@@ -80,8 +82,9 @@ function Collection() {
             setIsCreateCollection(false);
           });
       } else {
+        console.log("update");
         await collection
-          .createCollection(token, {
+          .updateCollection(token, idCollectionUpdate, {
             name: collectionNameUpdate,
             isPublic: collectionPrivacy,
           })
@@ -98,12 +101,10 @@ function Collection() {
 
   const handleSaveCollection = (e, collectionId) => {
     e.preventDefault();
-    console.log(e.target.dataset.isSave);
     if (e.target.dataset.isSave === "1") {
       collection
         .unsaveCollection(token, collectionId)
         .then((res) => {
-          console.log(res);
           setIsInteractionCollection((prevState) => !prevState);
         })
         .catch((err) => console.log(err));
@@ -111,11 +112,14 @@ function Collection() {
       collection
         .saveCollection(token, collectionId)
         .then((res) => {
-          console.log(res);
           setIsInteractionCollection((prevState) => !prevState);
         })
         .catch((err) => console.log(err));
     }
+  };
+
+  const receiveValuePagination = (curPage) => {
+    setCurrentPage(curPage);
   };
 
   useEffect(() => {
@@ -153,89 +157,92 @@ function Collection() {
         </button>
         <div className="container">
           <div className="row">
-            {userCollection.map((collection, index) => {
-              return (
-                <Link
-                  to={`${collection.id}`}
-                  className="col-3"
-                  key={collection.id}
-                  state={{
-                    collectionName: capitalize(collection.name),
-                  }}
-                >
-                  {console.log(userCollection)}
-                  {console.log(saveCollection)}
-                  <div className="collection-wrapper">
-                    <div className="collection-image-wrapper">
-                      <div className="image-overlay"></div>
-                      <img
-                        src={collection.imageUrl || noImgCollection}
-                        alt={collection.name}
-                        className="collection-image"
-                      />
-                      <span className="collection-save">
-                        <span className="collection-total-save">
-                          {collection.totalLikes}
-                        </span>
-                        <span
-                          className={`collection-save-icon-wrapper ${
-                            saveCollection.filter(
-                              (col) => col.id === collection.id
-                            )[0]
-                              ? "is-save-collection"
-                              : ""
-                          }`}
-                        >
-                          <div
-                            className="collection-save-overlay"
-                            onClick={(e) =>
-                              handleSaveCollection(e, collection.id)
-                            }
-                            data-is-save={
+            {userCollection
+              .slice(
+                (currentPage - 1) * limitItemInPage,
+                currentPage * limitItemInPage
+              )
+              .map((collection, index) => {
+                return (
+                  <Link
+                    to={`${collection.id}`}
+                    className="col-3"
+                    key={collection.id}
+                    state={{
+                      collectionName: capitalize(collection.name),
+                    }}
+                  >
+                    <div className="collection-wrapper">
+                      <div className="collection-image-wrapper">
+                        <div className="image-overlay"></div>
+                        <img
+                          src={collection.imageUrl || noImgCollection}
+                          alt={collection.name}
+                          className="collection-image"
+                        />
+                        <span className="collection-save">
+                          <span className="collection-total-save">
+                            {collection.totalLikes}
+                          </span>
+                          <span
+                            className={`collection-save-icon-wrapper ${
                               saveCollection.filter(
                                 (col) => col.id === collection.id
                               )[0]
-                                ? 1
-                                : 0
-                            }
-                          ></div>
-                          <FontAwesomeIcon
-                            icon={faHeart}
-                            className="collection-save-icon"
-                          />
+                                ? "is-save-collection"
+                                : ""
+                            }`}
+                          >
+                            <div
+                              className="collection-save-overlay"
+                              onClick={(e) =>
+                                handleSaveCollection(e, collection.id)
+                              }
+                              data-is-save={
+                                saveCollection.filter(
+                                  (col) => col.id === collection.id
+                                )[0]
+                                  ? 1
+                                  : 0
+                              }
+                            ></div>
+                            <FontAwesomeIcon
+                              icon={faHeart}
+                              className="collection-save-icon"
+                            />
+                          </span>
                         </span>
+                      </div>
+                      <div className="collection-name">
+                        {capitalize(collection.name)}
+                      </div>
+                      <span className="collection-number-of-recipe">
+                        {collection.recipeIds.length} công thức
                       </span>
+                      <div className="collection-action">
+                        <button
+                          className="btn btn-success collection-update"
+                          onClick={(e) =>
+                            updateCollection(e, collection.id, index)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faFilePen} className="me-1" />
+                          Chỉnh sửa
+                        </button>
+                        <button
+                          className="btn btn-danger collection-delete"
+                          onClick={(e) =>
+                            handleDeleteCollection(e, collection.id)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faTrash} className="me-1" />
+                          Xóa
+                        </button>
+                      </div>
                     </div>
-                    <div className="collection-name">
-                      {capitalize(collection.name)}
-                    </div>
-                    <span className="collection-number-of-recipe">
-                      {collection.recipeIds.length} công thức
-                    </span>
-                    <div className="collection-action">
-                      <button
-                        className="btn btn-success collection-update"
-                        onClick={(e) =>
-                          updateCollection(e, collection.id, index)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faTrash} />
-                        Chỉnh sửa
-                      </button>
-                      <button
-                        className="btn btn-danger collection-delete"
-                        onClick={(e) =>
-                          handleDeleteCollection(e, collection.id)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faFilePen} />
-                        Xóa
-                      </button>
-                    </div>
-                  </div>
-                </Link>
-              );
-            })}
+                  </Link>
+                );
+              })}
           </div>
         </div>
         <div
@@ -308,6 +315,11 @@ function Collection() {
           </div>
         </div>
       </div>
+      {userCollection[0] && <Pagination
+        itemArray={userCollection}
+        limitItemInPage={limitItemInPage}
+        passValuePagination={receiveValuePagination}
+      />}
     </>
   );
 }

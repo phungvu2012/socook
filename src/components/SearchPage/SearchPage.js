@@ -6,12 +6,23 @@ import searchApi from "../../api/searchApi";
 
 import CollectionsSearchResult from "./CollectionSearchResult/CollectionSearchResult";
 import RecipesSearchResult from "./RecipeSearchResult/RecipeSearchResult";
+import Pagination from "../Pagination/Pagination";
 
 function SearchPage() {
   const params = useParams();
   const [recipesSearchResult, setRecipesSearchResult] = useState([]);
   const [collectionsSearchResult, setCollectionsSearchResult] = useState([]);
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
+  const [currentPage1, setCurrentPage1] = useState(1);
+  const [currentPage2, setCurrentPage2] = useState(1);
+  const limitItemInPage = 12;
+
+  const receiveValuePagination1 = (curPage) => {
+    setCurrentPage1(curPage);
+  };
+  const receiveValuePagination2 = (curPage) => {
+    setCurrentPage2(curPage);
+  };
 
   useEffect(() => {
     searchApi
@@ -48,14 +59,26 @@ function SearchPage() {
               ) : (
                 <div className="row">
                   <h4>Công thức tìm được</h4>
-                  {recipesSearchResult.map((recipe) => {
-                    return (
-                      <div className="col-2" key={recipe.id}>
-                        <RecipesSearchResult recipe={recipe} />
-                      </div>
-                    );
-                  })}
+                  {recipesSearchResult
+                    .slice(
+                      (currentPage1 - 1) * limitItemInPage,
+                      currentPage1 * limitItemInPage
+                    )
+                    .map((recipe) => {
+                      return (
+                        <div className="col-2" key={recipe.id}>
+                          <RecipesSearchResult recipe={recipe} />
+                        </div>
+                      );
+                    })}
                 </div>
+              )}
+              {recipesSearchResult[0] && (
+                <Pagination
+                  itemArray={recipesSearchResult}
+                  limitItemInPage={limitItemInPage}
+                  passValuePagination={receiveValuePagination1}
+                />
               )}
             </div>
           </div>
@@ -67,20 +90,32 @@ function SearchPage() {
               ) : (
                 <div className="row">
                   <h4>Bộ sưu tập tìm được</h4>
-                  {collectionsSearchResult.map((collection) => {
-                    return (
-                      <div className="col-2" key={collection.id}>
-                        <CollectionsSearchResult
-                          collection={collection}
-                          setIsInteractionCollection={
-                            setIsInteractionCollection
-                          }
-                          isInteractionCollection={isInteractionCollection}
-                        />
-                      </div>
-                    );
-                  })}
+                  {collectionsSearchResult
+                    .slice(
+                      (currentPage2 - 1) * limitItemInPage,
+                      currentPage2 * limitItemInPage
+                    )
+                    .map((collection) => {
+                      return (
+                        <div className="col-2" key={collection.id}>
+                          <CollectionsSearchResult
+                            collection={collection}
+                            setIsInteractionCollection={
+                              setIsInteractionCollection
+                            }
+                            isInteractionCollection={isInteractionCollection}
+                          />
+                        </div>
+                      );
+                    })}
                 </div>
+              )}
+              {collectionsSearchResult[0] && (
+                <Pagination
+                  itemArray={collectionsSearchResult}
+                  limitItemInPage={limitItemInPage}
+                  passValuePagination={receiveValuePagination2}
+                />
               )}
             </div>
           </div>

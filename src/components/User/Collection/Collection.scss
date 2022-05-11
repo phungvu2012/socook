@@ -16,6 +16,7 @@
   border: 1px solid #eee;
   border-radius: 4px;
   color: #333;
+  margin-top: 12px;
   a {
     color: inherit;
   }
@@ -46,7 +47,7 @@
   bottom: 0;
   right: 0;
   padding-right: 4px;
-  z-index: 100;
+  z-index: 10;
   display: inline-flex;
   align-items: center;
   justify-content: flex-end;
@@ -65,7 +66,7 @@
 .collection-save-icon-wrapper {
   margin-left: 4px;
   color: #5c5959a8;
-  z-index: 100;
+  z-index: 10;
   position: relative;
 }
 
@@ -128,6 +129,7 @@
   background-color: #ccc;
   opacity: 0.3;
   display: none;
+  z-index: 100;
 }
 
 .update-form {
@@ -136,6 +138,7 @@
   background-color: #fff;
   padding: 40px;
   border-radius: 8px;
+  z-index: 100;
 }
 
 .update-form div {
@@ -161,10 +164,10 @@
 }
 
 .delete-collection-confirm-notice {
-  position: fixed; 
+  position: fixed;
   border: 1px solid #333;
   background-color: #fff;
-  padding: 24px;  
+  padding: 24px;
   top: 30%;
   left: 50%;
   transform: translateX(-30%);

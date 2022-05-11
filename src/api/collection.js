@@ -17,9 +17,9 @@ class Collection {
       },
     });
   };
-  updateCollection = (token, collectionObj) => {
-    const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL;
-    return axiosHost2.post(COLLECTION_URL, collectionObj, {
+  updateCollection = (token, idCollectionUpdate, collectionObj) => {
+    const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL + `/${idCollectionUpdate}`;
+    return axiosHost2.put(COLLECTION_URL, collectionObj, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -27,7 +27,7 @@ class Collection {
   };
   createCollection = (token, collectionObj) => {
     const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL;
-    return axiosHost2.put(COLLECTION_URL, collectionObj, {
+    return axiosHost2.post(COLLECTION_URL, collectionObj, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

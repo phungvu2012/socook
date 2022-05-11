@@ -1,0 +1,32 @@
+/* Pagination */
+
+.collection-pagination {
+  display: flex;
+  justify-content: center;
+  margin: 24px 0;
+}
+
+.collection-pagination-item {
+  min-width: 36px;
+  height: 36px;
+  border-radius: 4px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border-radius: 50%;
+}
+
+.collection-pagination-item:hover {
+  background: rgb(193, 231, 255);
+}
+
+.collection-pagination-item--active {
+  background: rgb(24, 158, 255);
+  color: rgb(255, 255, 255);
+}
+
+.collection-pagination-item--disabled {
+  pointer-events: none;
+  opacity: 0.5;
+}

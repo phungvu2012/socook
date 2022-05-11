@@ -9,6 +9,7 @@ import {
   faClock,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import Pagination from "../../Pagination/Pagination";
 
 function MyRecipe() {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -16,6 +17,12 @@ function MyRecipe() {
   const [idRecipeDelete, setIdRecipeDelete] = useState();
   const [userHeader, setUserHeader] = useState("Công thức của tôi");
   const token = getToken();
+  const [currentPage, setCurrentPage] = useState(1);
+  const limitItemInPage = 8;
+
+  const receiveValuePagination = (curPage) => {
+    setCurrentPage(curPage);
+  };
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
@@ -61,53 +68,58 @@ function MyRecipe() {
           <div className="row">
             {console.log("rerender because: ", idRecipeDelete)}
             {console.log(idRecipeDelete)}
-            {myRecipe.map((recipe) => {
-              return (
-                <div className="col-3" key={recipe.id}>
-                  <div className="collection-recipe-container">
-                    <Link to="/" className="collection-recipe-wrapper">
-                      <span
-                        className="collection-recipe-delete-icon"
-                        onClick={(e) =>
-                          handleDeleteRecipeCollection(e, recipe.id)
-                        }
-                      >
-                        <FontAwesomeIcon icon={faCircleXmark} />
-                      </span>
-                      <div className="collection-recipe-image-wrapper">
-                        <div className="image-overlay"></div>
-                        <img
-                          src={recipe.main_image_url}
-                          alt={recipe.title}
-                          className="collection-recipe-image"
-                        />
-                      </div>
-                      <div className="collection-recipe-info">
-                        <h5 className="collection-recipte-title">
-                          {recipe.title}
-                        </h5>
-                        <div className="collection-recipe-detail">
-                          <div className="collection-recipe-detail-number">
-                            <span>
-                              <FontAwesomeIcon icon={faClock} />
-                              {` ${recipe.cooking_time}`} phút
-                            </span>
-                            <span>
-                              <FontAwesomeIcon icon={faEye} />
-                              {` ${recipe.total_views}`}
-                            </span>
-                          </div>
-                          <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
+            {myRecipe
+              .slice(
+                (currentPage - 1) * limitItemInPage,
+                currentPage * limitItemInPage
+              )
+              .map((recipe) => {
+                return (
+                  <div className="col-3" key={recipe.id}>
+                    <div className="collection-recipe-container">
+                      <Link to="/" className="collection-recipe-wrapper">
+                        <span
+                          className="collection-recipe-delete-icon"
+                          onClick={(e) =>
+                            handleDeleteRecipeCollection(e, recipe.id)
+                          }
+                        >
+                          <FontAwesomeIcon icon={faCircleXmark} />
+                        </span>
+                        <div className="collection-recipe-image-wrapper">
+                          <div className="image-overlay"></div>
+                          <img
+                            src={recipe.main_image_url}
+                            alt={recipe.title}
+                            className="collection-recipe-image"
+                          />
                         </div>
-                      </div>
-                    </Link>
-                    <p className="collection-recipe-short-des">
-                      {recipe.short_description}
-                    </p>
+                        <div className="collection-recipe-info">
+                          <h5 className="collection-recipte-title">
+                            {recipe.title}
+                          </h5>
+                          <div className="collection-recipe-detail">
+                            <div className="collection-recipe-detail-number">
+                              <span>
+                                <FontAwesomeIcon icon={faClock} />
+                                {` ${recipe.cooking_time}`} phút
+                              </span>
+                              <span>
+                                <FontAwesomeIcon icon={faEye} />
+                                {` ${recipe.total_views}`}
+                              </span>
+                            </div>
+                            <p>Khẩu phần ăn: {recipe.amount_of_people} người</p>
+                          </div>
+                        </div>
+                      </Link>
+                      <p className="collection-recipe-short-des">
+                        {recipe.short_description}
+                      </p>
+                    </div>
                   </div>
-                </div>
-              );
-            })}
+                );
+              })}
             <div
               className={`delete-recipe-collection-confirm-notice ${
                 idRecipeDelete ? "is-display" : ""
@@ -134,6 +146,13 @@ function MyRecipe() {
           </div>
         </div>
       </div>
+      {myRecipe[0] && (
+        <Pagination
+          itemArray={myRecipe}
+          limitItemInPage={limitItemInPage}
+          passValuePagination={receiveValuePagination}
+        />
+      )}
     </>
   );
 }
