@@ -11,50 +11,29 @@ import {
   faUser,
   faLock,
   faFilePen,
-  faBookmark
+  faBookmark,
+  faImage,
 } from "@fortawesome/free-solid-svg-icons";
 
 function User() {
   const token = getToken();
   const [userInfo, setUserInfo] = useState(getUser());
-  const [avatarFile, setAvatarFile] = useState();
   const [userHeader, setUserHeader] = useState("Thông tin cá nhân");
 
   const handleChangeAvatar = (e) => {
-    const preview = document.getElementById("avatar");
-    const file = document.querySelector("input[type=file]").files[0];
-    const reader = new FileReader();
-    reader.addEventListener(
-      "load",
-      function () {
-        preview.src = reader.result;
-      },
-      false
-    );
-
-    if (file) {
-      reader.readAsDataURL(file);
-    }
-    setAvatarFile(prevAvatar =>  prevAvatar = e.target.files[0]);
+    const fd = new FormData();
+    fd.append("image", e.target.files[0]);
+    userApi
+      .changeAvatar(token, fd)
+      .then((res) => {
+        if (res.data.user) {
+          console.log(res.data);
+          setUserSession(token, res.data.user);
+          setUserInfo({ ...getUser() });
+        }
+      })
+      .catch((err) => console.log("F: ", err));
   };
-
-  useEffect(() => {
-    if (avatarFile) {
-      const fd = new FormData();
-      fd.append("image", avatarFile);
-      userApi
-        .changeAvatar(token, fd)
-        .then((res) => {
-          if (res.data.user) {
-            console.log(res.data);
-            setUserSession(token, res.data.user);
-            setUserInfo({ ...getUser() });
-          }
-        })
-        .catch((err) => console.log("F: ", err));
-    }
-  }, [avatarFile]);
-
   return (
     <div className=" user-info-container">
       <div className="container">
@@ -164,7 +143,6 @@ function User() {
                       Công thức của tôi
                     </span>
                   </Link>
-
                 </div>
                 <div
                   className={`user-function-button ${
@@ -173,7 +151,10 @@ function User() {
                       : ""
                   }`}
                 >
-                  <Link to="collection-save" className="user-function-button-link">
+                  <Link
+                    to="collection-save"
+                    className="user-function-button-link"
+                  >
                     <FontAwesomeIcon
                       className="user-function-button-icon"
                       icon={faBookmark}
@@ -186,7 +167,27 @@ function User() {
                       Bộ sưu tập đã lưu
                     </span>
                   </Link>
-                  
+                </div>
+                <div
+                  className={`user-function-button ${
+                    userHeader === "Công thức của tôi"
+                      ? "user-function-button--active"
+                      : ""
+                  }`}
+                >
+                  <Link to="cover-image" className="user-function-button-link">
+                    <FontAwesomeIcon
+                      className="user-function-button-icon"
+                      icon={faImage}
+                    />
+                    <span
+                      onClick={(e) => {
+                        setUserHeader(e.target.innerHTML);
+                      }}
+                    >
+                      Ảnh bìa
+                    </span>
+                  </Link>
                 </div>
               </div>
             </div>

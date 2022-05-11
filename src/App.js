@@ -27,6 +27,7 @@ import CollectionSave from "./components/User/CollectionSave/CollectionSave";
 import SearchPage from "./components/SearchPage/SearchPage";
 import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 import UserPage from "./components/UserPage/UserPage";
+import CoverImage from "./components/User/CoverImage/CoverImage";
 // import ThemeTest from './ThemeTest'
 
 function App() {
@@ -38,9 +39,12 @@ function App() {
             {/* Có thể truy cập mà không cần đăng nhập */}
             <Route path="" element={<BasePage />}>
               <Route index element={<Home />} />
-              <Route path="user-page/:user_name" element={ <UserPage /> } />
+              <Route path="user-page/:user_name" element={<UserPage />} />
               <Route path="search/:keyword" element={<SearchPage />}></Route>
-              <Route path="collection/:collectionId" element={ <CollectionSaveDisplay />}></Route>
+              <Route
+                path="collection/:collectionId"
+                element={<CollectionSaveDisplay />}
+              ></Route>
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
@@ -78,10 +82,12 @@ function App() {
                     element={<CollectionDisplay />}
                   />
                   <Route path="my-recipe" element={<MyRecipe />}></Route>
-                  <Route path="collection-save" element={<CollectionSave />}></Route>
+                  <Route
+                    path="collection-save"
+                    element={<CollectionSave />}
+                  ></Route>
+                  <Route path="cover-image" element={ <CoverImage />} />
                 </Route>
-                
-                
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

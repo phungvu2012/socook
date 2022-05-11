@@ -25,6 +25,15 @@ class UserApi {
       },
     });
   };
+  changeCoverImage = (token, fd) => {
+    const COLLECTION_URL = process.env.REACT_APP_CHANGE_COVER_IMAGE_URL;
+    return axiosHost1.post(COLLECTION_URL, fd, {
+      headers: {
+        token: `Bearer ${token}`,
+        "Content-Type": "multipart/form-data",
+      },
+    });
+  };
 }
 
 const userApi = new UserApi();
