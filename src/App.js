@@ -9,6 +9,7 @@ import GlobalStyles from "./components/GlobalStyles";
 import Auth from "./components/Authentication";
 import PublicRoute from "./features/PublicRoute";
 import PrivateRoute from "./features/PrivateRoute";
+import AdminRoute from "./features/AdminRoute";
 import RegisterForm from "./components/Authentication/RegisterForm";
 import ActiveEmail from "./components/Authentication/ActiveEmail";
 import LoginForm from "./components/Authentication/LoginForm";
@@ -29,6 +30,9 @@ import CollectionSaveDisplay from "./components/CollectionSaveDisplay/Collection
 import UserPage from "./components/UserPage/UserPage";
 
 import CoverImage from "./components/User/CoverImage/CoverImage";
+import Admin from "./components/Admin";
+import Main from './components/Admin/Main'
+import Recipe from './components/Admin/Recipe'
 import {
   getToken,
   setUser,
@@ -129,6 +133,15 @@ function App() {
                   <Route path="recipe-pending" element={<RecipePending />} />
                 </Route>
                 <Route path="/create-recipe" element={<AddRepice />} />
+              </Route>
+            </Route>
+            <Route path="/socook" element={<AdminRoute />}>
+              <Route exact
+                  path="admin"
+                  element={<Admin/>}
+                >
+                  <Route index element={<Main />} />
+                  <Route path='recipe' element={<Recipe />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}
