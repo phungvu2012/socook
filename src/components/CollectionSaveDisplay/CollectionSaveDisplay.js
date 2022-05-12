@@ -46,7 +46,7 @@ function CollectionSaveDisplay() {
                   return (
                     <div className="col-2" key={recipe.id}>
                       <div className="collection-recipe-container">
-                        <Link to="/" className="collection-recipe-wrapper">
+                        <Link to={`/recipe/${recipe.id}`} className="collection-recipe-wrapper">
                           <div className="collection-recipe-image-wrapper">
                             <div className="image-overlay"></div>
                             <img

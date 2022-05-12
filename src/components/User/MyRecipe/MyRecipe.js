@@ -9,6 +9,7 @@ import {
   faClock,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../Pagination/Pagination";
 
 function MyRecipe() {
@@ -64,6 +65,10 @@ function MyRecipe() {
     <>
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-display-container">
+        <Link to={`/create-recipe`} className="btn btn-info create-recipe-button">
+          <FontAwesomeIcon icon={faCirclePlus} className="me-1" />
+          <span>Tạo công thức</span>
+        </Link>
         <div className="container">
           <div className="row">
             {console.log("rerender because: ", idRecipeDelete)}
@@ -77,7 +82,10 @@ function MyRecipe() {
                 return (
                   <div className="col-3" key={recipe.id}>
                     <div className="collection-recipe-container">
-                      <Link to="/" className="collection-recipe-wrapper">
+                      <Link
+                        to={`/recipe/${recipe.id}`}
+                        className="collection-recipe-wrapper"
+                      >
                         <span
                           className="collection-recipe-delete-icon"
                           onClick={(e) =>
@@ -116,6 +124,14 @@ function MyRecipe() {
                       <p className="collection-recipe-short-des">
                         {recipe.short_description}
                       </p>
+                      <Link
+                        to={`/update-recipe/${recipe.id}`}
+                        className="my-recipe-update-button"
+                      >
+                        <button className="btn btn-success">
+                          Sửa công thức
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 );

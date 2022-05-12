@@ -81,7 +81,7 @@ function CollectionDisplay() {
                   return (
                     <div className="col-3" key={recipe.id}>
                       <div className="collection-recipe-container">
-                        <Link to="/" className="collection-recipe-wrapper">
+                        <Link to={`/recipe/${recipe.id}`} className="collection-recipe-wrapper">
                           <span
                             className="collection-recipe-delete-icon"
                             onClick={(e) =>

@@ -85,13 +85,13 @@ const Header = () => {
         <div className="row align-items-center">
           <div className="col-12 col-md">
             <div className={styles.headerLeft}>
-              <div className={styles.headerLeft__Logo}>
+              <Link to="/" className={styles.headerLeft__Logo}>
                 <img
                   src={logo}
                   alt="socook logo"
                   className={styles.logoImage}
                 />
-              </div>
+              </Link>
               <div className={styles.headerLeft__Search}>
                 <form className={styles.formSearch} onSubmit={handleSubmitSearchKeyword}>
                   <input
