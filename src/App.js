@@ -29,10 +29,14 @@ import SearchPage from "./components/SearchPage/SearchPage";
 import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 import UserPage from "./components/UserPage/UserPage";
 
+
 import CoverImage from "./components/User/CoverImage/CoverImage";
 import Admin from "./components/Admin";
 import Main from './components/Admin/Main'
 import Recipe from './components/Admin/Recipe'
+
+import FilterRecipePage from "./components/HomePage/FilterRecipePage/FilterRecipePage";
+
 import {
   getToken,
   setUser,
@@ -89,6 +93,7 @@ function App() {
               <Route path="/recipe">
                 <Route path=":recipeId" element={<RepiceInfo />} />
               </Route>
+              <Route path="filter-recipe/:idFilter" element={<FilterRecipePage />} />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>

@@ -1,0 +1,21 @@
+.category-group-container {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin: 16px 0;
+}
+
+.category-group-item {
+  color: #fff;
+  font-weight: 600;
+  margin-left: 8px;
+  min-width: 60px;
+  padding: 8px 12px;
+  border-radius: 16px;
+  background-color: rgb(24, 158, 255);
+}
+
+.category-group-item:hover {
+  background-color: rgb(193, 231, 255);
+  color: rgb(51, 51, 51) !important;
+}
