@@ -1,7 +1,15 @@
+export const setUser = (user) => {
+  sessionStorage.setItem("userInfo", JSON.stringify(user));
+}
+
 export const getUser = () => {
   const userStr = sessionStorage.getItem("userInfo");
   if(userStr) return JSON.parse(userStr);
   else return null;
+}
+
+export const setToken = (token) => {
+  sessionStorage.setItem("tokenAccess", token);
 }
 
 export const getToken = () => {

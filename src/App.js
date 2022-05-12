@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -28,9 +28,37 @@ import SearchPage from "./components/SearchPage/SearchPage";
 import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 import UserPage from "./components/UserPage/UserPage";
 import CoverImage from "./components/User/CoverImage/CoverImage";
+import { getToken, setUser, removeUserSession } from "./features/sessionStorage";
+import userApi from "./api/userApi";
+import RepiceInfo from "./components/Recipe/RecipeInfo";
+import AddRepice from './components/Recipe/AddRecipe'
 // import ThemeTest from './ThemeTest'
 
 function App() {
+  const [authLoading, setAutoLoading] = useState(true);
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      return;
+    }
+    userApi.userInfo(token)
+      .then((response) => {
+        const userInfo = response?.data?.user;
+        if (response?.data?.messageCode !== 1 && userInfo) throw { response };
+        setAutoLoading(false);
+        setUser(userInfo);
+      })
+      .catch((err) => {
+        removeUserSession();
+        setAutoLoading(false);
+      });
+  }, []);
+  // Loading when authentication  
+  // if(authLoading && getToken()) {
+  //   return <div className='content'>Checking Authentication...</div>
+  // }
+
   return (
     <GlobalStyles>
       <React.StrictMode>
@@ -45,6 +73,9 @@ function App() {
                 path="collection/:collectionId"
                 element={<CollectionSaveDisplay />}
               ></Route>
+              <Route path="/recipe">
+                <Route path=":recipeId" element={<RepiceInfo />} />
+              </Route>
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
@@ -88,6 +119,7 @@ function App() {
                   ></Route>
                   <Route path="cover-image" element={ <CoverImage />} />
                 </Route>
+                  <Route path="/create-recipe" element={<AddRepice />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

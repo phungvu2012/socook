@@ -53,7 +53,7 @@ function MyRecipe() {
       await recipeApi
         .getMyRecipe(token)
         .then((res) => {
-          console.log(res.data.myListRecipe);
+          console.log(res);
           setMyRecipe([...res.data.myListRecipe]);
         })
         .catch((err) => console.log("F: ", err));
