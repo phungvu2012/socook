@@ -13,15 +13,17 @@ import {
   faFilePen,
   faBookmark,
   faImage,
+  faWater,
 } from "@fortawesome/free-solid-svg-icons";
+import CoverImage from "./CoverImage/CoverImage";
 
 function User() {
   const token = getToken();
   const location = useLocation();
   window.onpopstate = () => {
-    console.log('back')
-    setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)))
-  }
+    console.log("back");
+    setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)));
+  };
   const [userInfo, setUserInfo] = useState(getUser());
   const mapUserHeader = (header) => {
     switch (header) {
@@ -39,7 +41,9 @@ function User() {
         return "Thông tin cá nhân";
     }
   };
-  const [userHeader, setUserHeader] = useState(mapUserHeader(location.pathname.split("/").at(-1)));
+  const [userHeader, setUserHeader] = useState(
+    mapUserHeader(location.pathname.split("/").at(-1))
+  );
   const handleChangeAvatar = (e) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
@@ -58,24 +62,33 @@ function User() {
     <div className=" user-info-container">
       <div className="container">
         <div className="row">
+          <div className="user-info-header-image">
+            <div className="user-avatar">
+              <label htmlFor="upload-avatar">
+                <input
+                  type="file"
+                  id="upload-avatar"
+                  onChange={handleChangeAvatar}
+                />
+                <img
+                  id="avatar"
+                  className="avatar"
+                  src={userInfo.avatar_image}
+                  alt="Avatar"
+                ></img>
+              </label>
+              <span>{userInfo.full_name}</span>
+            </div>
+            <div className="user-info-cover-image">
+              <CoverImage />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="container">
+        <div className="row">
           <div className="col-3">
             <div className="user-info-sidebar">
-              <div className="user-avatar">
-                <label htmlFor="upload-avatar">
-                  <input
-                    type="file"
-                    id="upload-avatar"
-                    onChange={handleChangeAvatar}
-                  />
-                  <img
-                    id="avatar"
-                    className="avatar"
-                    src={userInfo.avatar_image}
-                    alt="Avatar"
-                  ></img>
-                </label>
-                <span>{userInfo.full_name}</span>
-              </div>
               <div className="user-function">
                 <div
                   className={`user-function-button ${
@@ -190,22 +203,25 @@ function User() {
                 </div>
                 <div
                   className={`user-function-button ${
-                    userHeader === "Ảnh bìa"
+                    userHeader === "Công thức đang chờ duyệt"
                       ? "user-function-button--active"
                       : ""
                   }`}
                 >
-                  <Link to="cover-image" className="user-function-button-link">
+                  <Link
+                    to="recipe-pending"
+                    className="user-function-button-link"
+                  >
                     <FontAwesomeIcon
                       className="user-function-button-icon"
-                      icon={faImage}
+                      icon={faWater}
                     />
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
                       }}
                     >
-                      Ảnh bìa
+                      Công thức đang chờ duyệt
                     </span>
                   </Link>
                 </div>

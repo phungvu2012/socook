@@ -27,11 +27,19 @@ import CollectionSave from "./components/User/CollectionSave/CollectionSave";
 import SearchPage from "./components/SearchPage/SearchPage";
 import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 import UserPage from "./components/UserPage/UserPage";
+
 import CoverImage from "./components/User/CoverImage/CoverImage";
-import { getToken, setUser, removeUserSession } from "./features/sessionStorage";
+import {
+  getToken,
+  setUser,
+  removeUserSession,
+} from "./features/sessionStorage";
 import userApi from "./api/userApi";
 import RepiceInfo from "./components/Recipe/RecipeInfo";
-import AddRepice from './components/Recipe/AddRecipe'
+import AddRepice from "./components/Recipe/AddRecipe";
+
+import RecipePending from "./components/User/RecipePending/RecipePending";
+
 // import ThemeTest from './ThemeTest'
 
 function App() {
@@ -42,7 +50,8 @@ function App() {
     if (!token) {
       return;
     }
-    userApi.userInfo(token)
+    userApi
+      .userInfo(token)
       .then((response) => {
         const userInfo = response?.data?.user;
         if (response?.data?.messageCode !== 1 && userInfo) throw { response };
@@ -54,7 +63,7 @@ function App() {
         setAutoLoading(false);
       });
   }, []);
-  // Loading when authentication  
+  // Loading when authentication
   // if(authLoading && getToken()) {
   //   return <div className='content'>Checking Authentication...</div>
   // }
@@ -117,9 +126,9 @@ function App() {
                     path="collection-save"
                     element={<CollectionSave />}
                   ></Route>
-                  <Route path="cover-image" element={ <CoverImage />} />
+                  <Route path="recipe-pending" element={<RecipePending />} />
                 </Route>
-                  <Route path="/create-recipe" element={<AddRepice />} />
+                <Route path="/create-recipe" element={<AddRepice />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

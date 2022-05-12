@@ -25,21 +25,17 @@ function CoverImage() {
       .catch((err) => console.log("F: ", err));
   };
   return (
-    <>
-      <h3 className="user-header">{userHeader}</h3>
-      <div className="user-cover-image">
-        <p>Nhấp vào ảnh để thay đổi ảnh bìa</p>
-        <label htmlFor="user-cover-image-input">
-          <img src={userInfo.cover_image} alt="Cover" id="user-cover-image" />
-          {console.log(userInfo)}
-          <input
-            type="file"
-            id="user-cover-image-input"
-            onChange={handleChangeCoverImage}
-          />
-        </label>
-      </div>
-    </>
+    <div className="user-cover-image">
+      <label htmlFor="user-cover-image-input">
+        <img src={userInfo.cover_image} alt="Cover" id="user-cover-image" />
+        {console.log(userInfo)}
+        <input
+          type="file"
+          id="user-cover-image-input"
+          onChange={handleChangeCoverImage}
+        />
+      </label>
+    </div>
   );
 }
 
