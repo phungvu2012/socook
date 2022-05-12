@@ -118,7 +118,7 @@ function CollectionsSearchResult(props) {
         </div>
       </Link>
       <div className="collection-search-result-detail">
-        <span>{props.collection.recipeIds.length} công thức</span>
+        <span>{props.collection.recipeIds?.length} công thức</span>
         <Link to={`/user-page/${props.collection.userName}`}>
           {props.collection.userName}
         </Link>
