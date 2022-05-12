@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import {
   BrowserRouter as Router,
   Routes,
@@ -23,9 +23,37 @@ import ChangePassword from "./components/ChangePassword/ChangePassword";
 import Collection from "./components/User/Collection/Collection";
 import CollectionDisplay from "./components/User/CollectionDisplay/CollectionDisplay";
 import MyRecipe from "./components/User/MyRecipe/MyRecipe";
+import { getToken, setUser, removeUserSession } from "./features/sessionStorage";
+import userApi from "./api/userApi";
+import RepiceInfo from "./components/Recipe/RecipeInfo";
+import AddRepice from './components/Recipe/AddRecipe'
 // import ThemeTest from './ThemeTest'
 
 function App() {
+  const [authLoading, setAutoLoading] = useState(true);
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      return;
+    }
+    userApi.userInfo(token)
+      .then((response) => {
+        const userInfo = response?.data?.user;
+        if (response?.data?.messageCode !== 1 && userInfo) throw { response };
+        setAutoLoading(false);
+        setUser(userInfo);
+      })
+      .catch((err) => {
+        removeUserSession();
+        setAutoLoading(false);
+      });
+  }, []);
+  // Loading when authentication  
+  // if(authLoading && getToken()) {
+  //   return <div className='content'>Checking Authentication...</div>
+  // }
+
   return (
     <GlobalStyles>
       <React.StrictMode>
@@ -34,6 +62,9 @@ function App() {
             {/* Có thể truy cập mà không cần đăng nhập */}
             <Route path="" element={<BasePage />}>
               <Route index element={<Home />} />
+              <Route path="/recipe">
+                <Route path=":recipeId" element={<RepiceInfo />} />
+              </Route>
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
@@ -72,6 +103,7 @@ function App() {
                   />
                   <Route path="my-recipe" element={<MyRecipe />}></Route>
                 </Route>
+                  <Route path="/create-recipe" element={<AddRepice />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

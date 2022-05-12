@@ -6,10 +6,16 @@ import { faSquareCaretDown, faBell, faStickyNote } from "@fortawesome/free-regul
 import styles from "./header.module.scss"
 import logo from './../../assets/image/logo/Logo_SoCook_vertical_3.png'
 import avatar from './../../assets/image/login/pexels-pixabay-357573.jpg'
-import { removeUserSession } from './../../features/sessionStorage';
+import { getUser, removeUserSession } from './../../features/sessionStorage';
+import { useEffect, useState } from 'react';
 
 const Header = () => {
+  const [userInfo, setUserInfo] = useState();
   const allPopUp = document.getElementsByClassName(styles.popUp);
+
+  useEffect(() => {
+    setUserInfo(getUser());
+  }, [])
   
   const hanlePopup = (event) => {
     const element = event.currentTarget;
@@ -103,11 +109,19 @@ const Header = () => {
                   </div>
                 </div>
               </div>
-              <Link to='/' className={styles.userAvatar}>
-                <div className={styles.userAvatar__ImageBox} style={{backgroundImage: `url(${avatar})`}}>
-                </div>
-                <p className={styles.userAvatar__Name}>Phụng Vũ Minh</p>
-              </Link>
+              {
+                userInfo ? (
+                  <Link to='/user' className={styles.userAvatar}>
+                    <div className={styles.userAvatar__ImageBox} style={{backgroundImage: `url(${userInfo?.avatar_image})`}}>
+                    </div>
+                    <p className={styles.userAvatar__Name}>{userInfo?.full_name}</p>
+                  </Link>
+                ) : (
+                  <Link to='/login' className={styles.userAvatar} style={{border: 0}}>
+                    Đăng nhập
+                  </Link>
+                )
+              }
             </div>
           </div>
         </div>

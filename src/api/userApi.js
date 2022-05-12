@@ -1,5 +1,13 @@
 import axiosHost1 from "./axiosHost1";
 class UserApi {
+  userInfo = (token) => {
+    const MYINFO_URL = process.env.REACT_APP_MYINFO_URL;
+    return axiosHost1.get(MYINFO_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
   changeAvatar = (token, fd) => {
     const COLLECTION_URL = process.env.REACT_APP_USER_CHANGE_AVATAR_URL;
     return axiosHost1.post(COLLECTION_URL, fd, {

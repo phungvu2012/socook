@@ -45,7 +45,7 @@ function MyRecipe() {
     async function getMyRecipe() {
       await recipeApi.getMyRecipe(token)
         .then((res) => {
-          console.log(res.data.myListRecipe);
+          console.log(res);
           setMyRecipe([...res.data.myListRecipe]);
         })
         .catch((err) => console.log("F: ", err));
@@ -62,7 +62,7 @@ function MyRecipe() {
             return (
               <div className="col-3" key={recipe.id}>
                 <div className="collection-recipe-container">
-                  <Link to="/" className="collection-recipe-wrapper">
+                  <Link to={`/recipe/${recipe.id}`} className="collection-recipe-wrapper">
                     <span
                       className="collection-recipe-delete-icon"
                       onClick={(e) =>
@@ -96,7 +96,7 @@ function MyRecipe() {
                     </div>
                   </Link>
                   <a href="/" className="collection-recipe-owner" style={{textAlign: 'left'}}>
-                    <span> {recipe.short_description} </span>
+                    {/* <span> {recipe.short_description} </span> */}
                   </a>
                 </div>
               </div>

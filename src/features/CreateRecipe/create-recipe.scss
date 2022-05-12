@@ -1,0 +1,133 @@
+@use '../../GlobalStyles/mixin'as *;
+
+.recipe-page--create {
+  min-width: 300px;
+
+  .recipe-input-field {
+    font-family: var(--font-1) !important;
+  }
+  
+  .recipe-input {
+    width: 100%;
+    height: 100%;
+    border: 0.125rem outset var(--color-1);
+    padding: 0 0.5rem;
+    margin: 0.5rem 0;
+    box-shadow: var(--box-shadow-sm);
+    outline: none;
+    
+    &--title {
+      width: 100%;
+      height: 100%;
+      padding: .25rem .5rem;
+      margin: 0;
+  
+      font-weight: 600;
+      font-size: calc(1.375rem + 1.5vw);
+    }
+  
+    &--description {
+      height: 8rem;
+      padding: .25rem .5rem;
+      resize: none;
+    }
+  }
+
+  .recipe-ingredient-box {
+    position: relative;
+    border-radius: 0.25rem;
+    padding: 1.5rem;
+    margin: 2rem -1.5rem;
+    background-color: var(--bs-primary);
+    box-shadow: var(--box-shadow);
+
+    @include screenXL() {
+      padding: 1.5rem 1rem;
+      margin: 2rem -1rem 2rem;
+    }
+
+    @include screenLG() {
+      padding: 1.5rem 2rem;
+      margin: 2rem -2rem 2rem;
+    }
+
+    @include screenMD() {
+      padding: 1.5rem 2rem;
+      margin: 0 -1rem -2rem;
+      margin-bottom: 1rem;
+    }
+  }
+
+  .recipe-ingredient {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    border: 1px outset var(--bs-primary);
+    
+    font-size: 1rem;
+    
+    
+    &__input {
+      width: 100%;
+      height: 100%;
+      padding: 0.5rem;
+      border: none;
+      border-right: 1px solid var(--bs-primary);
+      outline: none;
+
+      :last-child {
+        border-right: none;
+      }
+    }
+  }
+
+  .recipe-ingredient__option {
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    width: fit-content;
+    max-width: 80%;
+
+    position: absolute;
+    top: 0;
+    left: 10%;
+    transform: translate(0, -50%);
+    padding: 0.25rem 2rem;
+    background: var(--bs-gray-300);
+    border-radius: 2rem;
+    box-shadow: var(--box-shadow-sm);
+
+    &-icon {
+      margin: 0 0.5rem;
+      font-size: 1.65rem;
+      color: var(--bs-orange);
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .recipe-info {
+    display: flex;
+    flex-direction: column;
+    
+    &__field {
+      display: grid;
+      grid-template-columns: 24px auto 3rem;
+      place-items: center;
+      border: 0.125rem outset var(--color-1);
+      padding: 0.25rem 0.5rem;
+      margin: 0.5rem 0;
+    }
+
+    &__input {
+      width: 100%;
+      height: 100%;
+      margin: 0;
+      padding: 0 1rem;
+      border: none;
+      outline: none;
+    }
+  }
+}

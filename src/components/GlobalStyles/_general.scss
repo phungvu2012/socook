@@ -7,6 +7,8 @@
   --color-3: #{$tomato};
   --color-4: #{$crimson};
   --color-5: #{$light-pink};
+  --bg-color-1: #f5f6fb;
+  --color-3-light: rgb(252 92 48 / 70%);
   --font-1: #{$font-family-poppins};
   --font-2: #{$font-family-noto};
   --font-3: #{$font-family-nunito};
@@ -14,6 +16,7 @@
   --box-shadow-lg: #{$box-shadow-lg};
   --box-shadow: #{$box-shadow};
   --box-shadow-inset: #{$box-shadow-inset};
+  --placeholder-image: url('http://localhost:3000/placeholder/placeholder.png');
 }
 
 body {
@@ -49,4 +52,112 @@ a:hover {
     background: linear-gradient(left, var(--bs-gray-100), var(--bs-gray-500));
     box-shadow: inset 0 0 1px 1px var(--bs-gray-500);
   }
+}
+
+
+.placeholder-image {
+  background-color: azure !important;
+  background-image: var(--placeholder-image) !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    width: 30%;
+    height: 220%;
+    filter: blur(4rem);
+    background: rgb(207,212,218);
+    animation: translate-loading-image 1.2s linear 0.5s infinite;
+    transform: rotate(30deg);
+  }
+
+  @keyframes translate-loading-image {
+    0% {
+      left: -200%;
+    }
+    100% {
+      left: 300%;
+    }
+  }
+}
+
+.placeholder-title {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(241,239,240) !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    width: 30%;
+    height: 220%;
+    filter: blur(4rem);
+    background: rgb(207,212,218);
+    animation: translate-loading-image 1.2s linear 0.5s infinite;
+    transform: rotate(30deg);
+  }
+
+  @keyframes translate-loading-title {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+}
+
+.placeholder-paragraph {
+  position: relative;
+  overflow: hidden;
+  background-color: rgb(241,239,240) !important;
+  background-size: cover !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+
+  &::before {
+    content: "";
+    position: absolute;
+    top: -60%;
+    width: 30%;
+    height: 220%;
+    filter: blur(4rem);
+    background: rgb(189,196,200);
+    animation: translate-loading-image 1.2s linear 0.5s infinite;
+    transform: rotate(30deg);
+  }
+
+  @keyframes translate-loading-paragraph {
+    0% {
+      left: -100%;
+    }
+    100% {
+      left: 200%;
+    }
+  }
+
+  &--lg {
+    height: 5rem;
+  }
+
+  &--xl {
+    height: 10rem;
+  }
+}
+
+
+.max-line-paragraph {
+  --max-line: 4;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: var(--max-line);
+  display: -webkit-box;
+  text-overflow: ellipsis;
 }
