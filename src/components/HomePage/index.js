@@ -4,8 +4,8 @@ import homePage from "../../api/homePageApi";
 import { Link, Outlet } from "react-router-dom";
 import RecipesSearchResult from "../SearchPage/RecipeSearchResult/RecipeSearchResult";
 import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/CollectionSearchResult";
-import Pagination from "../Pagination/Pagination";
-import RankRecipe from "./Rank/RankRecipe";
+import RankRecipe from "./RankRecipe/RankRecipe";
+import RankUser from "./RankUser/RankUser";
 
 const Home = () => {
   const [categoryGroups, setCategoryGroups] = useState([]);
@@ -38,9 +38,9 @@ const Home = () => {
     homePage
       .getTopSaveCollecion()
       .then((res) => {
-        setTopSaveCollection([...res.data.data]);
+        setTopSaveCollection([...res.data]);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log('SC F:', err));
 
     homePage
       .getTopNewCollection()
@@ -134,6 +134,7 @@ const Home = () => {
           </div>
           <div className="col-3">
             <RankRecipe />
+            <RankUser />
           </div>
         </div>
       </div>
