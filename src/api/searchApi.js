@@ -14,6 +14,16 @@ class SearchApi {
     const COLLECTION_URL = process.env.REACT_APP_SEARCH_COLLECTIONS_URL + `?keyword=${keyword}`;
     return axiosHost2.get(COLLECTION_URL);
   }
+
+  searchIngredients = (keyword) => {
+    const COLLECTION_URL = process.env.REACT_APP_SEARCH_INGREDIENT_URL + `?keyword=${keyword}`;
+    return axiosHost2.get(COLLECTION_URL);
+  }
+
+  searchRecipesByIngredient = (query) => {
+    const COLLECTION_URL = process.env.REACT_APP_SEARCH_RECIPE_BY_INGREDIENT_URL + `?${query}`;
+    return axiosHost2.get(COLLECTION_URL);
+  }
 }
 
 const searchApi = new SearchApi();

@@ -1,6 +1,7 @@
 .category-group-container {
   width: 100%;
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   margin: 16px 0;
 }
@@ -8,11 +9,13 @@
 .category-group-item {
   color: #fff;
   font-weight: 600;
-  margin-left: 8px;
+  margin: 4px;
   min-width: 60px;
   padding: 8px 12px;
   border-radius: 16px;
   background-color: rgb(24, 158, 255);
+  text-align: center;
+  cursor: pointer;
 }
 
 .category-group-item:hover {

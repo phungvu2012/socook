@@ -30,6 +30,10 @@ class HomePage {
     const COLLECTION_URL = process.env.REACT_APP_GET_TOP_USER_DEPEND_TOTAL_RECIPE_URL + '?Limit=10';
     return axiosHost1.get(COLLECTION_URL);
   }
+  getCategoryInGroup = (idCategoryGroup) => {
+    const COLLECTION_URL = process.env.REACT_APP_GET_CATEGORY_FROM_GROUP_URL + `/${idCategoryGroup}`;
+    return axiosHost2.get(COLLECTION_URL);
+  }
 }
 
 const homePage = new HomePage();

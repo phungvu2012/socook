@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faRightFromBracket,
+  faXmark
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretDown,
@@ -10,27 +11,27 @@ import {
   faStickyNote,
 } from "@fortawesome/free-regular-svg-icons";
 
-
 import styles from "./header.module.scss";
 import logo from "./../../assets/image/logo/Logo_SoCook_vertical_3.png";
 import avatar from "./../../assets/image/login/pexels-pixabay-357573.jpg";
-import { getUser, removeUserSession } from './../../features/sessionStorage';
+import { getUser, removeUserSession } from "./../../features/sessionStorage";
 import { useRef, useState, useEffect } from "react";
 
 import searchApi from "../../api/searchApi";
 
 const Header = () => {
   const [suggestionSearch, setSuggestionSearch] = useState([]);
-  const [keyword, setKeyword] = useState('')
-  const searchInput = useRef()
-  const navigate = useNavigate()
+  const [keyword, setKeyword] = useState("");
+  const searchInput = useRef();
+  const navigate = useNavigate();
   const allPopUp = document.getElementsByClassName(styles.popUp);
+  const [isDisplayAdvanceSearch, setIsDisplayAdvanceSearch] = useState(false);
 
   const [userInfo, setUserInfo] = useState();
 
   useEffect(() => {
     setUserInfo(getUser());
-  }, [])
+  }, []);
 
   const hanlePopup = (event) => {
     const element = event.currentTarget;
@@ -53,8 +54,8 @@ const Header = () => {
   };
 
   const handleSuggestionSearch = (e) => {
-    e.preventDefault()
-    setKeyword(e.target.value)
+    e.preventDefault();
+    setKeyword(e.target.value);
     if (e.target.value) {
       searchApi
         .getSearchSuggestions(e.target.value)
@@ -63,20 +64,29 @@ const Header = () => {
         })
         .catch((err) => console.log(err));
     } else {
-      setSuggestionSearch([])
+      setSuggestionSearch([]);
     }
   };
 
   const handleSubmitSearchKeyword = (e) => {
-    e.preventDefault()
-    navigate(`search/${keyword}`)
-    setKeyword("")
-    setSuggestionSearch([])
-  }
+    e.preventDefault();
+    navigate(`search/${keyword}`);
+    setKeyword("");
+    setSuggestionSearch([]);
+  };
 
   const handleResetInput = () => {
-    setKeyword("")
-    setSuggestionSearch([])
+    setKeyword("");
+    setSuggestionSearch([]);
+    setIsDisplayAdvanceSearch(false)
+  };
+
+  const handleFocusInputSearch = () => {
+    setIsDisplayAdvanceSearch(true);
+  };
+
+  const handleCloseAdvanceSearch = () => {
+    setIsDisplayAdvanceSearch(false)
   }
 
   return (
@@ -93,14 +103,19 @@ const Header = () => {
                 />
               </Link>
               <div className={styles.headerLeft__Search}>
-                <form className={styles.formSearch} onSubmit={handleSubmitSearchKeyword}>
+                <form
+                  className={styles.formSearch}
+                  onSubmit={handleSubmitSearchKeyword}
+                >
                   <input
                     type="text"
                     value={keyword}
                     className={styles.formSearch__Input}
                     onChange={handleSuggestionSearch}
                     ref={searchInput}
+                    onFocus={handleFocusInputSearch}
                   />
+
                   <button className={styles.formSearch__Btn}>
                     <FontAwesomeIcon
                       icon={faMagnifyingGlass}
@@ -109,10 +124,23 @@ const Header = () => {
                   </button>
                 </form>
                 <ul className={styles.suggestionSearchResult}>
-                  {suggestionSearch.slice(0,10).map((suggestion, index) => {
+                  {isDisplayAdvanceSearch && (
+                    <li className={styles.suggestionSearchItem}>
+                      <Link to="/advance-search" onClick={handleResetInput} className={styles.advanceSearch} >
+                        <span>Tìm kiếm nâng cao...</span>
+                        <FontAwesomeIcon icon={faXmark} className={styles.advanceSearchCloseIcon} onClick={handleCloseAdvanceSearch}/>
+                      </Link>
+                    </li>
+                  )}
+                  {suggestionSearch.slice(0, 10).map((suggestion, index) => {
                     return (
                       <li key={index} className={styles.suggestionSearchItem}>
-                        <Link to={`search/${suggestion}`} onClick={handleResetInput}>{suggestion}</Link>
+                        <Link
+                          to={`search/${suggestion}`}
+                          onClick={handleResetInput}
+                        >
+                          {suggestion}
+                        </Link>
                       </li>
                     );
                   })}
@@ -123,36 +151,34 @@ const Header = () => {
           <div className="col-12 col-md">
             <div className={styles.headerRight}>
               <div className={styles.feature}>
-                {
-                  userInfo && (
-                    <div className={styles.featureItem} onClick={hanlePopup}>
-                      <div className={styles.featureItem__IconBox}>
-                        <FontAwesomeIcon
-                          icon={faSquareCaretDown}
-                          className={styles.featureItem__Icon}
-                        />
-                      </div>
-                      <div
-                        className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
-                      >
-                        <Link
-                          to="/login"
-                          className={styles.popUp__SettingItem}
-                          onClick={removeUserSession}
-                        >
-                          <div className={styles.popUp__SettingIcon}>
-                            <FontAwesomeIcon icon={faRightFromBracket} />
-                          </div>
-                          <div className={styles.popUp__SettingContent}>
-                            <h5 className={`${styles.popUp__SettingTitle} m-0`}>
-                              Đăng xuất
-                            </h5>
-                          </div>
-                        </Link>
-                      </div>
+                {userInfo && (
+                  <div className={styles.featureItem} onClick={hanlePopup}>
+                    <div className={styles.featureItem__IconBox}>
+                      <FontAwesomeIcon
+                        icon={faSquareCaretDown}
+                        className={styles.featureItem__Icon}
+                      />
                     </div>
-                  )
-                }
+                    <div
+                      className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
+                    >
+                      <Link
+                        to="/login"
+                        className={styles.popUp__SettingItem}
+                        onClick={removeUserSession}
+                      >
+                        <div className={styles.popUp__SettingIcon}>
+                          <FontAwesomeIcon icon={faRightFromBracket} />
+                        </div>
+                        <div className={styles.popUp__SettingContent}>
+                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                            Đăng xuất
+                          </h5>
+                        </div>
+                      </Link>
+                    </div>
+                  </div>
+                )}
                 <div className={styles.featureItem} onClick={hanlePopup}>
                   <div className={styles.featureItem__IconBox}>
                     <FontAwesomeIcon
@@ -204,19 +230,27 @@ const Header = () => {
                   </div>
                 </div>
               </div>
-              {
-                userInfo ? (
-                  <Link to='/user' className={styles.userAvatar}>
-                    <div className={styles.userAvatar__ImageBox} style={{backgroundImage: `url(${userInfo?.avatar_image})`}}>
-                    </div>
-                    <p className={styles.userAvatar__Name}>{userInfo?.full_name}</p>
-                  </Link>
-                ) : (
-                  <Link to='/login' className={styles.userAvatar} style={{border: 0}}>
-                    Đăng nhập
-                  </Link>
-                )
-              }
+              {userInfo ? (
+                <Link to="/user" className={styles.userAvatar}>
+                  <div
+                    className={styles.userAvatar__ImageBox}
+                    style={{
+                      backgroundImage: `url(${userInfo?.avatar_image})`,
+                    }}
+                  ></div>
+                  <p className={styles.userAvatar__Name}>
+                    {userInfo?.full_name}
+                  </p>
+                </Link>
+              ) : (
+                <Link
+                  to="/login"
+                  className={styles.userAvatar}
+                  style={{ border: 0 }}
+                >
+                  Đăng nhập
+                </Link>
+              )}
             </div>
           </div>
         </div>

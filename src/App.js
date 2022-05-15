@@ -43,6 +43,8 @@ import RepiceInfo from "./components/Recipe/RecipeInfo";
 import AddRepice from "./components/Recipe/AddRecipe";
 
 import RecipePending from "./components/User/RecipePending/RecipePending";
+import FilterRecipePage from './../src/components/HomePage/FilterRecipePage/FilterRecipePage'
+import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
 
 // import ThemeTest from './ThemeTest'
 
@@ -89,6 +91,8 @@ function App() {
               <Route path="/recipe">
                 <Route path=":recipeId" element={<RepiceInfo />} />
               </Route>
+              <Route path="/filter-recipe/:idFilter" element={<FilterRecipePage />} />
+              <Route path="/advance-search" element={<AdvanceSearchPage />} />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
