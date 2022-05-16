@@ -13,6 +13,11 @@ const Home = () => {
   const [topNewRecipe, setTopNewRecipe] = useState([]);
   const [topSaveCollection, setTopSaveCollection] = useState([]);
   const [topNewCollection, setTopNewCollection] = useState([]);
+  const [isInteractionCollection1, setIsInteractionCollection1] =
+    useState(false);
+  const [isInteractionCollection2, setIsInteractionCollection2] =
+    useState(false);
+
   useEffect(() => {
     homePage
       .getCategory()
@@ -34,21 +39,23 @@ const Home = () => {
         setTopNewRecipe([...res.data]);
       })
       .catch((err) => console.log("err", err));
+  }, []);
 
+  useEffect(() => {
     homePage
       .getTopSaveCollecion()
       .then((res) => {
         setTopSaveCollection([...res.data]);
       })
       .catch((err) => console.log("SC F:", err));
-
     homePage
       .getTopNewCollection()
       .then((res) => {
         setTopNewCollection([...res.data]);
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isInteractionCollection1, isInteractionCollection2]);
+
   return (
     <React.Fragment>
       <div className="container">
@@ -105,7 +112,13 @@ const Home = () => {
                   {topSaveCollection?.map((collection) => {
                     return (
                       <div className="col-3" key={collection.id}>
-                        <CollectionsSearchResult collection={collection} />
+                        <CollectionsSearchResult
+                          collection={collection}
+                          setIsInteractionCollection={
+                            setIsInteractionCollection1
+                          }
+                          isInteractionCollection={isInteractionCollection1}
+                        />
                       </div>
                     );
                   })}
@@ -120,7 +133,13 @@ const Home = () => {
                   {topNewCollection?.slice(0, 8).map((collection) => {
                     return (
                       <div className="col-3" key={collection.id}>
-                        <CollectionsSearchResult collection={collection} />
+                        <CollectionsSearchResult
+                          collection={collection}
+                          setIsInteractionCollection={
+                            setIsInteractionCollection2
+                          }
+                          isInteractionCollection={isInteractionCollection2}
+                        />
                       </div>
                     );
                   })}
