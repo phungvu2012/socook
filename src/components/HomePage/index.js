@@ -4,8 +4,8 @@ import homePage from "../../api/homePageApi";
 import { Link, Outlet } from "react-router-dom";
 import RecipesSearchResult from "../SearchPage/RecipeSearchResult/RecipeSearchResult";
 import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/CollectionSearchResult";
-import Pagination from "../Pagination/Pagination";
-import RankRecipe from "./Rank/RankRecipe";
+import RankRecipe from "./RankRecipe/RankRecipe";
+import RankUser from "./RankUser/RankUser";
 
 const Home = () => {
   const [categoryGroups, setCategoryGroups] = useState([]);
@@ -17,7 +17,7 @@ const Home = () => {
     homePage
       .getCategory()
       .then((res) => {
-        setCategoryGroups([{ id: 0, name: "Tất cả" }, ...res.data]);
+        setCategoryGroups([...res.data]);
       })
       .catch((err) => console.log("F: ", err));
 
@@ -38,9 +38,9 @@ const Home = () => {
     homePage
       .getTopSaveCollecion()
       .then((res) => {
-        setTopSaveCollection([...res.data.data]);
+        setTopSaveCollection([...res.data]);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("SC F:", err));
 
     homePage
       .getTopNewCollection()
@@ -60,6 +60,7 @@ const Home = () => {
                   to={`/filter-recipe/${categoryGroup.id}`}
                   className="category-group-item"
                   key={index}
+                  state={{ categoryGroupName: categoryGroup.name }}
                 >
                   {categoryGroup.name}
                 </Link>
@@ -67,11 +68,6 @@ const Home = () => {
             })}
           </div>
           <div className="col-9">
-            {console.log("VR: ", topViewRecipe)}
-            {console.log("NR: ", topNewRecipe)}
-            {console.log("SC: ", topSaveCollection)}
-            {console.log("NC: ", topNewCollection)}
-
             <div className="top-view-recipe">
               <h4>Công thức nổi bật</h4>
               <div className="container">
@@ -91,7 +87,7 @@ const Home = () => {
               <h4>Công thức mới nhất</h4>
               <div className="container">
                 <div className="row">
-                  {topNewRecipe?.slice(0,8).map((recipe) => {
+                  {topNewRecipe?.slice(0, 8).map((recipe) => {
                     return (
                       <div className="col-3" key={recipe.id}>
                         <RecipesSearchResult recipe={recipe} />
@@ -121,7 +117,7 @@ const Home = () => {
               <h4>Bộ sưu tập mới nhất</h4>
               <div className="container">
                 <div className="row">
-                  {topNewCollection?.slice(0,8).map((collection) => {
+                  {topNewCollection?.slice(0, 8).map((collection) => {
                     return (
                       <div className="col-3" key={collection.id}>
                         <CollectionsSearchResult collection={collection} />
@@ -133,6 +129,7 @@ const Home = () => {
             </div>
           </div>
           <div className="col-3">
+            <RankUser />
             <RankRecipe />
           </div>
         </div>

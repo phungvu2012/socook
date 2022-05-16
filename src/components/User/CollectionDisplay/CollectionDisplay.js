@@ -163,6 +163,7 @@ function CollectionDisplay() {
           itemArray={recipes}
           limitItemInPage={limitItemInPage}
           passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
         />
       )}
     </>

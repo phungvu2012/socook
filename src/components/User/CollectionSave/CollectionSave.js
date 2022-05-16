@@ -121,6 +121,7 @@ function CollectionSave() {
           itemArray={saveCollection}
           limitItemInPage={limitItemInPage}
           passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
         />
       )}
     </>

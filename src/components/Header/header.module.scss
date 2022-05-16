@@ -102,9 +102,24 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+    padding-right: 8px;
     a {
         color: #333;
+        display: inline-block;
+        width: 100%;
     }
+  }
+  .advanceSearch {
+    display: flex !important;
+    justify-content: space-between !important;
+    align-items: center !important;
+  }
+  .advanceSearchCloseIcon {
+    width: 16px;
+    height: 16px;
+    padding: 2px;
+    border-radius: 50%;
+    border: 1px solid #333;
   }
 }
 

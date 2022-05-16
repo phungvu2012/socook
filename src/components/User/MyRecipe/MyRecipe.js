@@ -167,6 +167,7 @@ function MyRecipe() {
           itemArray={myRecipe}
           limitItemInPage={limitItemInPage}
           passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
         />
       )}
     </>

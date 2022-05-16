@@ -78,6 +78,7 @@ function SearchPage() {
                   itemArray={recipesSearchResult}
                   limitItemInPage={limitItemInPage}
                   passValuePagination={receiveValuePagination1}
+                  currentPagePass={currentPage1}
                 />
               )}
             </div>
@@ -115,6 +116,7 @@ function SearchPage() {
                   itemArray={collectionsSearchResult}
                   limitItemInPage={limitItemInPage}
                   passValuePagination={receiveValuePagination2}
+                  currentPagePass={currentPage2}
                 />
               )}
             </div>

@@ -9,7 +9,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useState, useEffect } from "react";
 
-function Pagination({ itemArray, passValuePagination, limitItemInPage }) {
+function Pagination({ itemArray, passValuePagination, limitItemInPage, currentPagePass }) {
   // Pagination
   const pageInRowLimit = 3;
   const [currentPage, setCurrentPage] = useState(1);
@@ -29,7 +29,7 @@ function Pagination({ itemArray, passValuePagination, limitItemInPage }) {
     setPaginationArray([
       ...calculationPaginationArray(itemArray?.length, limitItemInPage),
     ]);
-    // setCurrentPage(1);
+    setCurrentPage(currentPagePass);
   }, [itemArray]);
   return (
     <div className="collection-pagination">

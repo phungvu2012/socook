@@ -280,24 +280,12 @@ function UserPage() {
                         </div>
                       )}
                     </div>
-                    {/* {activeTab === "recipe" ? (
-                      userRecipes && <Pagination
-                        itemArray={userRecipes}
-                        limitItemInPage={limitItemInPage}
-                        passValuePagination={receiveValuePagination}
-                      />
-                    ) : (activeTab === "collection" ? (
-                      <Pagination
-                        itemArray={userCollections}
-                        limitItemInPage={limitItemInPage}
-                        passValuePagination={receiveValuePagination}
-                      />
-                    ) : (<></>))} */}
                     {activeTab === "recipe" && userRecipes && (
                       <Pagination
                         itemArray={userRecipes}
                         limitItemInPage={limitItemInPage}
                         passValuePagination={receiveValuePagination}
+                        currentPagePass={currentPage}
                       />
                     )}
                     {activeTab === "collection" && userCollections && (
@@ -305,6 +293,7 @@ function UserPage() {
                         itemArray={userCollections}
                         limitItemInPage={limitItemInPage}
                         passValuePagination={receiveValuePagination}
+                        currentPagePass={currentPage}
                       />
                     )}
                   </div>

@@ -9,6 +9,7 @@ import GlobalStyles from "./components/GlobalStyles";
 import Auth from "./components/Authentication";
 import PublicRoute from "./features/PublicRoute";
 import PrivateRoute from "./features/PrivateRoute";
+import AdminRoute from "./features/AdminRoute";
 import RegisterForm from "./components/Authentication/RegisterForm";
 import ActiveEmail from "./components/Authentication/ActiveEmail";
 import LoginForm from "./components/Authentication/LoginForm";
@@ -27,7 +28,11 @@ import CollectionSave from "./components/User/CollectionSave/CollectionSave";
 import SearchPage from "./components/SearchPage/SearchPage";
 import CollectionSaveDisplay from "./components/CollectionSaveDisplay/CollectionSaveDisplay";
 import UserPage from "./components/UserPage/UserPage";
-import FilterRecipePage from "./components/HomePage/FilterRecipePage/FilterRecipePage";
+
+import Admin from "./components/Admin";
+import Main from './components/Admin/Main'
+import Recipe from './components/Admin/Recipe'
+
 import {
   getToken,
   setUser,
@@ -38,6 +43,8 @@ import RepiceInfo from "./components/Recipe/RecipeInfo";
 import AddRepice from "./components/Recipe/AddRecipe";
 
 import RecipePending from "./components/User/RecipePending/RecipePending";
+import FilterRecipePage from './../src/components/HomePage/FilterRecipePage/FilterRecipePage'
+import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
 
 // import ThemeTest from './ThemeTest'
 
@@ -84,7 +91,8 @@ function App() {
               <Route path="/recipe">
                 <Route path=":recipeId" element={<RepiceInfo />} />
               </Route>
-              <Route path="filter-recipe/:idFilter" element={<FilterRecipePage />} />
+              <Route path="/filter-recipe/:idFilter" element={<FilterRecipePage />} />
+              <Route path="/advance-search" element={<AdvanceSearchPage />} />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
@@ -129,6 +137,15 @@ function App() {
                   <Route path="recipe-pending" element={<RecipePending />} />
                 </Route>
                 <Route path="/create-recipe" element={<AddRepice />} />
+              </Route>
+            </Route>
+            <Route path="/socook" element={<AdminRoute />}>
+              <Route exact
+                  path="admin"
+                  element={<Admin/>}
+                >
+                  <Route index element={<Main />} />
+                  <Route path='recipe' element={<Recipe />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

@@ -319,6 +319,7 @@ function Collection() {
         itemArray={userCollection}
         limitItemInPage={limitItemInPage}
         passValuePagination={receiveValuePagination}
+        currentPagePass={currentPage}
       />}
     </>
   );
