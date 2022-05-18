@@ -47,6 +47,7 @@ import RecipeReject from "./components/User/RecipeReject/RecipeReject";
 import MyComment from "./components/User/MyComment/MyComment";
 import FilterRecipePage from './../src/components/HomePage/FilterRecipePage/FilterRecipePage'
 import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
+import NotFound from './components/NotFound'
 
 // import ThemeTest from './ThemeTest'
 
@@ -62,7 +63,7 @@ function App() {
       .userInfo(token)
       .then((response) => {
         const userInfo = response?.data?.user;
-        if (response?.data?.messageCode !== 1 && userInfo) throw { response };
+        if (response?.data?.messageCode !== 1 || !userInfo) throw { response };
         setAutoLoading(false);
         setUser(userInfo);
       })
@@ -95,6 +96,7 @@ function App() {
               </Route>
               <Route path="/filter-recipe/:idFilter" element={<FilterRecipePage />} />
               <Route path="/advance-search" element={<AdvanceSearchPage />} />
+              <Route path='*' element={<NotFound />}  />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>

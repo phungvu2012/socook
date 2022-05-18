@@ -1,24 +1,65 @@
-.category-group-container {
-  width: 100%;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: flex-start;
-  margin: 16px 0;
-}
+@use './../GlobalStyles/mixin'as *;
 
-.category-group-item {
-  color: #fff;
-  font-weight: 600;
-  margin: 4px;
-  min-width: 60px;
-  padding: 8px 12px;
-  border-radius: 16px;
-  background-color: rgb(24, 158, 255);
-  text-align: center;
-  cursor: pointer;
-}
+.home-page {
+  
+  .category-group-container {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-start;
+    margin: 16px 0;
+  }
+  
+  .category-group-item {
+    color: #fff;
+    font-weight: 600;
+    margin: 4px;
+    min-width: 60px;
+    padding: 8px 12px;
+    border-radius: 16px;
+    background-color: rgb(24, 158, 255);
+    text-align: center;
+    cursor: pointer;
+  }
+  
+  .category-group-item:hover {
+    background-color: rgb(193, 231, 255);
+    color: rgb(51, 51, 51) !important;
+  }
+  
+  .slider {
 
-.category-group-item:hover {
-  background-color: rgb(193, 231, 255);
-  color: rgb(51, 51, 51) !important;
+    &__inner {
+      border-radius: 2rem;
+      overflow: hidden;
+    }
+  
+    &__image-box {
+      display: block;
+      width: 100%;
+      aspect-ratio: 68 / 22; // (68/27)
+      text-decoration: none;
+
+      @include screenLG() {
+        aspect-ratio: 68 / 27;
+      }
+    }
+  
+    &__image {
+      display: block;
+      object-fit: cover;
+    }
+  
+    &__indicators {
+      margin-bottom: 1% !important;
+    }
+  
+    &__indicators-button {
+  
+      @include screenLG() {
+        width: 10px !important;
+        height: 10px !important;
+      }
+    }
+  }
 }

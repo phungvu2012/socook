@@ -4,35 +4,72 @@ import recipeApi from "../../../api/recipeApi";
 import { useNavigate } from "react-router-dom";
 
 const RecipeContext = createContext();
+const NUMBER_REGEX = /^\d+$/;
+
 
 function RecipeProvider({ children }) {
   const token = getToken();
   const navigate = useNavigate();
+  
+  const [title, setTitle] = useState('');
+  const [validTitle, setValidTitle] = useState();
+  const [errTitle, setErrTitle] = useState('');
+  
+  const [shortDescription, setShortDescription] = useState('');
+  const [validShortDescription, setValidShortDescription] = useState();
+  const [errShortDescription, setErrShortDescription] = useState('');
 
-  const [title, setTitle] = useState();
-  const [shortDescription, setShortDescription] = useState();
-  const [amountOfPeople, setamountOfPeople] = useState();
-  const [cookingTime, setCookingTime] = useState();
+  const [amountOfPeople, setAmountOfPeople] = useState('');
+  const [validAmountOfPeople, setValidAmountOfPeople] = useState();
+  const [errAmountOfPeople, setErrAmountOfPeople] = useState();
+  
+  const [cookingTime, setCookingTime] = useState('');
+  const [validCookingTime, setValidCookingTime] = useState();
+  const [errCookingTime, setErrCookingTime] = useState();
 
   const [mainImageUrl, setMainImageUrl] = useState();
+  const [validMainImageUrl, setValidMainImageUrl] = useState();
+  const [errMainImageUrl, setErrMainImageUrl] = useState();
 
   const [stepContent, setStepContent] = useState(['', '']);
+  const [validStepContent, setValidStepContent] = useState(['', '']);
+  const [errStepContent, setErrStepContent] = useState();
+  
   // {1: imageList, 2: imageList}
   const [images, setImages] = useState({});
+  const [validImages, setValidImages] = useState({});
+  const [errImages, setErrImages] = useState();
   
-  const [category, setCategory] = useState(['']);
+  const [category, setCategory] = useState([]);
+  const [validCategory, setValidCategory] = useState([]);
+  const [errCategory, setErrCategory] = useState();
+  
   const [ingredient, setIngredient] = useState([{name: '', amount: '', unit: ''}, {name: '', amount: '', unit: ''}]);
+  const [validIngredient, setValidIngredient] = useState([{name: '', amount: '', unit: ''}, {name: '', amount: '', unit: ''}]);
+  const [errIngredient, setErrIngredient] = useState()
+
   // [{stepNumber, previewLink}]
   const [previewImageLinks, setPreviewImageLinks] = useState([])
 
+  // State
   const [loading, setLoading] = useState();
   const [success, setSuccess] = useState();
-  const [recipeId, setRecipeId] = useState();
+
+  let [categoryList, setCategoryList] = useState();
+
+  useEffect(() => {
+    recipeApi.getCategory()
+    .then((response) => {
+      console.log("category: ", response);
+      setCategoryList(response?.data?.data)
+    })
+
+  }, [])
 
   //Tạo links preview
   useEffect(() => {
     // console.log("content ", stepContent, ' ', stepContent.length)
-    console.log("images ", ingredient);
+    console.log("ingredient ", ingredient);
     const linkImageList = [];
     for(let key in images) {
       linkImageList[key] = ({
@@ -55,12 +92,22 @@ function RecipeProvider({ children }) {
     }
   }, [previewImageLinks])
 
+  useEffect(() => {
+    setValidCategory();
+  }, [category])
+
   // Xoá link ảnh chính preview nếu không dùng đến
   useEffect(() => {
     return () => {
       URL.revokeObjectURL(mainImageUrl?.preview);
     }
   }, [mainImageUrl])
+
+  useEffect(() => {
+    if(success === true) {
+      navigate(`/user/recipe-pending`);
+    }
+  }, [success]);
 
   // Format lại mảng image
   function handlePreviewAvatar(images = []) {
@@ -74,22 +121,121 @@ function RecipeProvider({ children }) {
     }
     return imageList;
   }
-
-  useEffect(() => {
-    if(success === true) {
-      setTimeout(() => {
-        navigate(`/recipe/${recipeId}`);
-      }, 5000)
+  //Thay đổi ảnh chính Công thức
+  const handleChangeMainImage = (ImageObject) => {
+    console.log(ImageObject[0])
+    if(ImageObject[0]?.type === 'image/png' || ImageObject[0]?.type === 'image/jpg' || ImageObject[0]?.type === 'image/jpeg' || ImageObject[0]?.type === 'image/svg') {
+      if(ImageObject[0].size < 15,728,640) {
+        const imageObj = ImageObject[0];
+        imageObj.preview = URL.createObjectURL(imageObj);
+        setValidMainImageUrl(true);
+        setMainImageUrl(imageObj);
+      }
+      else {
+        console.log(false)
+        setValidMainImageUrl(false);
+        setErrMainImageUrl('Dung lượng ảnh không được vượt quá 15MB')  
+      }
     }
-  }, [success]);
-
-  const handleChangeMainImage = (ImageObject, setElement) => {
-    const imageObj = ImageObject[0];
-    imageObj.preview = URL.createObjectURL(imageObj);
-    setMainImageUrl(imageObj);
+    else {
+      console.log(false)
+      setValidMainImageUrl(false);
+      setErrMainImageUrl('Chỉ chấp nhận ảnh có đuôi jpg, jpeg, svg, png!')
+    }
   };
+  // Thay đổi tên món ăn
+  const handleChangeTitle = (value) => {
+    setValidTitle();
+    setTitle(value);
+  }
+  // Thay đổi mô tả món ăn
+  const handleChangeShortDescription = (value) => {
+    setValidShortDescription();
+    setShortDescription(value);
+  }
+  //Thay đổi thời gian nấu
+  const handleChangeCookingTime = (value) => {
+    setValidCookingTime(NUMBER_REGEX.test(value));
+    if(NUMBER_REGEX.test(value) || value === '') setCookingTime(value || '')
+    else {
+      setErrCookingTime('Vui lòng điền số vào thời gian nấu.');
+    }
+  }
+  //Thay đổi khẩu phần
+  const handleChangeAmountOfPeople = (value) => {
+    setValidAmountOfPeople(NUMBER_REGEX.test(value));
+    if(NUMBER_REGEX.test(value) || value === '') setAmountOfPeople(value || '')
+    else {
+      setErrAmountOfPeople('Vui lòng điền số vào khẩu phần ăn.');
+    }
+  }
 
-  const handleSubmit = () => {
+  const checkValidAll = () => {
+    console.log('click')
+
+    setTitle(preValue => preValue.trim());
+    if(title.trim().length === 0) {
+      setValidTitle(false);
+      setErrTitle('Vui lòng điền tên món ăn');
+    }
+    
+    setShortDescription(preValue => preValue.trim());
+    if(shortDescription.trim().length === 0) {
+      setValidShortDescription(false);
+      setErrShortDescription('Vui lòng điền mô tả món ăn');
+    }
+
+    if(!NUMBER_REGEX.test(cookingTime)) {
+      setValidCookingTime(false);
+      setErrCookingTime('Thời gian nấu không hợp lệ');
+    }
+
+    if(cookingTime.length === 0) {
+      setValidCookingTime(false);
+      setErrCookingTime('Vui lòng điền thời gian nấu')
+    }
+
+    if(!NUMBER_REGEX.test(amountOfPeople)) {
+      setValidAmountOfPeople(false);
+      setErrAmountOfPeople('Khẩu phần ăn không hợp lệ');
+    }
+
+    if(amountOfPeople.length === 0) {
+      setValidAmountOfPeople(false);
+      setErrAmountOfPeople('Vui lòng điền khẩu phần ăn')
+    }
+
+    if(ingredient.length === 0) {
+      setValidIngredient(false);
+      console.log('hello')
+
+      setErrIngredient('Vui lòng điền ít nhất 1 nguyên liệu')
+    }
+
+    for(let item of ingredient) {
+      if(!item.name || !item.amount || !item.unit) {
+        console.log(item.name, ' ', item.amount, ' ', item.unit)
+        setValidIngredient(false);
+        setErrIngredient('Vui lòng điền đầy đủ các trường')
+        break;
+      }
+    }
+
+    if(stepContent.length === 0) {
+      setValidIngredient(false);
+      console.log('hello')
+
+      setErrIngredient('Vui có 1 bước');
+    }
+
+    if(category.length === 0) {
+      setValidCategory(false);
+      setErrCategory('Vui lòng chọn ít nhất 2 category');
+    }
+  }
+
+  const handleSubmit = (event) => {
+    event.preventDefault()
     setLoading(true);
     const formData = new FormData();
     formData.append("title", title);
@@ -137,41 +283,71 @@ function RecipeProvider({ children }) {
       .then((response) => {
         console.log(response);
         if(response?.data?.data?.messageCode !== 1) throw {response};
-        setRecipeId(response?.data?.data?.data?.recipe?.id);
         setSuccess(true);
-        // setLoading(false);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err?.response);;
-        // setLoading(false);
+        setLoading(false);
       });
   };
 
   const value = {
     token,
+
     title,
-    setTitle,
+    handleChangeTitle,
+    validTitle,
+    errTitle,
+
     shortDescription,
-    setShortDescription,
+    handleChangeShortDescription,
+    validShortDescription,
+    errShortDescription,
+
     amountOfPeople,
-    setamountOfPeople,
+    handleChangeAmountOfPeople,
+    validAmountOfPeople,
+    errAmountOfPeople,
+
     cookingTime,
-    setCookingTime,
+    handleChangeCookingTime,
+    validCookingTime,
+    errCookingTime,
+
     mainImageUrl,
     setMainImageUrl,
+    validMainImageUrl,
+    errMainImageUrl,
+
     stepContent,
     setStepContent,
+    validStepContent,
+    errStepContent,
+
     images,
     setImages,
+    validImages,
+    errImages,
+
     category,
     setCategory,
+    validCategory,
+    errCategory,
+
     ingredient,
     setIngredient,
+    validIngredient,
+    setValidIngredient,
+    errIngredient,
+
     previewImageLinks,
     handleChangeMainImage,
     handleSubmit,
     loading,
-    setLoading
+    setLoading,
+    categoryList,
+    checkValidAll
   };
 
   return (

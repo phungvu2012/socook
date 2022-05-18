@@ -1,4 +1,5 @@
 import axiosHost1 from "./axiosHost1";
+import axiosHost2 from "./axiosHost2";
 class RecipeApi {
   getRecipe = (token, id) => {
     const REPICE_URL = process.env.REACT_APP_RECIPE_URL + `?id=${id}`;
@@ -73,6 +74,11 @@ class RecipeApi {
         'token': `Bearer ${token}`,
       }
     })
+  }
+
+  getCategory = () => {
+    const GET_CATEGORY_URL = '/api/recipe/get-category';
+    return axiosHost1.get(GET_CATEGORY_URL);
   }
 
   getRecipeComment = (idRecipe, token) => {
@@ -181,6 +187,24 @@ class RecipeApi {
       },
     });
   };
+
+  reportRecipe = (token, reportObj) => {
+    const REPORT_RECIPE_URL = process.env.REACT_APP_REPORT_RECIPE_URL;
+    return axiosHost2.post(REPORT_RECIPE_URL, reportObj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
+
+  reportComment = (token, reportObj) => {
+    const REPORT_COMMENT_URL = process.env.REACT_APP_REPORT_COMMENT_URL;
+    return axiosHost2.post(REPORT_COMMENT_URL, reportObj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 const recipeApi = new RecipeApi();

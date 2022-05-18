@@ -8,7 +8,8 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 
 import { RecipeContext } from "./AddRecipeContext";
-import CategoryItem from "./Category";
+
+const recommentUnit = ['cái', 'miếng', 'hộp', 'ml', 'kilogram', 'gram', 'quả', 'Thìa cà phê', 'Thìa canh', 'Thìa tráng miệng', 'Pound', 'Pint', 'Quart', 'Gallon', 'lít', 'lát', 'chén', 'tách']
 
 const Ingredient = () => {
   const context = useContext(RecipeContext);
@@ -68,23 +69,26 @@ const Ingredient = () => {
   };
 
   function IngredientItem({ index }) {
-    const [name, setName] = useState(context.ingredient[index].name);
+    const [ingredient, setIngredient] = useState(context.ingredient[index].name);
     const [amount, setAmount] = useState(context.ingredient[index].amount);
     const [unit, setUnit] = useState(context.ingredient[index].unit);
     
     const handleName = (event) => {
-      setName(event.target?.value);
+      setIngredient(event.target?.value);
       context.ingredient[index].name = event.target?.value;
+      context.setValidIngredient();
     }
 
     const handleAmount = (event) => {
       setAmount(event.target?.value);
       context.ingredient[index].amount = event.target?.value;
+      context.setValidIngredient();
     }
 
     const handleUnit = (event) => {
       setUnit(event.target?.value);
       context.ingredient[index].unit = event.target?.value;
+      context.setValidIngredient();
     }
 
     return (
@@ -120,13 +124,13 @@ const Ingredient = () => {
             type="text"
             name="title"
             placeholder="Tên nguyên liệu"
-            value={name}
+            value={ingredient}
             onChange={(event) => handleName(event)}
             className={"recipe-ingredient__input"}
             required
           />
           <input
-            type="text"
+            type="number"
             name="title"
             placeholder="Số lượng"
             value={amount}
@@ -142,27 +146,25 @@ const Ingredient = () => {
             onChange={(event) => handleUnit(event)}
             className={"recipe-ingredient__input"}
             required
+            list="ingredient-unit"
           />
+          <datalist id='ingredient-unit' className="recipe-ingredient__unit-list">
+            {recommentUnit.map((value, index) => {
+              return <option value={value} key={index}/> 
+            })}
+          </datalist>
         </div>
       </div>
     );
   }
 
   return (
-    <div className="recipe-body__section recipe-body__section--ingredient shadow recipe-input-field">
+    <div className={"recipe-body__section recipe-body__section--ingredient shadow recipe-input-field" + ((context.validIngredient === false) ? ' error': '')}>
       <h3 className="recipe-body__title">Nguyên liệu</h3>
+      {context.validIngredient === false && <p className="text-danger">* {context.errIngredient}</p>}
       {context.ingredient.map((value, index) => {
         return (
           <IngredientItem
-            key={index}
-            index={index}
-          />
-        );
-      })}
-      <h3 className="recipe-body__title">Category</h3>
-      {context.category.map((value, index) => {
-        return (
-          <CategoryItem
             key={index}
             index={index}
           />

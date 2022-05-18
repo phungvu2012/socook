@@ -1,6 +1,7 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import recipeApi from "../../../api/recipeApi";
 import RecipeComment from "./RecipeComment/RecipeComment";
+import ReportInput from "../../ReportInput/ReportInput";
 
 import { ReadMore } from "../../../features/editorText";
 
@@ -13,12 +14,26 @@ import TagRecipe, {
 } from "./section";
 import { useParams } from "react-router-dom";
 import "./recipe.scss";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
 
 const RepiceInfo = () => {
   const params = useParams();
   const recipeId = params.recipeId;
   const tokenAccess = getToken();
   let [recipeInfo, setRecipeInfo] = useState();
+  const [idRecipeReport, setIdRecipeReport] = useState(0)
+
+  const handleGetIdRecipeReport = (e) => {
+    e.preventDefault()
+    e.stopPropagation()
+    setIdRecipeReport(recipeId)
+  }
+
+  const resetIdRecipeDelete = (data) => {
+    console.log(data)
+    setIdRecipeReport(data)
+  }
 
   const [id, setId] = useState();
   const [title, setTitle] = useState("");
@@ -58,6 +73,7 @@ const RepiceInfo = () => {
 
   return (
     <div className="recipe-page" style={{ backgroundColor: "" }}>
+      {idRecipeReport ? <ReportInput idReport={idRecipeReport} typeReport="recipe" resetIdDelete={resetIdRecipeDelete}/>  : (<></>)}
       <div className="container py-3">
         <RecipeBreadcrumb
           list={[
@@ -106,6 +122,10 @@ const RepiceInfo = () => {
               amount={amountOfPeople}
               numberLikes={numberLikes}
             />
+            <span className="recipe-report-icon" onClick={handleGetIdRecipeReport}>
+                <FontAwesomeIcon icon={faFlag} />
+            </span>
+            
           </div>
         </div>
         <div className="recipe-body">

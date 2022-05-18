@@ -25,7 +25,7 @@
     }
 
     &__left {
-
+      position: relative;
       display: flex;
       justify-content: center;
     }
@@ -45,12 +45,13 @@
       @include screenLG() {
         width: 100%;
         min-height: 15rem;
-        filter: blur(0.2rem);
+        // filter: blur(0.2rem);
         box-shadow: none;
       }
     }
 
     &__right {
+      position: relative;
       padding: 1rem 2rem;
       margin: 0 2rem;
 
@@ -66,11 +67,6 @@
       }
 
       &-top {
-        overflow: hidden;
-        // -webkit-box-orient: vertical;
-        // -webkit-line-clamp: 5;
-        // display: -webkit-box;
-        // text-overflow: ellipsis;
 
       }
     }
@@ -289,4 +285,13 @@
 
     cursor: pointer;
   }
+}
+
+.recipe-report-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  right: 32px;
+  bottom: 80px;
+  color: red;
+  cursor: pointer;
 }

@@ -4,11 +4,13 @@ import {
   faMagnifyingGlass,
   faRightFromBracket,
   faXmark,
+  faFileUpload
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretDown,
   faBell,
   faStickyNote,
+  faUser
 } from "@fortawesome/free-regular-svg-icons";
 
 import styles from "./header.module.scss";
@@ -26,6 +28,8 @@ import homePage from "../../api/homePageApi";
 import Notification from "./Notification/Notification";
 
 const Header = () => {
+  const username = getUser()?.user_name;
+
   const [suggestionSearch, setSuggestionSearch] = useState([]);
   const [keyword, setKeyword] = useState("");
   const searchInput = useRef();
@@ -45,7 +49,7 @@ const Header = () => {
       homePage
         .getNotificationList(token)
         .then((res) => {
-          const mapData = res.data.data.map((notification) => {
+          const mapData = res.data.data && res.data.data.map((notification) => {
             if (notification.type === "đăng bài viết mới") {
               return {
                 id: notification.id,
@@ -128,7 +132,7 @@ const Header = () => {
               };
             }
           });
-          setNotificationList([...mapData.reverse()]);
+          if(mapData?.length) setNotificationList([...mapData.reverse()]);
         })
         .catch((err) => console.log(err));
     }
@@ -294,6 +298,32 @@ const Header = () => {
                       className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
                     >
                       <Link
+                        to="/user/user-info"
+                        className={styles.popUp__SettingItem}
+                      >
+                        <div className={styles.popUp__SettingIcon}>
+                          <FontAwesomeIcon icon={faUser} />
+                        </div>
+                        <div className={styles.popUp__SettingContent}>
+                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                            Quản lý tài khoản
+                          </h5>
+                        </div>
+                      </Link>
+                      <Link
+                        to="/create-recipe"
+                        className={styles.popUp__SettingItem}
+                      >
+                        <div className={styles.popUp__SettingIcon}>
+                          <FontAwesomeIcon icon={faFileUpload} />
+                        </div>
+                        <div className={styles.popUp__SettingContent}>
+                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                            Tạo công thức mới
+                          </h5>
+                        </div>
+                      </Link>
+                      <Link
                         to="/login"
                         className={styles.popUp__SettingItem}
                         onClick={removeUserSession}
@@ -342,8 +372,8 @@ const Header = () => {
                     <div className={styles.notificationFilter}>
                       <button
                         className={
-                          filterValue === "all" &&
-                          styles.notificationFilter_active
+                          filterValue === "all" ?
+                          styles.notificationFilter_active : ''
                         }
                         onClick={() => setFilterValue("all")}
                       >
@@ -351,8 +381,8 @@ const Header = () => {
                       </button>
                       <button
                         className={
-                          filterValue === "notview" &&
-                          styles.notificationFilter_active
+                          filterValue === "notview" ?
+                          styles.notificationFilter_active : ''
                         }
                         onClick={() => setFilterValue("notview")}
                       >
@@ -360,8 +390,8 @@ const Header = () => {
                       </button>
                       <button
                         className={
-                          filterValue === "viewed" &&
-                          styles.notificationFilter_active
+                          filterValue === "viewed" ?
+                          styles.notificationFilter_active : ''
                         }
                         onClick={() => setFilterValue("viewed")}
                       >
@@ -401,7 +431,7 @@ const Header = () => {
                 </div>
               </div>
               {userInfo ? (
-                <Link to="/user" className={styles.userAvatar}>
+                <Link to={`/user-page/${username}`} className={styles.userAvatar}>
                   <div
                     className={styles.userAvatar__ImageBox}
                     style={{

@@ -1,30 +1,30 @@
 export const setUser = (user) => {
-  sessionStorage.setItem("userInfo", JSON.stringify(user));
+  localStorage.setItem("userInfo", JSON.stringify(user));
 }
 
 export const getUser = () => {
-  const userStr = sessionStorage.getItem("userInfo");
+  const userStr = localStorage.getItem("userInfo");
   if(userStr) return JSON.parse(userStr);
   else return null;
 }
 
 export const setToken = (token) => {
-  sessionStorage.setItem("tokenAccess", token);
+  localStorage.setItem("tokenAccess", token);
 }
 
 export const getToken = () => {
-  const tokenStr = sessionStorage.getItem("tokenAccess") || null;
+  const tokenStr = localStorage.getItem("tokenAccess") || null;
   return tokenStr;
 }
 
 export const setUserSession = (token, user) => {
-  sessionStorage.setItem("tokenAccess", token);
-  sessionStorage.setItem("userInfo", JSON.stringify(user));
+  localStorage.setItem("tokenAccess", token);
+  localStorage.setItem("userInfo", JSON.stringify(user));
 }
 
 export const removeUserSession = (token, user) => {
-  sessionStorage.removeItem("tokenAccess", token);
-  sessionStorage.removeItem("userInfo", user);
+  localStorage.removeItem("tokenAccess", token);
+  localStorage.removeItem("userInfo", user);
 }
 
 export const isActive = () => {

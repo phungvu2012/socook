@@ -159,7 +159,7 @@
     min-width: 38px;
     border-radius: 50%;
     margin: 0 0.25rem;
-    background: green center / cover no-repeat;
+    background: var(--bs-gray-200) center / cover no-repeat;
   }
 
   &__Name {
