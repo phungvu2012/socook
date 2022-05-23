@@ -71,6 +71,18 @@ class RecipeApi {
       }
     })
   }
+
+  getRecipeComment = (idRecipe, token) => {
+    const COLLECTION_URL = process.env.REACT_APP_GET_RECIPE_COMMENT_URL + `/?id=${idRecipe}`;
+    if(token) {
+      return axiosHost1.get(COLLECTION_URL, {
+        headers: {
+          'token': `Bearer ${token}`,
+        }
+      });
+    }
+    return axiosHost1.get(COLLECTION_URL);
+  };
 }
 
 const recipeApi = new RecipeApi();

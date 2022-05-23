@@ -1,5 +1,6 @@
 import React, { useEffect, useState, lazy, Suspense } from "react";
 import recipeApi from "../../../api/recipeApi";
+import RecipeComment from "./RecipeComment/RecipeComment";
 
 import { ReadMore } from "../../../features/editorText";
 
@@ -18,7 +19,7 @@ const RepiceInfo = () => {
   const recipeId = params.recipeId;
   const tokenAccess = getToken();
   let [recipeInfo, setRecipeInfo] = useState();
-  
+
   const [id, setId] = useState();
   const [title, setTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -28,14 +29,14 @@ const RepiceInfo = () => {
   const [step, setStep] = useState();
   const [category, setCategory] = useState("");
   const [ingredient, setIngredient] = useState();
-  const [numberLikes, setNumberLikes] = useState(); 
+  const [numberLikes, setNumberLikes] = useState();
 
   useEffect(() => {
     recipeApi
       .getRecipe(tokenAccess, recipeId)
       .then((response) => {
         console.log(response?.data?.data);
-        if(response?.data?.messageCode !== 1) throw { response };
+        if (response?.data?.messageCode !== 1) throw { response };
 
         const data = response?.data?.data;
         setRecipeInfo(true);
@@ -48,7 +49,7 @@ const RepiceInfo = () => {
         setStep(data?.step);
         setCategory(data?.category);
         setIngredient(data?.ingredient);
-        setNumberLikes(data?.likes)
+        setNumberLikes(data?.likes);
       })
       .catch((err) => {
         console.log(err);
@@ -56,7 +57,7 @@ const RepiceInfo = () => {
   }, []);
 
   return (
-    <div className="recipe-page" style={{backgroundColor: ''}}>
+    <div className="recipe-page" style={{ backgroundColor: "" }}>
       <div className="container py-3">
         <RecipeBreadcrumb
           list={[
@@ -115,6 +116,7 @@ const RepiceInfo = () => {
               <StepComponent loading={!recipeInfo} stepList={step} />
             </div>
             <TagRecipe categorys={category} />
+            <RecipeComment recipeId={recipeId}/>
           </div>
         </div>
       </div>
