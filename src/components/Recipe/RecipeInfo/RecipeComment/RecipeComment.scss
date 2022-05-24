@@ -77,3 +77,18 @@
 .recipe-comment-wrapper {
 
 }
+
+.recipe-comment-load-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 16px;
+  button {
+    outline: none;
+    border: none;
+    padding: 8px 20px;
+    background-color: #3578e5;
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+  }
+}

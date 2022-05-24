@@ -133,6 +133,33 @@ class RecipeApi {
       }
     })
   }
+
+  createChildComment = (token, commentObj) => {
+    const CREATE_COMMENT_URL = process.env.REACT_APP_CREATE_CHILD_COMMENT_URL;
+    return axiosHost1.post(CREATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  updateChildComment = (token, commentObj) => {
+    const UPDATE_COMMENT_URL = process.env.REACT_APP_UPDATE_CHILD_COMMENT_URL;
+    return axiosHost1.put(UPDATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  deleteChildComment = (token, commentId) => {
+    const DELETE_COMMENT_URL = process.env.REACT_APP_DELETE_CHILD_COMMENT_URL + `?id=${commentId}`;
+    return axiosHost1.delete(DELETE_COMMENT_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 const recipeApi = new RecipeApi();

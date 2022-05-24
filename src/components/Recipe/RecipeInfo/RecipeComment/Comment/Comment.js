@@ -18,6 +18,8 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
   const [isUpdateComment, setIsUpdateComment] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [isDeleteComment, setIsDeleteComment] = useState(false);
+  const [isReplyComment, setIsReplyComment] = useState(false);
+  const [replyCommentValue, setReplyCommentValue] = useState("");
   const handleCancelUpdateComment = (e) => {
     setIsUpdateComment(false);
     setIsDisplayCommentAction(false);
@@ -59,6 +61,26 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
       .catch((err) => console.log(err));
   };
 
+  const handlePostChildComment = (e) => {
+    e.preventDefault()
+    if(token) {
+      const commentObj = {
+        parent_id: comment.id,
+        content: replyCommentValue
+      }
+      recipeApi.createChildComment(token, commentObj)
+      .then(res => {
+        console.log(res)
+        setReplyCommentValue('')
+        setIsGetCommentList(prev => !prev)
+        setIsReplyComment(false)
+      })
+      .catch(err => console.log(err))
+    } else {
+      navigate('/login')
+    }
+  }
+
   const convertTimeToDate = (str) => {
     let date = new Date(str);
     let milisecond = Date.now() - date;
@@ -82,6 +104,12 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
       }
     }
   };
+
+  const triggerRenderParentComment = (idDeleteChildComment) => {
+    console.log("id: ", idDeleteChildComment)
+    comment.childComment = comment.childComment.filter(childComment => childComment.id !== idDeleteChildComment)
+    setRenderCommentVariable(prev => !prev)
+  }
 
   const handleLikeComment = () => {
     if (token) {
@@ -140,7 +168,7 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
           to={`/user-page/${comment.user_name}`}
           className="comment-user-avatar"
         >
-          <img src={comment.avatar_image} alt="" />
+          <img src={comment.avatar_image} alt={comment.user_name} />
         </Link>
         {isUpdateComment ? (
           <div className="comment-content-update-container">
@@ -194,7 +222,12 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
                   )}
                   {comment.like}
                 </span>
-                <span className="comment-interaction-reply">Trả lời</span>
+                <span
+                  className="comment-interaction-reply"
+                  onClick={() => setIsReplyComment(true)}
+                >
+                  Trả lời
+                </span>
                 <span className="comment-interaction-date">
                   {convertTimeToDate(comment.create_time)}
                 </span>
@@ -243,12 +276,33 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
         )}
       </div>
       <div className="child-comment-container">
+        {isReplyComment && (
+          <div className="comment-reply-container">
+            <input
+              type="text"
+              value={replyCommentValue}
+              onChange={(e) => setReplyCommentValue(e.target.value)}
+            />
+            <div className="comment-reply-button">
+              <button
+                className="comment-reply-button-cancel"
+                onClick={() => setIsReplyComment(false)}
+              >
+                Hủy
+              </button>
+              <button className="comment-reply-button-post" onClick={handlePostChildComment}>Trả lời</button>
+            </div>
+          </div>
+        )}
+
         {comment.childComment[0] &&
           comment.childComment.map((childComment) => (
             <ChildComment
               childComment={childComment}
               key={childComment.id}
               convertTimeToDate={convertTimeToDate}
+              renderCommentVariable={renderCommentVariable}
+              triggerRenderParentComment={triggerRenderParentComment}
             />
           ))}
       </div>

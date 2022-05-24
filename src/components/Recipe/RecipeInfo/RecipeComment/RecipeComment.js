@@ -12,6 +12,7 @@ function RecipeComment({ recipeId }) {
   const [commentValue, setCommentValue] = useState("");
   const [isGetCommentList, setIsGetCommentList] = useState(false);
   const [sortCondition, setSortCondition] = useState("newest");
+  const [loadMoreValue, setLoadMoreValue] = useState();
 
   const handlePostComment = (e) => {
     e.preventDefault();
@@ -56,6 +57,11 @@ function RecipeComment({ recipeId }) {
       .getRecipeComment(recipeId, token)
       .then((res) => {
         setRecipeComment(res.data.comment);
+        if (res.data.comment.length <= 5) {
+          setLoadMoreValue(res.data.comment.length);
+        } else {
+          setLoadMoreValue(5);
+        }
       })
       .catch((err) => console.log(err));
   }, [recipeId, isGetCommentList]);
@@ -104,16 +110,25 @@ function RecipeComment({ recipeId }) {
         </div>
       </div>
       <div className="recipe-comment-wrapper">
-        {sortComment(recipeComment)?.map((comment) => (
-          <Comment
-            comment={comment}
-            key={comment.id}
-            isGetCommentList={isGetCommentList}
-            setIsGetCommentList={(data) => setIsGetCommentList(data)}
-          />
-        ))}
+        {sortComment(recipeComment)
+          ?.slice(0, loadMoreValue)
+          .map((comment) => (
+            <Comment
+              comment={comment}
+              key={comment.id}
+              isGetCommentList={isGetCommentList}
+              setIsGetCommentList={(data) => setIsGetCommentList(data)}
+            />
+          ))}
       </div>
-      {console.log("Cmt: ", recipeComment)}
+      {console.log("Cmt: ", recipeComment, loadMoreValue)}
+      {recipeComment?.length >= 5 && loadMoreValue <= recipeComment?.length && (
+        <div className="recipe-comment-load-more">
+          <button onClick={() => setLoadMoreValue((prev) => prev + 5)}>
+            Xem thêm 5 bình luận
+          </button>
+        </div>
+      )}
     </div>
   );
 }
