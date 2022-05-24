@@ -122,10 +122,10 @@ function RecipeComment({ recipeId }) {
           ))}
       </div>
       {console.log("Cmt: ", recipeComment, loadMoreValue)}
-      {recipeComment?.length >= 5 && loadMoreValue <= recipeComment?.length && (
+      {recipeComment?.length >= 5 && loadMoreValue < recipeComment?.length && (
         <div className="recipe-comment-load-more">
           <button onClick={() => setLoadMoreValue((prev) => prev + 5)}>
-            Xem thêm 5 bình luận
+            Xem thêm {(recipeComment.length-loadMoreValue)/5>1 ? 5 : recipeComment.length-loadMoreValue} bình luận
           </button>
         </div>
       )}
