@@ -6,12 +6,59 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons";
 import { getToken } from "../../../../../features/sessionStorage";
+import { getUser } from "../../../../../features/sessionStorage";
 import { useState } from "react";
 
-function Comment({ comment }) {
-  const token = getToken()
-  const [renderCommentVariable, setRenderCommentVariable] = useState(false)
-  const navigate = useNavigate()
+function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
+  const token = getToken();
+  const userInfo = getUser();
+  const navigate = useNavigate();
+  const [renderCommentVariable, setRenderCommentVariable] = useState(false);
+  const [isDisplayCommentAction, setIsDisplayCommentAction] = useState(false);
+  const [isUpdateComment, setIsUpdateComment] = useState(false);
+  const [commentValue, setCommentValue] = useState("");
+  const [isDeleteComment, setIsDeleteComment] = useState(false);
+  const handleCancelUpdateComment = (e) => {
+    setIsUpdateComment(false);
+    setIsDisplayCommentAction(false);
+  };
+
+  const handleUpdateComment = (e) => {
+    e.preventDefault();
+    const formData = new FormData();
+    formData.append("id", comment.id);
+    formData.append("content", commentValue);
+    recipeApi
+      .updateComment(token, formData)
+      .then((res) => {
+        console.log(res);
+        comment.content = commentValue;
+        setIsUpdateComment(false);
+        setIsDisplayCommentAction(false);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const handleCancelActionComment = (e) => {
+    e.stopPropagation();
+    setIsDisplayCommentAction(false);
+  };
+
+  const handleCancelDeleteComment = () => {
+    setIsDeleteComment(false);
+  };
+
+  const handleDeleteComment = (e) => {
+    recipeApi
+      .deleteComment(token, comment.id)
+      .then((res) => {
+        console.log(res);
+        setIsDeleteComment(false);
+        setIsGetCommentList(!isGetCommentList);
+      })
+      .catch((err) => console.log(err));
+  };
+
   const convertTimeToDate = (str) => {
     let date = new Date(str);
     let milisecond = Date.now() - date;
@@ -37,32 +84,57 @@ function Comment({ comment }) {
   };
 
   const handleLikeComment = () => {
-    if(token) {
-      if(comment.liked) {
-        recipeApi.dislikeComment(token, comment.id)
-        .then(res => {
-          console.log(res)
-          comment.like--
-          comment.liked=0
-          setRenderCommentVariable(prev => !prev)
-        })
-        .catch(err => console.log(err))
+    if (token) {
+      if (comment.liked) {
+        recipeApi
+          .dislikeComment(token, comment.id)
+          .then((res) => {
+            console.log(res);
+            comment.like--;
+            comment.liked = 0;
+            setRenderCommentVariable((prev) => !prev);
+          })
+          .catch((err) => console.log(err));
       } else {
-        recipeApi.likeComment(token, comment.id)
-        .then(res => {
-          console.log(res)
-          comment.like++
-          comment.liked=1
-          setRenderCommentVariable(prev => !prev)
-        })
-        .catch(err => console.log(err))
+        recipeApi
+          .likeComment(token, comment.id)
+          .then((res) => {
+            console.log(res);
+            comment.like++;
+            comment.liked = 1;
+            setRenderCommentVariable((prev) => !prev);
+          })
+          .catch((err) => console.log(err));
       }
     } else {
-      navigate("/login")
+      navigate("/login");
     }
-  }
+  };
+
   return (
     <div className="comment-container">
+      {isDeleteComment && (
+        <div>
+          <div className="comment-delete-confirm">
+            <p>Bạn có chắc chắn muốn xóa bình luận này không ?</p>
+            <div className="comment-delete-confirm-button">
+              <button
+                className="comment-delete-confirm-button-cancel"
+                onClick={handleCancelDeleteComment}
+              >
+                Hủy
+              </button>
+              <button
+                className="comment-delete-confirm-button-delete"
+                onClick={handleDeleteComment}
+              >
+                Xóa
+              </button>
+            </div>
+          </div>
+          <div className="comment-delete-confirm-overlay"></div>
+        </div>
+      )}
       <div className="comment-wrapper">
         <Link
           to={`/user-page/${comment.user_name}`}
@@ -70,36 +142,105 @@ function Comment({ comment }) {
         >
           <img src={comment.avatar_image} alt="" />
         </Link>
-        <div className="comment-detail">
-          <span className="comment-user-name">
-            <Link to={`/user-page/${comment.user_name}`}>
-              {comment.user_name}
-            </Link>
-          </span>
-          <p className="comment-content">{comment.content}</p>
-          <div className="comment-interaction">
-            <span className="comment-interaction-like">
-              {comment.liked ? (
-                <FontAwesomeIcon
-                  icon={faThumbsUpSolid}
-                  className="comment-interaction-like-icon"
-                  onClick={handleLikeComment}
-                />
-              ) : (
-                <FontAwesomeIcon
-                  icon={faThumbsUp}
-                  className="comment-interaction-like-icon"
-                  onClick={handleLikeComment}
-                />
-              )}
-              {comment.like}
-            </span>
-            <span className="comment-interaction-reply">Trả lời</span>
-            <span className="comment-interaction-date">
-              {convertTimeToDate(comment.create_time)}
-            </span>
+        {isUpdateComment ? (
+          <div className="comment-content-update-container">
+            <input
+              type="text"
+              value={commentValue}
+              onChange={(e) => setCommentValue(e.target.value)}
+            />
+            <div
+              className={`recipe-comment-input-submit-button ${
+                commentValue ? "recipe-comment-input-submit-button--active" : ""
+              }`}
+            >
+              <button
+                className="recipe-comment-input-button-cancel"
+                onClick={handleCancelUpdateComment}
+              >
+                Hủy
+              </button>
+              <button
+                className="recipe-comment-input-button-post"
+                onClick={handleUpdateComment}
+              >
+                Cập nhật
+              </button>
+            </div>
           </div>
-        </div>
+        ) : (
+          <div className="comment-content-container">
+            <div className="comment-detail">
+              <span className="comment-user-name">
+                <Link to={`/user-page/${comment.user_name}`}>
+                  {comment.user_name}
+                </Link>
+              </span>
+              <p className="comment-content">{comment.content}</p>
+              <div className="comment-interaction">
+                <span className="comment-interaction-like">
+                  {comment.liked ? (
+                    <FontAwesomeIcon
+                      icon={faThumbsUpSolid}
+                      className="comment-interaction-like-icon"
+                      onClick={handleLikeComment}
+                    />
+                  ) : (
+                    <FontAwesomeIcon
+                      icon={faThumbsUp}
+                      className="comment-interaction-like-icon"
+                      onClick={handleLikeComment}
+                    />
+                  )}
+                  {comment.like}
+                </span>
+                <span className="comment-interaction-reply">Trả lời</span>
+                <span className="comment-interaction-date">
+                  {convertTimeToDate(comment.create_time)}
+                </span>
+              </div>
+            </div>
+            {userInfo?.user_id === comment.user_id ? (
+              <div
+                className="comment-action-wrapper"
+                onClick={() => setIsDisplayCommentAction(true)}
+              >
+                <span>...</span>
+                {isDisplayCommentAction && (
+                  <ul className="comment-actions">
+                    <li
+                      className="comment-actions-cancel"
+                      onClick={handleCancelActionComment}
+                    >
+                      x
+                    </li>
+                    <li
+                      className="comment-actions-update"
+                      onClick={(e) => {
+                        setIsUpdateComment(true);
+                        setCommentValue(comment.content);
+                      }}
+                    >
+                      Sửa
+                    </li>
+                    <li
+                      className="comment-actions-delete"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setIsDeleteComment(true);
+                        setIsDisplayCommentAction(false);
+                      }}
+                    >
+                      Xóa
+                    </li>
+                  </ul>
+                )}
+              </div>
+            ) : (
+              <div className="comment-action-wrapper"></div>
+            )}
+          </div>
+        )}
       </div>
       <div className="child-comment-container">
         {comment.childComment[0] &&

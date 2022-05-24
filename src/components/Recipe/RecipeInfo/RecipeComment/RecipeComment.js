@@ -38,17 +38,17 @@ function RecipeComment({ recipeId }) {
   };
 
   const sortComment = (commentArray) => {
-    if(sortCondition === "newest") {
+    if (sortCondition === "newest") {
       const tempCommentList = [...commentArray];
       tempCommentList.reverse();
       return tempCommentList;
     }
-    if(sortCondition === "helpful") {
-      const tempCommentList = [...commentArray]
-      tempCommentList.sort((a, b) => b.like - a.like)
-      return tempCommentList
-    } 
-    return commentArray
+    if (sortCondition === "helpful") {
+      const tempCommentList = [...commentArray];
+      tempCommentList.sort((a, b) => b.like - a.like);
+      return tempCommentList;
+    }
+    return commentArray;
   };
 
   useEffect(() => {
@@ -105,7 +105,12 @@ function RecipeComment({ recipeId }) {
       </div>
       <div className="recipe-comment-wrapper">
         {sortComment(recipeComment)?.map((comment) => (
-          <Comment comment={comment} key={comment.id} />
+          <Comment
+            comment={comment}
+            key={comment.id}
+            isGetCommentList={isGetCommentList}
+            setIsGetCommentList={(data) => setIsGetCommentList(data)}
+          />
         ))}
       </div>
       {console.log("Cmt: ", recipeComment)}

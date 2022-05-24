@@ -115,6 +115,24 @@ class RecipeApi {
       }
     })
   }
+
+  updateComment = (token, commentObj) => {
+    const UPDATE_COMMENT_URL = process.env.REACT_APP_UPDATE_COMMENT_URL;
+    return axiosHost1.put(UPDATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  deleteComment = (token, commentId) => {
+    const DELETE_COMMENT_URL = process.env.REACT_APP_DELETE_COMMENT_URL + `?id=${commentId}`;
+    return axiosHost1.delete(DELETE_COMMENT_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 const recipeApi = new RecipeApi();
