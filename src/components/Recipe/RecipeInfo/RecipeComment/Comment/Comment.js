@@ -1,11 +1,17 @@
 import "./Comment.scss";
+import recipeApi from "../../../../../api/recipeApi";
 import ChildComment from "./ChildComment/ChildComment";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faThumbsUp } from "@fortawesome/free-regular-svg-icons";
 import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons";
+import { getToken } from "../../../../../features/sessionStorage";
+import { useState } from "react";
 
 function Comment({ comment }) {
+  const token = getToken()
+  const [renderCommentVariable, setRenderCommentVariable] = useState(false)
+  const navigate = useNavigate()
   const convertTimeToDate = (str) => {
     let date = new Date(str);
     let milisecond = Date.now() - date;
@@ -29,6 +35,32 @@ function Comment({ comment }) {
       }
     }
   };
+
+  const handleLikeComment = () => {
+    if(token) {
+      if(comment.liked) {
+        recipeApi.dislikeComment(token, comment.id)
+        .then(res => {
+          console.log(res)
+          comment.like--
+          comment.liked=0
+          setRenderCommentVariable(prev => !prev)
+        })
+        .catch(err => console.log(err))
+      } else {
+        recipeApi.likeComment(token, comment.id)
+        .then(res => {
+          console.log(res)
+          comment.like++
+          comment.liked=1
+          setRenderCommentVariable(prev => !prev)
+        })
+        .catch(err => console.log(err))
+      }
+    } else {
+      navigate("/login")
+    }
+  }
   return (
     <div className="comment-container">
       <div className="comment-wrapper">
@@ -51,14 +83,15 @@ function Comment({ comment }) {
                 <FontAwesomeIcon
                   icon={faThumbsUpSolid}
                   className="comment-interaction-like-icon"
+                  onClick={handleLikeComment}
                 />
               ) : (
                 <FontAwesomeIcon
                   icon={faThumbsUp}
                   className="comment-interaction-like-icon"
+                  onClick={handleLikeComment}
                 />
               )}
-
               {comment.like}
             </span>
             <span className="comment-interaction-reply">Trả lời</span>

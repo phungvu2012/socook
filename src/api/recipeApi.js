@@ -77,12 +77,35 @@ class RecipeApi {
     if(token) {
       return axiosHost1.get(COLLECTION_URL, {
         headers: {
-          'token': `Bearer ${token}`,
+          token: `Bearer ${token}`,
         }
       });
     }
     return axiosHost1.get(COLLECTION_URL);
   };
+
+  likeComment = (token, commentId) => {
+    const LIKE_RECIPE_URL = process.env.REACT_APP_LIKE_COMMENT_URL;
+    return axiosHost1.post(LIKE_RECIPE_URL, {
+      comment_id: commentId
+    }, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  dislikeComment = (token, commentId) => {
+    const DISLIKE_RECIPE_URL = process.env.REACT_APP_DISLIKE_COMMENT_URL;
+    return axiosHost1.delete(DISLIKE_RECIPE_URL, {
+      data: {
+        comment_id: commentId
+      },
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 const recipeApi = new RecipeApi();
