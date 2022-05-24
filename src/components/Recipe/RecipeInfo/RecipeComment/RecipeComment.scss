@@ -4,6 +4,25 @@
   border-top: 1px solid #ccc;
 }
 
+.recipe-comment-sort {
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+  &-area {
+    select {
+      min-width: 60px;
+      outline: none;
+      font-weight: 700;
+      margin-left: 8px;
+      font-size: 0.75rem;
+      padding: 2px 4px;
+      background-color: #f5f6f7;
+      border: 1px solid #ccd0d5;
+      color: #4b4f56;
+    }
+  }
+}
+
 .recipe-comment-input-wrapper {
   width: 100%;
   margin: 12px 0;
@@ -20,25 +39,37 @@
   border-color: #666;
 }
 
-.recipe-comment-input:focus ~ .recipe-comment-input-submit-button {
+.recipe-comment-input-submit-button {
   display: flex;
   justify-content: flex-end;
-}
-
-.recipe-comment-input-submit-button {
-  display: none;
   button {
     border: none;
     outline: none;
-    background-color: #9cb4d8;
     color: #fff;
     font-weight: 700;
     padding: 4px 12px;
     border-radius: 4px;
+    margin-right: 8px;
   }
+
+  .recipe-comment-input-button-post {
+    background-color: #9cb4d8;
+    pointer-events: none;
+  }
+  .recipe-comment-input-button-cancel {
+    display: none;
+  }
+
   &--active {
-    button {
+    .recipe-comment-input-button-post {
       background-color: #4267b2;
+      pointer-events: all;
+    }
+    .recipe-comment-input-button-cancel {
+      display: inline-block;
+      background-color: #fff;
+      color: #333;
+      border: 1px solid #333;
     }
   }
 }

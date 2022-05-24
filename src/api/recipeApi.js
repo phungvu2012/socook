@@ -85,8 +85,8 @@ class RecipeApi {
   };
 
   likeComment = (token, commentId) => {
-    const LIKE_RECIPE_URL = process.env.REACT_APP_LIKE_COMMENT_URL;
-    return axiosHost1.post(LIKE_RECIPE_URL, {
+    const LIKE_COMMENT_URL = process.env.REACT_APP_LIKE_COMMENT_URL;
+    return axiosHost1.post(LIKE_COMMENT_URL, {
       comment_id: commentId
     }, {
       headers: {
@@ -96,11 +96,20 @@ class RecipeApi {
   }
 
   dislikeComment = (token, commentId) => {
-    const DISLIKE_RECIPE_URL = process.env.REACT_APP_DISLIKE_COMMENT_URL;
-    return axiosHost1.delete(DISLIKE_RECIPE_URL, {
+    const DISLIKE_COMMENT_URL = process.env.REACT_APP_DISLIKE_COMMENT_URL;
+    return axiosHost1.delete(DISLIKE_COMMENT_URL, {
       data: {
         comment_id: commentId
       },
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  createComment = (token, commentObj) => {
+    const CREATE_COMMENT_URL = process.env.REACT_APP_CREATE_COMMENT_URL;
+    return axiosHost1.post(CREATE_COMMENT_URL, commentObj, {
       headers: {
         token: `Bearer ${token}`,
       }
