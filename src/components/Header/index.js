@@ -116,6 +116,17 @@ const Header = () => {
                 isView: notification.is_viewed,
               };
             }
+
+            if (notification.type === "duyệt bài viết") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã duyệt bài viết của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
           });
           setNotificationList([...mapData.reverse()]);
         })
