@@ -25,7 +25,6 @@ function AdvanceSearchPage() {
       searchApi
         .searchIngredients(e.target.value)
         .then((res) => {
-          console.log(res);
           setIngredientListRecommand([...res.data]);
         })
         .catch((err) => console.log(err));
@@ -68,7 +67,6 @@ function AdvanceSearchPage() {
         .searchRecipesByIngredient(mapKeywordsListToQuery(keywords))
         .then((res) => {
           setRecipeResult([...res.data]);
-          console.log("REcipes: ", res);
         })
         .catch((err) => console.log(err));
     } else {

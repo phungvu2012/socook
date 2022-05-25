@@ -33,7 +33,6 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
     recipeApi
       .updateComment(token, formData)
       .then((res) => {
-        console.log(res);
         comment.content = commentValue;
         setIsUpdateComment(false);
         setIsDisplayCommentAction(false);
@@ -54,7 +53,6 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
     recipeApi
       .deleteComment(token, comment.id)
       .then((res) => {
-        console.log(res);
         setIsDeleteComment(false);
         setIsGetCommentList(!isGetCommentList);
       })
@@ -62,24 +60,25 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
   };
 
   const handlePostChildComment = (e) => {
-    e.preventDefault()
-    if(token) {
+    e.preventDefault();
+    if (token) {
       const commentObj = {
         parent_id: comment.id,
-        content: replyCommentValue
-      }
-      recipeApi.createChildComment(token, commentObj)
-      .then(res => {
-        console.log(res)
-        setReplyCommentValue('')
-        setIsGetCommentList(prev => !prev)
-        setIsReplyComment(false)
-      })
-      .catch(err => console.log(err))
+        content: replyCommentValue,
+      };
+      recipeApi
+        .createChildComment(token, commentObj)
+        .then((res) => {
+          console.log(res);
+          setReplyCommentValue("");
+          setIsGetCommentList((prev) => !prev);
+          setIsReplyComment(false);
+        })
+        .catch((err) => console.log(err));
     } else {
-      navigate('/login')
+      navigate("/login");
     }
-  }
+  };
 
   const convertTimeToDate = (str) => {
     let date = new Date(str);
@@ -106,10 +105,11 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
   };
 
   const triggerRenderParentComment = (idDeleteChildComment) => {
-    console.log("id: ", idDeleteChildComment)
-    comment.childComment = comment.childComment.filter(childComment => childComment.id !== idDeleteChildComment)
-    setRenderCommentVariable(prev => !prev)
-  }
+    comment.childComment = comment.childComment.filter(
+      (childComment) => childComment.id !== idDeleteChildComment
+    );
+    setRenderCommentVariable((prev) => !prev);
+  };
 
   const handleLikeComment = () => {
     if (token) {
@@ -117,7 +117,6 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
         recipeApi
           .dislikeComment(token, comment.id)
           .then((res) => {
-            console.log(res);
             comment.like--;
             comment.liked = 0;
             setRenderCommentVariable((prev) => !prev);
@@ -127,7 +126,6 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
         recipeApi
           .likeComment(token, comment.id)
           .then((res) => {
-            console.log(res);
             comment.like++;
             comment.liked = 1;
             setRenderCommentVariable((prev) => !prev);
@@ -290,7 +288,12 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
               >
                 Hủy
               </button>
-              <button className="comment-reply-button-post" onClick={handlePostChildComment}>Trả lời</button>
+              <button
+                className="comment-reply-button-post"
+                onClick={handlePostChildComment}
+              >
+                Trả lời
+              </button>
             </div>
           </div>
         )}

@@ -34,7 +34,6 @@ function CollectionSave() {
     collection
       .unsaveCollection(token, collectionId)
       .then((res) => {
-        console.log(res);
         setIsInteractionCollection((prevState) => !prevState);
       })
       .catch((err) => console.log(err));

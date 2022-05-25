@@ -43,6 +43,8 @@ import RepiceInfo from "./components/Recipe/RecipeInfo";
 import AddRepice from "./components/Recipe/AddRecipe";
 
 import RecipePending from "./components/User/RecipePending/RecipePending";
+import RecipeReject from "./components/User/RecipeReject/RecipeReject";
+import MyComment from "./components/User/MyComment/MyComment";
 import FilterRecipePage from './../src/components/HomePage/FilterRecipePage/FilterRecipePage'
 import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
 
@@ -135,6 +137,8 @@ function App() {
                     element={<CollectionSave />}
                   ></Route>
                   <Route path="recipe-pending" element={<RecipePending />} />
+                  <Route path="recipe-reject" element={<RecipeReject />} />
+                  <Route path="my-comment" element={<MyComment />} />
                 </Route>
                 <Route path="/create-recipe" element={<AddRepice />} />
               </Route>

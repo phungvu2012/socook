@@ -27,7 +27,6 @@ function MyRecipe() {
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
-    console.log(idDelete);
     setIdRecipeDelete(idDelete);
   };
 
@@ -40,7 +39,6 @@ function MyRecipe() {
       await recipeApi
         .deleteRecipe(token, idRecipeDelete)
         .then((res) => {
-          console.log(res.data);
           setIdRecipeDelete(0);
           setIsReRender((prevState) => !prevState);
         })
@@ -54,7 +52,6 @@ function MyRecipe() {
       await recipeApi
         .getMyRecipe(token)
         .then((res) => {
-          console.log(res);
           setMyRecipe([...res.data.myListRecipe]);
         })
         .catch((err) => console.log("F: ", err));
@@ -65,14 +62,15 @@ function MyRecipe() {
     <>
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-display-container">
-        <Link to={`/create-recipe`} className="btn btn-info create-recipe-button">
+        <Link
+          to={`/create-recipe`}
+          className="btn btn-info create-recipe-button"
+        >
           <FontAwesomeIcon icon={faCirclePlus} className="me-1" />
           <span>Tạo công thức</span>
         </Link>
         <div className="container">
           <div className="row">
-            {console.log("rerender because: ", idRecipeDelete)}
-            {console.log(idRecipeDelete)}
             {myRecipe
               .slice(
                 (currentPage - 1) * limitItemInPage,

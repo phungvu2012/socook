@@ -5,7 +5,11 @@ import { getToken } from "./../../../../../../features/sessionStorage";
 import { getUser } from "./../../../../../../features/sessionStorage";
 import { useState } from "react";
 
-function ChildComment({ childComment, convertTimeToDate, triggerRenderParentComment }) {
+function ChildComment({
+  childComment,
+  convertTimeToDate,
+  triggerRenderParentComment,
+}) {
   const token = getToken();
   const userInfo = getUser();
   // const [renderCommentVariable, setRenderCommentVariable] = useState(false);
@@ -22,12 +26,11 @@ function ChildComment({ childComment, convertTimeToDate, triggerRenderParentComm
     e.preventDefault();
     const commentObj = {
       child_comment_id: childComment.id,
-      content: commentValue
-    }
+      content: commentValue,
+    };
     recipeApi
       .updateChildComment(token, commentObj)
       .then((res) => {
-        console.log(res);
         childComment.content = commentValue;
         setIsUpdateComment(false);
         setIsDisplayCommentAction(false);
@@ -48,9 +51,8 @@ function ChildComment({ childComment, convertTimeToDate, triggerRenderParentComm
     recipeApi
       .deleteChildComment(token, childComment.id)
       .then((res) => {
-        console.log(res);
         setIsDeleteComment(false);
-        triggerRenderParentComment(childComment.id)
+        triggerRenderParentComment(childComment.id);
       })
       .catch((err) => console.log(err));
   };

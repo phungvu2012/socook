@@ -1,0 +1,23 @@
+.reject-recipe-info {
+  flex: 1;
+  display: flex;
+}
+
+.reject-recipe-title {
+  width: 160px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  border-right: 1px solid #ccc;
+}
+
+.reject-recipe-reason {
+  text-align: left;
+  word-wrap: break-word;
+  flex: 1;
+  padding: 0 8px;
+  &-header {
+    font-weight: 700;
+  }
+}

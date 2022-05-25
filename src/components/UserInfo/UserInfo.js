@@ -8,7 +8,7 @@ import userApi from "../../api/userApi";
 function UserInfo() {
   const token = getToken();
   const [userInfo, setUserInfo] = useState(getUser());
-  const [userHeader, setUserHeader] = useState('Thông tin cá nhân');
+  const [userHeader, setUserHeader] = useState("Thông tin cá nhân");
   const citys = [
     "Hà Nội",
     "Hà Giang",
@@ -79,7 +79,6 @@ function UserInfo() {
       .changeUserInfo(token, userInfo)
       .then((res) => {
         if (res.data.user) {
-          console.log(typeof res.data.user);
           setUserSession(token, res.data.user);
           setUserInfo({ ...getUser() });
         }
@@ -160,7 +159,9 @@ function UserInfo() {
           </div>
           <div className="user-field">
             <label className="user-field-name">Email</label>
-            <span className="user-field-detail user-mail">{userInfo.email}</span>
+            <span className="user-field-detail user-mail">
+              {userInfo.email}
+            </span>
           </div>
           <div className="user-field">
             <label className="user-field-name">Ngày sinh</label>

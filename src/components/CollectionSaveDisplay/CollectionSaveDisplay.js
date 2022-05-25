@@ -46,7 +46,10 @@ function CollectionSaveDisplay() {
                   return (
                     <div className="col-2" key={recipe.id}>
                       <div className="collection-recipe-container">
-                        <Link to={`/recipe/${recipe.id}`} className="collection-recipe-wrapper">
+                        <Link
+                          to={`/recipe/${recipe.id}`}
+                          className="collection-recipe-wrapper"
+                        >
                           <div className="collection-recipe-image-wrapper">
                             <div className="image-overlay"></div>
                             <img
@@ -75,7 +78,6 @@ function CollectionSaveDisplay() {
                               </p>
                             </div>
                           </div>
-                          {console.log(recipes[0])}
                         </Link>
                         <a href="/" className="collection-recipe-owner">
                           <span>Người tạo:</span> {recipe.user_name}

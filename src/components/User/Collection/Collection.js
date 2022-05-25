@@ -82,7 +82,6 @@ function Collection() {
             setIsCreateCollection(false);
           });
       } else {
-        console.log("update");
         await collection
           .updateCollection(token, idCollectionUpdate, {
             name: collectionNameUpdate,
@@ -315,12 +314,14 @@ function Collection() {
           </div>
         </div>
       </div>
-      {userCollection[0] && <Pagination
-        itemArray={userCollection}
-        limitItemInPage={limitItemInPage}
-        passValuePagination={receiveValuePagination}
-        currentPagePass={currentPage}
-      />}
+      {userCollection[0] && (
+        <Pagination
+          itemArray={userCollection}
+          limitItemInPage={limitItemInPage}
+          passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
+        />
+      )}
     </>
   );
 }

@@ -12,8 +12,9 @@ import {
   faLock,
   faFilePen,
   faBookmark,
-  faImage,
+  faBan,
   faWater,
+  faComment
 } from "@fortawesome/free-solid-svg-icons";
 import CoverImage from "./CoverImage/CoverImage";
 
@@ -21,7 +22,6 @@ function User() {
   const token = getToken();
   const location = useLocation();
   window.onpopstate = () => {
-    console.log("back");
     setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)));
   };
   const [userInfo, setUserInfo] = useState(getUser());
@@ -37,6 +37,12 @@ function User() {
         return "Công thức của tôi";
       case "collection-save":
         return "Bộ sưu tập đã lưu";
+      case "recipe-pending": 
+        return "Công thức chờ duyệt";
+      case "recipe-reject":
+        return "Công thức bị từ chối"
+      case "my-comment": 
+        return "Lịch sử bình luận"
       default:
         return "Thông tin cá nhân";
     }
@@ -51,7 +57,6 @@ function User() {
       .changeAvatar(token, fd)
       .then((res) => {
         if (res.data.user) {
-          console.log(res.data);
           setUserSession(token, res.data.user);
           setUserInfo({ ...getUser() });
         }
@@ -222,6 +227,56 @@ function User() {
                       }}
                     >
                       Công thức đang chờ duyệt
+                    </span>
+                  </Link>
+                </div>
+
+                <div
+                  className={`user-function-button ${
+                    userHeader === "Công thức bị từ chối"
+                      ? "user-function-button--active"
+                      : ""
+                  }`}
+                >
+                  <Link
+                    to="recipe-reject"
+                    className="user-function-button-link"
+                  >
+                    <FontAwesomeIcon
+                      className="user-function-button-icon"
+                      icon={faBan}
+                    />
+                    <span
+                      onClick={(e) => {
+                        setUserHeader(e.target.innerHTML);
+                      }}
+                    >
+                      Công thức bị từ chối
+                    </span>
+                  </Link>
+                </div>
+
+                <div
+                  className={`user-function-button ${
+                    userHeader === "Lịch sử bình luận"
+                      ? "user-function-button--active"
+                      : ""
+                  }`}
+                >
+                  <Link
+                    to="my-comment"
+                    className="user-function-button-link"
+                  >
+                    <FontAwesomeIcon
+                      className="user-function-button-icon"
+                      icon={faComment}
+                    />
+                    <span
+                      onClick={(e) => {
+                        setUserHeader(e.target.innerHTML);
+                      }}
+                    >
+                      Lịch sử bình luận
                     </span>
                   </Link>
                 </div>

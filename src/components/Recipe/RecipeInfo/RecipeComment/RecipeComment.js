@@ -23,7 +23,6 @@ function RecipeComment({ recipeId }) {
       recipeApi
         .createComment(token, formData)
         .then((res) => {
-          console.log("S:", res);
           setIsGetCommentList((prev) => !prev);
           setCommentValue("");
         })
@@ -121,11 +120,14 @@ function RecipeComment({ recipeId }) {
             />
           ))}
       </div>
-      {console.log("Cmt: ", recipeComment, loadMoreValue)}
       {recipeComment?.length >= 5 && loadMoreValue < recipeComment?.length && (
         <div className="recipe-comment-load-more">
           <button onClick={() => setLoadMoreValue((prev) => prev + 5)}>
-            Xem thêm {(recipeComment.length-loadMoreValue)/5>1 ? 5 : recipeComment.length-loadMoreValue} bình luận
+            Xem thêm{" "}
+            {(recipeComment.length - loadMoreValue) / 5 > 1
+              ? 5
+              : recipeComment.length - loadMoreValue}{" "}
+            bình luận
           </button>
         </div>
       )}

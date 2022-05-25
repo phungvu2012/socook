@@ -2,11 +2,14 @@ import axiosHost1 from "./axiosHost1";
 class RecipeApi {
   getRecipe = (token, id) => {
     const REPICE_URL = process.env.REACT_APP_RECIPE_URL + `?id=${id}`;
-    return axiosHost1.get(REPICE_URL,{} ,{
-      headers: {
-        token: `Bearer ${token}`,
-      },
-    });
+    if(token) {
+      return axiosHost1.get(REPICE_URL, {
+        headers: {
+          token: `Bearer ${token}`,
+        },
+      });
+    }
+    return axiosHost1.get(REPICE_URL);
   }
   getMyRecipe = (token) => {
     const COLLECTION_URL = process.env.REACT_APP_GET_MY_RECIPE_URL;
@@ -164,6 +167,15 @@ class RecipeApi {
   getMyPendingRecipe = (token) => {
     const GET_MY_PENDING_RECIPE_URL = process.env.REACT_APP_GET_WAIT_RECIPE_URL;
     return axiosHost1.get(GET_MY_PENDING_RECIPE_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
+
+  getMyRejectRecipe = (token) => {
+    const GET_MY_REJECT_RECIPE_URL = process.env.REACT_APP_GET_REJECT_RECIPE_URL;
+    return axiosHost1.get(GET_MY_REJECT_RECIPE_URL, {
       headers: {
         token: `Bearer ${token}`,
       },

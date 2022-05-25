@@ -185,7 +185,6 @@ function UserPage() {
                     Thông tin cá nhân
                   </span>
                 </div>
-                {console.log(userRecipes)}
                 <div className="user-page-detail-content">
                   <div className="container">
                     <div className="row">
@@ -230,7 +229,6 @@ function UserPage() {
                           })
                       ) : (
                         <div className="user-page-user-info">
-                          {console.log("U:", userInfo)}
                           <div className="user-page-user-info-field">
                             <span>
                               <FontAwesomeIcon

@@ -28,9 +28,7 @@ function CollectionDisplay() {
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
-    console.log(idDelete);
     setIdRecipeDelete(idDelete);
-    console.log(idRecipeDelete);
   };
 
   const cancelDeleteRecipeCollection = () => {
@@ -81,7 +79,10 @@ function CollectionDisplay() {
                   return (
                     <div className="col-3" key={recipe.id}>
                       <div className="collection-recipe-container">
-                        <Link to={`/recipe/${recipe.id}`} className="collection-recipe-wrapper">
+                        <Link
+                          to={`/recipe/${recipe.id}`}
+                          className="collection-recipe-wrapper"
+                        >
                           <span
                             className="collection-recipe-delete-icon"
                             onClick={(e) =>
@@ -118,7 +119,6 @@ function CollectionDisplay() {
                               </p>
                             </div>
                           </div>
-                          {console.log(recipes[0])}
                         </Link>
                         <Link
                           to={`/user-page/${recipe.user_name}`}

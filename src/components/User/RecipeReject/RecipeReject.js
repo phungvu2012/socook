@@ -1,21 +1,15 @@
-import "./RecipePending.scss";
-import recipeApi from "../../../api/recipeApi";
+import "./RecipeReject.scss";
 import { getToken } from "../../../features/sessionStorage";
+import recipeApi from "../../../api/recipeApi";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-function RecipePending() {
+function RecipeReject() {
   const token = getToken();
   const navigate = useNavigate();
-  const [header, setHeader] = useState("Công thức đang chờ duyệt");
-  const [recipePendingList, setRecipePendingList] = useState([]);
+  const [recipeRejectList, setRecipeRejectList] = useState([]);
   const [isDeleteRecipe, setIsDeleteRecipe] = useState(0);
-  const [isGetPendingRecipeList, setIsGetPendingRecipeList] = useState(false);
-
-  const convertTimeToDate = (str) => {
-    let date = new Date(str);
-    return `${date.getDate()}/${date.getMonth()}/${date.getFullYear()}`;
-  };
+  const [isGetRejectRecipeList, setIsGetRejectRecipeList] = useState(false);
 
   const handleDeleteRecipe = (e, id) => {
     e.preventDefault();
@@ -34,7 +28,7 @@ function RecipePending() {
       .deleteRecipe(token, isDeleteRecipe)
       .then((res) => {
         setIsDeleteRecipe(0);
-        setIsGetPendingRecipeList((prev) => !prev);
+        setIsGetRejectRecipeList((prev) => !prev);
       })
       .catch((err) => console.log(err));
   };
@@ -45,33 +39,33 @@ function RecipePending() {
 
   useEffect(() => {
     recipeApi
-      .getMyPendingRecipe(token)
+      .getMyRejectRecipe(token)
       .then((res) => {
-        setRecipePendingList([...res.data.waitRecipe]);
+        setRecipeRejectList([...res.data.data]);
       })
       .catch((err) => console.log(err));
-  }, [isGetPendingRecipeList]);
+  }, [isGetRejectRecipeList]);
   return (
     <div className="pending-recipe-container">
-      <h5>{header}</h5>
-      {recipePendingList?.map((recipe) => {
+      <h5>Công thức bị từ chối</h5>
+      <div className="pending-recipe-wrapper">
+        <div className="reject-recipe-info">
+          <span className="reject-recipe-title">Tên công thức</span>
+          <span className="reject-recipe-reason reject-recipe-reason-header">Lý do từ chối</span>
+        </div>
+      </div>
+      {recipeRejectList?.map((recipe) => {
         return (
           <Link
             to={`/recipe/${recipe.id}`}
             className="pending-recipe-wrapper"
             key={recipe.id}
           >
-            <div className="pending-recipe-info">
-              <img
-                src={recipe.main_image_url}
-                alt={recipe.title}
-                className="pending-recipe-main-img"
-              />
-              <span className="pending-recipe-title">{recipe.title}</span>
-              <span className="pending-recipe-time-create">
-                Tạo ngày {convertTimeToDate(recipe.create_time)}
-              </span>
+            <div className="reject-recipe-info">
+              <span className="reject-recipe-title">{recipe.title}</span>
+              <span className="reject-recipe-reason">{recipe.reason}</span>
             </div>
+
             <div className="pending-recipe-action">
               <button
                 className="pending-recipe-action-delete"
@@ -114,4 +108,4 @@ function RecipePending() {
   );
 }
 
-export default RecipePending;
+export default RecipeReject;

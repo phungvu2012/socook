@@ -45,7 +45,6 @@ const Header = () => {
       homePage
         .getNotificationList(token)
         .then((res) => {
-          console.log("list: ", res);
           const mapData = res.data.data.map((notification) => {
             if (notification.type === "đăng bài viết mới") {
               return {
@@ -186,22 +185,21 @@ const Header = () => {
     homePage
       .setViewAllNotification(token)
       .then((res) => {
-        console.log(res);
-        notificationList.map((notification) => (notification.isView = 1));
+        notificationList?.map((notification) => (notification.isView = 1));
         setRenderPage((prev) => !prev);
       })
       .catch((err) => console.log(err));
   };
 
   const filterNotification = (arr) => {
-    if(filterValue==="notview") {
-      return arr.filter(ele => ele.isView===0)
-    } else if(filterValue==="viewed") {
-      return arr.filter(ele => ele.isView===1)
+    if (filterValue === "notview") {
+      return arr?.filter((ele) => ele.isView === 0);
+    } else if (filterValue === "viewed") {
+      return arr?.filter((ele) => ele.isView === 1);
     } else {
-      return arr
+      return arr;
     }
-  }
+  };
 
   return (
     <header className={styles.header}>
@@ -307,8 +305,14 @@ const Header = () => {
                       icon={faBell}
                       className={styles.featureItem__Icon}
                     />
-                    {notificationList.filter(noti => noti.isView === 0)?.length>0 && (
-                      <span>{notificationList.filter(noti => noti.isView === 0)?.length}</span>
+                    {notificationList?.filter((noti) => noti?.isView === 0)
+                      ?.length > 0 && (
+                      <span>
+                        {
+                          notificationList?.filter((noti) => noti?.isView === 0)
+                            ?.length
+                        }
+                      </span>
                     )}
                   </div>
                   <div
@@ -353,12 +357,16 @@ const Header = () => {
                         Đã đọc
                       </button>
                     </div>
-                    {filterNotification(notificationList).map((notification, index) => {
-                      return (
-                        <Notification notification={notification} key={index} />
-                      );
-                    })}
-                    {console.log("Notice list: ", notificationList)}
+                    {filterNotification(notificationList).map(
+                      (notification, index) => {
+                        return (
+                          <Notification
+                            notification={notification}
+                            key={index}
+                          />
+                        );
+                      }
+                    )}
                   </div>
                 </div>
                 <div className={styles.featureItem} onClick={hanlePopup}>

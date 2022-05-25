@@ -21,7 +21,6 @@ function ChangePassword() {
         newPassword,
       })
       .then((res) => {
-        console.log(res);
         removeUserSession();
         navigation("/login");
       })

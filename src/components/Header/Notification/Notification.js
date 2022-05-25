@@ -5,8 +5,8 @@ import homePage from "../../../api/homePageApi";
 import { useNavigate } from "react-router-dom";
 
 function Notification({ notification }) {
-  const token = getToken()
-  const navigate = useNavigate()
+  const token = getToken();
+  const navigate = useNavigate();
 
   const convertTimeToDate = (str) => {
     let date = new Date(str);
@@ -33,21 +33,23 @@ function Notification({ notification }) {
   };
 
   const handleRedirectNotification = (id, url) => {
-    homePage.setViewNotification(token, id)
-    .then(res => {
-      console.log('VIew: ', res)
-      notification.isView = 1
-      navigate(url)
-    })
-    .catch(err => console.log(err))
+    homePage
+      .setViewNotification(token, id)
+      .then((res) => {
+        notification.isView = 1;
+        navigate(url);
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
     <span
       className={`${styles.popUp__Item} ${
-        notification?.isView ? "" : "notification-not-view" 
+        notification?.isView ? "" : "notification-not-view"
       }`}
-      onClick={() => handleRedirectNotification(notification?.id, notification?.urlRedirect)}
+      onClick={() =>
+        handleRedirectNotification(notification?.id, notification?.urlRedirect)
+      }
     >
       <div className={styles.popUp__Avatar}>
         <img
