@@ -159,7 +159,16 @@ class RecipeApi {
         token: `Bearer ${token}`,
       }
     })
-  }
+  } 
+
+  getMyPendingRecipe = (token) => {
+    const GET_MY_PENDING_RECIPE_URL = process.env.REACT_APP_GET_WAIT_RECIPE_URL;
+    return axiosHost1.get(GET_MY_PENDING_RECIPE_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
 }
 
 const recipeApi = new RecipeApi();
