@@ -54,7 +54,7 @@ const RepiceInfo = () => {
       .catch((err) => {
         console.log(err);
       });
-  }, []);
+  }, [recipeId]);
 
   return (
     <div className="recipe-page" style={{ backgroundColor: "" }}>

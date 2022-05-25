@@ -3,7 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faMagnifyingGlass,
   faRightFromBracket,
-  faXmark
+  faXmark,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretDown,
@@ -14,10 +14,16 @@ import {
 import styles from "./header.module.scss";
 import logo from "./../../assets/image/logo/Logo_SoCook_vertical_3.png";
 import avatar from "./../../assets/image/login/pexels-pixabay-357573.jpg";
-import { getUser, removeUserSession } from "./../../features/sessionStorage";
+import {
+  getUser,
+  removeUserSession,
+  getToken,
+} from "./../../features/sessionStorage";
 import { useRef, useState, useEffect } from "react";
 
 import searchApi from "../../api/searchApi";
+import homePage from "../../api/homePageApi";
+import Notification from "./Notification/Notification";
 
 const Header = () => {
   const [suggestionSearch, setSuggestionSearch] = useState([]);
@@ -26,11 +32,96 @@ const Header = () => {
   const navigate = useNavigate();
   const allPopUp = document.getElementsByClassName(styles.popUp);
   const [isDisplayAdvanceSearch, setIsDisplayAdvanceSearch] = useState(false);
+  const [notificationList, setNotificationList] = useState([]);
+  const [renderPage, setRenderPage] = useState(false);
+  const [filterValue, setFilterValue] = useState("all");
 
   const [userInfo, setUserInfo] = useState();
+  const token = getToken();
 
   useEffect(() => {
     setUserInfo(getUser());
+    if (token) {
+      homePage
+        .getNotificationList(token)
+        .then((res) => {
+          console.log("list: ", res);
+          const mapData = res.data.data.map((notification) => {
+            if (notification.type === "đăng bài viết mới") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã đăng bài viết mới`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "follow") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã theo dõi bạn`,
+                urlRedirect: `/user-page/${notification.create_user_name}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "comment") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã bình luận bài viết của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "like") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã thích bài viết của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "likeComment") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã thích bình luận của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "childcomment") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã trả lời bình luận của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+            if (notification.type === "từ chối bài viết") {
+              return {
+                id: notification.id,
+                avatar: notification.avatar_image,
+                notiContent: `${notification.create_user_name} đã từ chối duyệt bài viết của bạn`,
+                urlRedirect: `/recipe/${notification.recipe_id}`,
+                time: new Date(notification.create_time),
+                isView: notification.is_viewed,
+              };
+            }
+          });
+          setNotificationList([...mapData.reverse()]);
+        })
+        .catch((err) => console.log(err));
+    }
   }, []);
 
   const hanlePopup = (event) => {
@@ -78,7 +169,7 @@ const Header = () => {
   const handleResetInput = () => {
     setKeyword("");
     setSuggestionSearch([]);
-    setIsDisplayAdvanceSearch(false)
+    setIsDisplayAdvanceSearch(false);
   };
 
   const handleFocusInputSearch = () => {
@@ -86,7 +177,30 @@ const Header = () => {
   };
 
   const handleCloseAdvanceSearch = () => {
-    setIsDisplayAdvanceSearch(false)
+    setIsDisplayAdvanceSearch(false);
+  };
+
+  const setViewAllNotification = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    homePage
+      .setViewAllNotification(token)
+      .then((res) => {
+        console.log(res);
+        notificationList.map((notification) => (notification.isView = 1));
+        setRenderPage((prev) => !prev);
+      })
+      .catch((err) => console.log(err));
+  };
+
+  const filterNotification = (arr) => {
+    if(filterValue==="notview") {
+      return arr.filter(ele => ele.isView===0)
+    } else if(filterValue==="viewed") {
+      return arr.filter(ele => ele.isView===1)
+    } else {
+      return arr
+    }
   }
 
   return (
@@ -126,9 +240,17 @@ const Header = () => {
                 <ul className={styles.suggestionSearchResult}>
                   {isDisplayAdvanceSearch && (
                     <li className={styles.suggestionSearchItem}>
-                      <Link to="/advance-search" onClick={handleResetInput} className={styles.advanceSearch} >
+                      <Link
+                        to="/advance-search"
+                        onClick={handleResetInput}
+                        className={styles.advanceSearch}
+                      >
                         <span>Tìm kiếm nâng cao...</span>
-                        <FontAwesomeIcon icon={faXmark} className={styles.advanceSearchCloseIcon} onClick={handleCloseAdvanceSearch}/>
+                        <FontAwesomeIcon
+                          icon={faXmark}
+                          className={styles.advanceSearchCloseIcon}
+                          onClick={handleCloseAdvanceSearch}
+                        />
                       </Link>
                     </li>
                   )}
@@ -185,29 +307,58 @@ const Header = () => {
                       icon={faBell}
                       className={styles.featureItem__Icon}
                     />
+                    {notificationList.filter(noti => noti.isView === 0)?.length>0 && (
+                      <span>{notificationList.filter(noti => noti.isView === 0)?.length}</span>
+                    )}
                   </div>
-                  <div className={`${styles.popUp}`}>
-                    <a href="#" className={styles.popUp__Item}>
-                      <div className={styles.popUp__Avatar}>
-                        <img src={avatar} className={styles.popUp__Image} />
-                      </div>
-                      <div className={styles.popUp__Message}>
-                        <p className={styles.popUp__MessageContent}>
-                          Chào buổi tối, Phụng
-                        </p>
-                      </div>
-                    </a>
-                    <a to="#" className={styles.popUp__Item}>
-                      <div className={styles.popUp__Avatar}>
-                        <img src={avatar} className={styles.popUp__Image} />
-                      </div>
-                      <div className={styles.popUp__Message}>
-                        <p className={styles.popUp__MessageContent}>
-                          Chào buổi tối, Phụng Ngày hôm nay của bạn thế nào Hãy
-                          nấu một món ăn để tăng thêm niềm vui nào nào.
-                        </p>
-                      </div>
-                    </a>
+                  <div
+                    className={`${styles.popUp} ${
+                      notificationList?.length > 3
+                        ? styles.notificationScrollY
+                        : ""
+                    }`}
+                  >
+                    <div className={styles.notificationHeader}>
+                      <h5>Thông báo</h5>
+                      <span onClick={setViewAllNotification}>
+                        Đánh dấu tất cả đã đọc
+                      </span>
+                    </div>
+                    <div className={styles.notificationFilter}>
+                      <button
+                        className={
+                          filterValue === "all" &&
+                          styles.notificationFilter_active
+                        }
+                        onClick={() => setFilterValue("all")}
+                      >
+                        Tất cả
+                      </button>
+                      <button
+                        className={
+                          filterValue === "notview" &&
+                          styles.notificationFilter_active
+                        }
+                        onClick={() => setFilterValue("notview")}
+                      >
+                        Chưa đọc
+                      </button>
+                      <button
+                        className={
+                          filterValue === "viewed" &&
+                          styles.notificationFilter_active
+                        }
+                        onClick={() => setFilterValue("viewed")}
+                      >
+                        Đã đọc
+                      </button>
+                    </div>
+                    {filterNotification(notificationList).map((notification, index) => {
+                      return (
+                        <Notification notification={notification} key={index} />
+                      );
+                    })}
+                    {console.log("Notice list: ", notificationList)}
                   </div>
                 </div>
                 <div className={styles.featureItem} onClick={hanlePopup}>

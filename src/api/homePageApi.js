@@ -43,6 +43,35 @@ class HomePage {
     const COLLECTION_URL = process.env.REACT_APP_GET_ALL_RECIPE_FROM_CATEGORY_URL + `/${idCategory}`;
     return axiosHost2.get(COLLECTION_URL);
   }
+  getNotificationList = (token) => {
+    const GET_NOTIFICATION_URL = process.env.REACT_APP_GET_NOTIFICATION_URL;
+    return axiosHost1.get(GET_NOTIFICATION_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    });
+  };
+  setViewNotification = (token, idNoti) => {
+    const SET_VIEW_NOTIFICATION_URL = process.env.REACT_APP_CHECK_VIEW_NOTIFICATION_URL;
+    return axiosHost1.put(SET_VIEW_NOTIFICATION_URL, {
+      id: idNoti
+    }, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    });
+  };
+
+  setViewAllNotification = (token) => {
+    const SET_VIEW_ALL_NOTIFICATION_URL = process.env.REACT_APP_CHECK_VIEW_ALL_NOTIFICATION_URL;
+    return axiosHost1.put(SET_VIEW_ALL_NOTIFICATION_URL, {
+      data: "Hi",
+    }, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    });
+  };
 }
 
 const homePage = new HomePage();
