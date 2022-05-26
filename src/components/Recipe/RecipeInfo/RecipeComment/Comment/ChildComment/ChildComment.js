@@ -4,6 +4,7 @@ import recipeApi from "../../../../../../api/recipeApi";
 import { getToken } from "./../../../../../../features/sessionStorage";
 import { getUser } from "./../../../../../../features/sessionStorage";
 import { useState } from "react";
+import ReportInput from "../../../../../ReportInput/ReportInput";
 
 function ChildComment({
   childComment,
@@ -17,6 +18,19 @@ function ChildComment({
   const [isUpdateComment, setIsUpdateComment] = useState(false);
   const [commentValue, setCommentValue] = useState("");
   const [isDeleteComment, setIsDeleteComment] = useState(false);
+  const [idCommentReport, setIdCommentReport] = useState(0);
+
+  const handleGetIdRecipeReport = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdCommentReport(childComment.id);
+    setIsDisplayCommentAction(false);
+  };
+
+  const resetIdRecipeDelete = (data) => {
+    console.log(data);
+    setIdCommentReport(data);
+  };
   const handleCancelUpdateComment = (e) => {
     setIsUpdateComment(false);
     setIsDisplayCommentAction(false);
@@ -58,6 +72,15 @@ function ChildComment({
   };
   return (
     <div className="comment-container">
+      {idCommentReport ? (
+        <ReportInput
+          idReport={idCommentReport}
+          typeReport="comment"
+          resetIdDelete={resetIdRecipeDelete}
+        />
+      ) : (
+        <></>
+      )}
       {isDeleteComment && (
         <div>
           <div className="comment-delete-confirm">
@@ -128,47 +151,52 @@ function ChildComment({
                 </span>
               </div>
             </div>
-            {userInfo?.user_id === childComment.user_id ? (
-              <div
-                className="comment-action-wrapper"
-                onClick={() => setIsDisplayCommentAction(true)}
-              >
-                <span>...</span>
-                {isDisplayCommentAction && (
-                  <ul className="comment-actions">
-                    <li
-                      className="comment-actions-cancel"
-                      onClick={handleCancelActionComment}
-                    >
-                      x
-                    </li>
-                    <li
-                      className="comment-actions-update"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsUpdateComment(true);
-                        setCommentValue(childComment.content);
-                        setIsDisplayCommentAction(false);
-                      }}
-                    >
-                      Sửa
-                    </li>
+            <div
+              className="comment-action-wrapper"
+              onClick={() => setIsDisplayCommentAction(true)}
+            >
+              <span>...</span>
+              {isDisplayCommentAction && (
+                <ul className="comment-actions">
+                  <li
+                    className="comment-actions-cancel"
+                    onClick={handleCancelActionComment}
+                  >
+                    x
+                  </li>
+                  {userInfo?.user_id === childComment.user_id ? (
+                    <>
+                      <li
+                        className="comment-actions-update"
+                        onClick={(e) => {
+                          setIsUpdateComment(true);
+                          setCommentValue(childComment.content);
+                        }}
+                      >
+                        Sửa
+                      </li>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDeleteComment(true);
+                          setIsDisplayCommentAction(false);
+                        }}
+                      >
+                        Xóa
+                      </li>
+                    </>
+                  ) : (
                     <li
                       className="comment-actions-delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsDeleteComment(true);
-                        setIsDisplayCommentAction(false);
-                      }}
+                      onClick={handleGetIdRecipeReport}
                     >
-                      Xóa
+                      Báo cáo
                     </li>
-                  </ul>
-                )}
-              </div>
-            ) : (
-              <div className="comment-action-wrapper"></div>
-            )}
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
         )}
       </div>

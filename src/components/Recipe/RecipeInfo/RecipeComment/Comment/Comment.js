@@ -8,6 +8,7 @@ import { faThumbsUp as faThumbsUpSolid } from "@fortawesome/free-solid-svg-icons
 import { getToken } from "../../../../../features/sessionStorage";
 import { getUser } from "../../../../../features/sessionStorage";
 import { useState } from "react";
+import ReportInput from "../../../../ReportInput/ReportInput";
 
 function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
   const token = getToken();
@@ -20,6 +21,21 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
   const [isDeleteComment, setIsDeleteComment] = useState(false);
   const [isReplyComment, setIsReplyComment] = useState(false);
   const [replyCommentValue, setReplyCommentValue] = useState("");
+
+  const [idCommentReport, setIdCommentReport] = useState(0);
+
+  const handleGetIdRecipeReport = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdCommentReport(comment.id);
+    setIsDisplayCommentAction(false);
+  };
+
+  const resetIdRecipeDelete = (data) => {
+    console.log(data);
+    setIdCommentReport(data);
+  };
+
   const handleCancelUpdateComment = (e) => {
     setIsUpdateComment(false);
     setIsDisplayCommentAction(false);
@@ -139,6 +155,15 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
 
   return (
     <div className="comment-container">
+      {idCommentReport ? (
+        <ReportInput
+          idReport={idCommentReport}
+          typeReport="comment"
+          resetIdDelete={resetIdRecipeDelete}
+        />
+      ) : (
+        <></>
+      )}
       {isDeleteComment && (
         <div>
           <div className="comment-delete-confirm">
@@ -231,45 +256,53 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
                 </span>
               </div>
             </div>
-            {userInfo?.user_id === comment.user_id ? (
-              <div
-                className="comment-action-wrapper"
-                onClick={() => setIsDisplayCommentAction(true)}
-              >
-                <span>...</span>
-                {isDisplayCommentAction && (
-                  <ul className="comment-actions">
-                    <li
-                      className="comment-actions-cancel"
-                      onClick={handleCancelActionComment}
-                    >
-                      x
-                    </li>
-                    <li
-                      className="comment-actions-update"
-                      onClick={(e) => {
-                        setIsUpdateComment(true);
-                        setCommentValue(comment.content);
-                      }}
-                    >
-                      Sửa
-                    </li>
+
+            <div
+              className="comment-action-wrapper"
+              onClick={() => setIsDisplayCommentAction(true)}
+            >
+              <span>...</span>
+              {isDisplayCommentAction && (
+                <ul className="comment-actions">
+                  <li
+                    className="comment-actions-cancel"
+                    onClick={handleCancelActionComment}
+                  >
+                    x
+                  </li>
+                  {userInfo?.user_id === comment.user_id ? (
+                    <>
+                      <li
+                        className="comment-actions-update"
+                        onClick={(e) => {
+                          setIsUpdateComment(true);
+                          setCommentValue(comment.content);
+                        }}
+                      >
+                        Sửa
+                      </li>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDeleteComment(true);
+                          setIsDisplayCommentAction(false);
+                        }}
+                      >
+                        Xóa
+                      </li>
+                    </>
+                  ) : (
                     <li
                       className="comment-actions-delete"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setIsDeleteComment(true);
-                        setIsDisplayCommentAction(false);
-                      }}
+                      onClick={handleGetIdRecipeReport}
                     >
-                      Xóa
+                      Báo cáo
                     </li>
-                  </ul>
-                )}
-              </div>
-            ) : (
-              <div className="comment-action-wrapper"></div>
-            )}
+                  )}
+                </ul>
+              )}
+            </div>
           </div>
         )}
       </div>

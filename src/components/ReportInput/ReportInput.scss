@@ -1,0 +1,70 @@
+.report-input-container {
+  
+}
+
+.report-input-overlay { 
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 50;
+  background-color: #f6f6f6;
+  opacity: 0.5;
+}
+
+.report-input-wrapper {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 100;
+  width: 480px;
+  padding: 24px;
+  border-radius: 16px;
+  background-color: #fff;
+  p {
+    font-weight: 600;
+  }
+}
+
+.report-input-textarea {
+  width: 100%;
+  outline: none;
+  padding: 12px;
+  border-color: #ccc;
+}
+
+.report-input-textarea:focus {
+  border-color: #333
+}
+
+.report-button-wrapper {
+  display: flex;
+  justify-content: flex-end;
+  button {
+    outline: none;
+    border: none;
+    margin-left: 12px;
+    min-width: 72px;
+    padding: 8px 12px;
+    border-radius: 16px;
+    color: #fff;
+    font-weight: 500;
+  }
+}
+
+.report-button-confirm {
+  background-color: #dc3545;
+}
+
+.report-button-confirm:hover {
+  background-color: #ff4053;
+}
+
+.report-button-cancel {
+  background-color: #3578e5;
+}
+.report-button-cancel:hover {
+  background-color: #4a8fff;
+}

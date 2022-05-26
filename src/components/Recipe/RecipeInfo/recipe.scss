@@ -51,6 +51,7 @@
     }
 
     &__right {
+      position: relative;
       padding: 1rem 2rem;
       margin: 0 2rem;
 
@@ -289,4 +290,13 @@
 
     cursor: pointer;
   }
+}
+
+.recipe-report-icon {
+  position: absolute;
+  font-size: 1.5rem;
+  right: 32px;
+  bottom: 80px;
+  color: red;
+  cursor: pointer;
 }
