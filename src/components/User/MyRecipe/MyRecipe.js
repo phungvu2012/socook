@@ -9,6 +9,7 @@ import {
   faClock,
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
+import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../Pagination/Pagination";
 
 function MyRecipe() {
@@ -26,7 +27,6 @@ function MyRecipe() {
 
   const handleDeleteRecipeCollection = (e, idDelete) => {
     e.preventDefault();
-    console.log(idDelete);
     setIdRecipeDelete(idDelete);
   };
 
@@ -39,7 +39,6 @@ function MyRecipe() {
       await recipeApi
         .deleteRecipe(token, idRecipeDelete)
         .then((res) => {
-          console.log(res.data);
           setIdRecipeDelete(0);
           setIsReRender((prevState) => !prevState);
         })
@@ -53,7 +52,6 @@ function MyRecipe() {
       await recipeApi
         .getMyRecipe(token)
         .then((res) => {
-          console.log(res);
           setMyRecipe([...res.data.myListRecipe]);
         })
         .catch((err) => console.log("F: ", err));
@@ -64,10 +62,15 @@ function MyRecipe() {
     <>
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-display-container">
+        <Link
+          to={`/create-recipe`}
+          className="btn btn-info create-recipe-button"
+        >
+          <FontAwesomeIcon icon={faCirclePlus} className="me-1" />
+          <span>Tạo công thức</span>
+        </Link>
         <div className="container">
           <div className="row">
-            {console.log("rerender because: ", idRecipeDelete)}
-            {console.log(idRecipeDelete)}
             {myRecipe
               .slice(
                 (currentPage - 1) * limitItemInPage,
@@ -75,9 +78,12 @@ function MyRecipe() {
               )
               .map((recipe) => {
                 return (
-                  <div className="col-3" key={recipe.id}>
+                  <div className="col-4" key={recipe.id}>
                     <div className="collection-recipe-container">
-                      <Link to="/" className="collection-recipe-wrapper">
+                      <Link
+                        to={`/recipe/${recipe.id}`}
+                        className="collection-recipe-wrapper"
+                      >
                         <span
                           className="collection-recipe-delete-icon"
                           onClick={(e) =>
@@ -116,6 +122,14 @@ function MyRecipe() {
                       <p className="collection-recipe-short-des">
                         {recipe.short_description}
                       </p>
+                      <Link
+                        to={`/update-recipe/${recipe.id}`}
+                        className="my-recipe-update-button"
+                      >
+                        <button className="btn btn-success">
+                          Sửa công thức
+                        </button>
+                      </Link>
                     </div>
                   </div>
                 );
@@ -151,6 +165,7 @@ function MyRecipe() {
           itemArray={myRecipe}
           limitItemInPage={limitItemInPage}
           passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
         />
       )}
     </>

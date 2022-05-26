@@ -185,7 +185,6 @@ function UserPage() {
                     Thông tin cá nhân
                   </span>
                 </div>
-                {console.log(userRecipes)}
                 <div className="user-page-detail-content">
                   <div className="container">
                     <div className="row">
@@ -230,7 +229,6 @@ function UserPage() {
                           })
                       ) : (
                         <div className="user-page-user-info">
-                          {console.log("U:", userInfo)}
                           <div className="user-page-user-info-field">
                             <span>
                               <FontAwesomeIcon
@@ -280,24 +278,12 @@ function UserPage() {
                         </div>
                       )}
                     </div>
-                    {/* {activeTab === "recipe" ? (
-                      userRecipes && <Pagination
-                        itemArray={userRecipes}
-                        limitItemInPage={limitItemInPage}
-                        passValuePagination={receiveValuePagination}
-                      />
-                    ) : (activeTab === "collection" ? (
-                      <Pagination
-                        itemArray={userCollections}
-                        limitItemInPage={limitItemInPage}
-                        passValuePagination={receiveValuePagination}
-                      />
-                    ) : (<></>))} */}
                     {activeTab === "recipe" && userRecipes && (
                       <Pagination
                         itemArray={userRecipes}
                         limitItemInPage={limitItemInPage}
                         passValuePagination={receiveValuePagination}
+                        currentPagePass={currentPage}
                       />
                     )}
                     {activeTab === "collection" && userCollections && (
@@ -305,6 +291,7 @@ function UserPage() {
                         itemArray={userCollections}
                         limitItemInPage={limitItemInPage}
                         passValuePagination={receiveValuePagination}
+                        currentPagePass={currentPage}
                       />
                     )}
                   </div>

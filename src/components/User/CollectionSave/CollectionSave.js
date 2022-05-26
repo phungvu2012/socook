@@ -34,7 +34,6 @@ function CollectionSave() {
     collection
       .unsaveCollection(token, collectionId)
       .then((res) => {
-        console.log(res);
         setIsInteractionCollection((prevState) => !prevState);
       })
       .catch((err) => console.log(err));
@@ -121,6 +120,7 @@ function CollectionSave() {
           itemArray={saveCollection}
           limitItemInPage={limitItemInPage}
           passValuePagination={receiveValuePagination}
+          currentPagePass={currentPage}
         />
       )}
     </>

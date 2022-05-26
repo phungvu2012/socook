@@ -65,10 +65,10 @@ const LoginForm = () => {
         setEmail("");
         setPwd("");
         if (
-          response?.data?.status !== undefined &&
-          response?.data?.status === 1
+          response?.data?.messageCode !== undefined &&
+          response?.data?.messageCode === 1
         )
-          navigate("/");
+          navigate(-1);
         else navigate("/activeEmail");
       })
       .catch(function (err) {

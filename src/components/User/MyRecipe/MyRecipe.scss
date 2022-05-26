@@ -1,11 +1,25 @@
+.create-recipe-button {
+  margin: 4px 12px;
+}
+
 .collection-recipe-short-des {
   overflow: hidden;
-  height: 48px;
+  height: 36px;
   text-overflow: ellipsis;
   display: -webkit-box;
   -webkit-line-clamp: 2; /* number of lines to show */
-          line-clamp: 2; 
+  line-clamp: 2;
   -webkit-box-orient: vertical;
   margin: 0;
   margin-top: 4px;
+  font-size: 0.75rem;
+  border-bottom: 1px solid #ccc;
+  margin-bottom: 4px;
+}
+
+.my-recipe-update-button {
+  display: inline-block;
+  margin-top: 4px;
+  width: 100%;
+  text-align: center;
 }

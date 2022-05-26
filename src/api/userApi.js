@@ -42,6 +42,15 @@ class UserApi {
       },
     });
   };
+
+  getMyComment = (token) => {
+    const GET_MY_COMMENT_URL = process.env.REACT_APP_GET_MY_COMMENT_URL;
+    return axiosHost1.get(GET_MY_COMMENT_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
 }
 
 const userApi = new UserApi();

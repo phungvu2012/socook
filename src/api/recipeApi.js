@@ -2,11 +2,14 @@ import axiosHost1 from "./axiosHost1";
 class RecipeApi {
   getRecipe = (token, id) => {
     const REPICE_URL = process.env.REACT_APP_RECIPE_URL + `?id=${id}`;
-    return axiosHost1.get(REPICE_URL,{} ,{
-      headers: {
-        token: `Bearer ${token}`,
-      },
-    });
+    if(token) {
+      return axiosHost1.get(REPICE_URL, {
+        headers: {
+          token: `Bearer ${token}`,
+        },
+      });
+    }
+    return axiosHost1.get(REPICE_URL);
   }
   getMyRecipe = (token) => {
     const COLLECTION_URL = process.env.REACT_APP_GET_MY_RECIPE_URL;
@@ -71,6 +74,113 @@ class RecipeApi {
       }
     })
   }
+
+  getRecipeComment = (idRecipe, token) => {
+    const COLLECTION_URL = process.env.REACT_APP_GET_RECIPE_COMMENT_URL + `/?id=${idRecipe}`;
+    if(token) {
+      return axiosHost1.get(COLLECTION_URL, {
+        headers: {
+          token: `Bearer ${token}`,
+        }
+      });
+    }
+    return axiosHost1.get(COLLECTION_URL);
+  };
+
+  likeComment = (token, commentId) => {
+    const LIKE_COMMENT_URL = process.env.REACT_APP_LIKE_COMMENT_URL;
+    return axiosHost1.post(LIKE_COMMENT_URL, {
+      comment_id: commentId
+    }, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  dislikeComment = (token, commentId) => {
+    const DISLIKE_COMMENT_URL = process.env.REACT_APP_DISLIKE_COMMENT_URL;
+    return axiosHost1.delete(DISLIKE_COMMENT_URL, {
+      data: {
+        comment_id: commentId
+      },
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  createComment = (token, commentObj) => {
+    const CREATE_COMMENT_URL = process.env.REACT_APP_CREATE_COMMENT_URL;
+    return axiosHost1.post(CREATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  updateComment = (token, commentObj) => {
+    const UPDATE_COMMENT_URL = process.env.REACT_APP_UPDATE_COMMENT_URL;
+    return axiosHost1.put(UPDATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  deleteComment = (token, commentId) => {
+    const DELETE_COMMENT_URL = process.env.REACT_APP_DELETE_COMMENT_URL + `?id=${commentId}`;
+    return axiosHost1.delete(DELETE_COMMENT_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  createChildComment = (token, commentObj) => {
+    const CREATE_COMMENT_URL = process.env.REACT_APP_CREATE_CHILD_COMMENT_URL;
+    return axiosHost1.post(CREATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  updateChildComment = (token, commentObj) => {
+    const UPDATE_COMMENT_URL = process.env.REACT_APP_UPDATE_CHILD_COMMENT_URL;
+    return axiosHost1.put(UPDATE_COMMENT_URL, commentObj, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  }
+
+  deleteChildComment = (token, commentId) => {
+    const DELETE_COMMENT_URL = process.env.REACT_APP_DELETE_CHILD_COMMENT_URL + `?id=${commentId}`;
+    return axiosHost1.delete(DELETE_COMMENT_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      }
+    })
+  } 
+
+  getMyPendingRecipe = (token) => {
+    const GET_MY_PENDING_RECIPE_URL = process.env.REACT_APP_GET_WAIT_RECIPE_URL;
+    return axiosHost1.get(GET_MY_PENDING_RECIPE_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
+
+  getMyRejectRecipe = (token) => {
+    const GET_MY_REJECT_RECIPE_URL = process.env.REACT_APP_GET_REJECT_RECIPE_URL;
+    return axiosHost1.get(GET_MY_REJECT_RECIPE_URL, {
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  };
 }
 
 const recipeApi = new RecipeApi();

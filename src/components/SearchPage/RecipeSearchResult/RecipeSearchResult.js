@@ -5,7 +5,10 @@ import { faClock, faEye } from "@fortawesome/free-regular-svg-icons";
 function RecipesSearchResult(props) {
   return (
     <div className="collection-recipe-container">
-      <Link to="/" className="collection-recipe-wrapper">
+      <Link
+        to={`/recipe/${props.recipe.id}`}
+        className="collection-recipe-wrapper"
+      >
         <div className="collection-recipe-image-wrapper recipe-search-result-wrapper">
           <div className="image-overlay"></div>
           <img
@@ -31,7 +34,10 @@ function RecipesSearchResult(props) {
           </div>
         </div>
       </Link>
-      <Link to={`/user-page/${props.recipe.user_name}`} className="collection-recipe-owner">
+      <Link
+        to={`/user-page/${props.recipe.user_name}`}
+        className="collection-recipe-owner"
+      >
         <span>Người tạo:</span> {props.recipe.user_name}
       </Link>
     </div>
