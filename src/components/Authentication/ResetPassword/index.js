@@ -37,7 +37,11 @@ const ResetPassword = () => {
     const errRef = useRef();
 
     useEffect(() => {
+      document.title = 'Lấy lại mật khẩu | Socook';
       passwordRef.current.focus();
+      return () => {
+        document.title = 'Socook';
+      }
     }, []);
 
     useEffect(() => {

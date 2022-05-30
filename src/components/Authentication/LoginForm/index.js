@@ -35,7 +35,11 @@ const LoginForm = () => {
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
+    document.title = 'Đăng nhập | Socook';
     userRef.current.focus();
+    return () => {
+      document.title = 'Socook';
+    }
   }, []);
 
   useEffect(() => {

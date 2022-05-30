@@ -7,6 +7,14 @@ import {getUser, getToken, removeUserSession} from "./../../features/sessionStor
 const Admin = () => {
   const user = getUser();
   const token = getToken();
+
+  useEffect(() => {
+    document.title = 'Admin | Socook';
+
+    return () => {
+      document.title = 'Socook';
+    }
+  })
   
   const handleOpenSideBar = () => {
     let sidebar = document.querySelector(".sidebar");
@@ -41,6 +49,18 @@ const Admin = () => {
             <Link to='' className="active">
               <i className="bx bx-grid-alt"></i>
               <span className="links_name">Dashboard</span>
+            </Link>
+          </li>
+          <li>
+            <Link to=''>
+              <i className="bx bx-user"></i>
+              <span className="links_name">Report comment</span>
+            </Link>
+          </li>
+          <li>
+            <Link to=''>
+              <i className="bx bx-user"></i>
+              <span className="links_name">Report user </span>
             </Link>
           </li>
           <li>

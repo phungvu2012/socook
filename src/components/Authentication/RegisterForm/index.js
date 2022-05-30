@@ -32,7 +32,11 @@ const RegisterForm = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
+    document.title = 'Đăng ký | Socook';
     userRef.current.focus();
+    return () => {
+      document.title = 'Socook';
+    }
   }, [])
 
   useEffect(() => {

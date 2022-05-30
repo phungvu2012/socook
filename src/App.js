@@ -30,8 +30,8 @@ import CollectionSaveDisplay from "./components/CollectionSaveDisplay/Collection
 import UserPage from "./components/UserPage/UserPage";
 
 import Admin from "./components/Admin";
-import Main from './components/Admin/Main'
-import Recipe from './components/Admin/Recipe'
+import Main from "./components/Admin/Main";
+import Recipe from "./components/Admin/Recipe";
 
 import {
   getToken,
@@ -46,9 +46,9 @@ import UpdateRecipe from "./components/Recipe/UpdateRecipe";
 import RecipePending from "./components/User/RecipePending/RecipePending";
 import RecipeReject from "./components/User/RecipeReject/RecipeReject";
 import MyComment from "./components/User/MyComment/MyComment";
-import FilterRecipePage from './../src/components/HomePage/FilterRecipePage/FilterRecipePage'
+import FilterRecipePage from "./../src/components/HomePage/FilterRecipePage/FilterRecipePage";
 import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
-import NotFound from './components/NotFound'
+import NotFound from "./components/NotFound";
 
 // import ThemeTest from './ThemeTest'
 
@@ -95,11 +95,19 @@ function App() {
               <Route path="/recipe">
                 <Route path=":recipeId" element={<RepiceInfo />} />
               </Route>
-              <Route path="/filter-recipe/:idFilter" element={<FilterRecipePage />} />
+              <Route
+                path="/filter-recipe/:idFilter"
+                element={<FilterRecipePage />}
+              />
               <Route path="/advance-search" element={<AdvanceSearchPage />} />
-              <Route path='*' element={<NotFound />}  />
+              <Route path="*" element={<NotFound />} />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
+            {/* <Route element={<PublicRoute />}>
+              <Route element={<Auth />}>
+                <Route exact path="/register" element={<RegisterForm />} />
+              </Route>
+            </Route> */}
             <Route path="" element={<PublicRoute />}>
               <Route path="" element={<Auth />}>
                 <Route path="/login" element={<LoginForm />} />
@@ -150,12 +158,9 @@ function App() {
               </Route>
             </Route>
             <Route path="/socook" element={<AdminRoute />}>
-              <Route exact
-                  path="admin"
-                  element={<Admin/>}
-                >
-                  <Route index element={<Main />} />
-                  <Route path='recipe' element={<Recipe />} />
+              <Route exact path="admin" element={<Admin />}>
+                <Route index element={<Main />} />
+                <Route path="recipe" element={<Recipe />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

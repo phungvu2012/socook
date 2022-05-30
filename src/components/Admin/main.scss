@@ -521,6 +521,48 @@
       &:active {
         background-color: var(--color-2);
       }
+
+      &.active {
+        opacity: 0.5;
+        color: var(--bs-white);
+        background-color: #198754;
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        &:active {
+          background-color: #198754;
+        }
+      }
+
+      &--delete {
+        color: var(--bs-white);
+        background-color: var(--bs-danger);
+        
+        &:active {
+          background-color: var(--bs-danger);
+        }
+
+        &.active {
+          opacity: 0.5;
+          color: var(--bs-white);
+          background-color: var(--bs-danger);
+  
+          &:hover {
+            opacity: 0.5;
+          }
+  
+          &:active {
+            background-color: var(--bs-danger);
+          }
+        }
+      }
+    }
+
+    .recipe-link {
+      color: var(--bs-blue);
+      font-weight: 500;
     }
 
     .recent_project,

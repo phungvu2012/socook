@@ -26,7 +26,11 @@ const SendResetPassword = () => {
     const errRef = useRef();
 
     useEffect(() => {
+      document.title = 'Quên mật khẩu | Socook';
       userRef.current.focus();
+      return () => {
+        document.title = 'Quên mật khẩu | Socook';
+      }
     }, []);
 
     useEffect(() => {

@@ -31,6 +31,15 @@ class AdminApi {
       },
     });
   }
+  
+  deleteRecipe = (token, recipeId) => {
+    const DELETE_RECIPE_URL = '/api/recipe/delete-recipe?id=' + recipeId;
+    return axiosHost1.delete(DELETE_RECIPE_URL,{
+      headers: {
+        token: `Bearer ${token}`,
+      },
+    });
+  }
 }
 
 const adminApi = new AdminApi();

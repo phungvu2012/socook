@@ -19,6 +19,7 @@ const VerifyEmail = () => {
   });
   
   useEffect(() => {
+    document.title = 'Xác thực Email | Socook';
     if (isActive()) navigate('/')
 
     setLoading(true);
@@ -48,6 +49,9 @@ const VerifyEmail = () => {
       setLoading(false);
       setSuccess(false);
       setMessageErr("Đã có lỗi .Vui lòng thử lại sau.");
+    }
+    return () => {
+      document.title = 'Socook';
     }
   }, []);
 

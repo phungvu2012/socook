@@ -65,10 +65,14 @@ const RepiceInfo = () => {
         setCategory(data?.category);
         setIngredient(data?.ingredient);
         setNumberLikes(data?.likes);
+        document.title = data?.recipe?.title + ' | Socook';
       })
       .catch((err) => {
         console.log(err);
       });
+      return () => {
+        document.title = 'Socook';
+      }
   }, [recipeId]);
 
   return (
