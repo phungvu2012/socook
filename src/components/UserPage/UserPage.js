@@ -14,9 +14,12 @@ import {
   faCity,
   faMarsAndVenus,
 } from "@fortawesome/free-solid-svg-icons";
+import { faFlag } from "@fortawesome/free-regular-svg-icons";
+
 import RecipeSearchResult from "./../SearchPage/RecipeSearchResult/RecipeSearchResult";
 import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/CollectionSearchResult";
 import Pagination from "../Pagination/Pagination";
+import ReportInput from "../ReportInput/ReportInput";
 
 function UserPage() {
   const token = getToken();
@@ -31,6 +34,19 @@ function UserPage() {
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const limitItemInPage = 12;
+
+  const [idUserReport, setIdUserReport] = useState(0);
+
+  const handleGetIdUserReport = (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIdUserReport(userInfo.user_id);
+  };
+
+  const resetIdUserDelete = (data) => {
+    console.log(data);
+    setIdUserReport(data);
+  };
 
   const receiveValuePagination = (curPage) => {
     setCurrentPage(curPage);
@@ -105,6 +121,15 @@ function UserPage() {
 
   return (
     <div className="user-page-container">
+      {idUserReport ? (
+        <ReportInput
+          idReport={idUserReport}
+          typeReport="user"
+          resetIdDelete={resetIdUserDelete}
+        />
+      ) : (
+        <></>
+      )}
       <div className="container">
         <div className="row">
           <div className="user-page-profile-header-container">
@@ -143,6 +168,16 @@ function UserPage() {
                   </button>
                 )}
               </div>
+              {userInfo?.user_id !== userLoginInfo?.user_id && (
+                <div
+                  className="user-page-report-button"
+                  onClick={handleGetIdUserReport}
+                >
+                  <FontAwesomeIcon icon={faFlag} className="me-1" />
+                  Báo cáo
+                </div>
+              )}
+              {console.log(userInfo)}
             </div>
             <div className="user-page-profile-header-background-image">
               <img src={userInfo?.cover_image} alt="Background" />

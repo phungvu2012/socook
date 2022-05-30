@@ -65,14 +65,29 @@
   }
 
   button:hover {
-    background-color: #c70808;
+    background-color: #58a4e7;
     color: inherit;
   }
-  
-  .disable-follow-button, .disable-follow-button:hover {
+
+  .disable-follow-button,
+  .disable-follow-button:hover {
     background-color: #ccc;
     cursor: text;
   }
+}
+
+.user-page-report-button {
+  margin: 4px auto;
+  cursor: pointer;
+  padding: 4px 12px;
+  border-radius: 8px;
+  background-color: #dc3545;
+  color: #fff;
+  font-weight: 500;
+}
+
+.user-page-report-button:hover {
+  background-color: #ff4e5f;
 }
 
 .user-page-profile-header-background-image {
@@ -89,7 +104,7 @@
 .user-page-detail-container {
   margin: 32px 0;
   background-color: #eee;
-  border: .5px solid #ddd;
+  border: 0.5px solid #ddd;
   border-radius: 16px;
   padding-bottom: 12px;
 }
@@ -106,7 +121,7 @@
   display: flex;
   align-items: center;
   min-width: 120px;
-  padding:  12px 16px;
+  padding: 12px 16px;
   font-weight: 500;
   cursor: pointer;
 }
@@ -122,7 +137,6 @@
 }
 
 .user-page-user-info {
-
 }
 
 .user-page-user-info-field {

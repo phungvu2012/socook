@@ -1,5 +1,6 @@
 import "./ReportInput.scss";
 import recipeApi from "../../api/recipeApi";
+import userApi from "../../api/userApi";
 import { getToken } from "../../features/sessionStorage";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -48,6 +49,20 @@ function ReportInput({ idReport, typeReport, resetIdDelete }) {
         };
         recipeApi
           .reportComment(token, reportObj)
+          .then((res) => {
+            console.log(res);
+            resetIdDelete(0);
+          })
+          .catch((err) => console.log(err));
+      }
+
+      if (typeReport === "user") {
+        const reportObj = {
+          reportedUserId: parseInt(idReport),
+          content: reportMessage,
+        };
+        userApi
+          .reportUser(token, reportObj)
           .then((res) => {
             console.log(res);
             resetIdDelete(0);
