@@ -41,6 +41,7 @@ import {
 import userApi from "./api/userApi";
 import RepiceInfo from "./components/Recipe/RecipeInfo";
 import AddRepice from "./components/Recipe/AddRecipe";
+import UpdateRecipe from "./components/Recipe/UpdateRecipe";
 
 import RecipePending from "./components/User/RecipePending/RecipePending";
 import RecipeReject from "./components/User/RecipeReject/RecipeReject";
@@ -143,6 +144,9 @@ function App() {
                   <Route path="my-comment" element={<MyComment />} />
                 </Route>
                 <Route path="/create-recipe" element={<AddRepice />} />
+                <Route path="/update-recipe" element={<UpdateRecipe />}>
+                  <Route path=":recipeId" element={<RepiceInfo />} />
+                </Route>
               </Route>
             </Route>
             <Route path="/socook" element={<AdminRoute />}>

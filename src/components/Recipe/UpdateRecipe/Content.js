@@ -5,10 +5,10 @@ import { faClock } from "@fortawesome/free-regular-svg-icons";
 import { faCamera } from "@fortawesome/free-solid-svg-icons";
 
 import "./../RecipeInfo/recipe.scss";
-import "./create-recipe.scss";
+import "./../AddRecipe/create-recipe.scss";
 
 import StepComponent from "./StepComponent";
-import { RecipeContext } from "./AddRecipeContext";
+import { RecipeContext } from "./UpdateRecipeContext";
 import Ingredient from "./Ingredient";
 import Category from "./Category";
 
@@ -18,7 +18,7 @@ const Content = () => {
   return (
     <div className="recipe-page recipe-page--create">
       <div className="container py-3">
-        <h2 className="recipe-title"> Đăng công thức mới</h2>
+        <h2 className="recipe-title"> Sửa công thức</h2>
         <form onSubmit={context.handleSubmit}>
           <div className="recipe-header">
             <div className="recipe-header__left">
@@ -35,11 +35,11 @@ const Content = () => {
                     width: "100%",
                     cursor: "pointer",
                     textAlign: "center",
-                    lineHeight: "10rem",
+                    lineHeight: "5rem",
                   }}
                 >
                   {context?.validMainImageUrl === false && (
-                    <p className="text-danger">- {context?.errMainImageUrl}</p>
+                    <p className="bg-danger opacity-75 text-light fw-bolder rounded">- {context?.errMainImageUrl}</p>
                   )}
                 </label>
                 <input
@@ -48,9 +48,9 @@ const Content = () => {
                   onChange={(event) =>
                     context?.handleChangeMainImage(event.target.files)
                   }
-                  accept="jpg|jpge|png"
                   style={{ display: "none" }}
                   id="main-image"
+                  name='main-image'
                 />
               </div>
               <label

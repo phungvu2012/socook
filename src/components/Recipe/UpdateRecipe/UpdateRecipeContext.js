@@ -1,7 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
 import { getToken } from "../../../features/sessionStorage";
 import recipeApi from "../../../api/recipeApi";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 const RecipeContext = createContext();
 const NUMBER_REGEX = /^\d+$/;
@@ -10,7 +10,10 @@ const NUMBER_REGEX = /^\d+$/;
 function RecipeProvider({ children }) {
   const token = getToken();
   const navigate = useNavigate();
+  const params = useParams();
+  const recipeId = params.recipeId;
   
+  const [id, setId] = useState();
   const [title, setTitle] = useState('');
   const [validTitle, setValidTitle] = useState();
   const [errTitle, setErrTitle] = useState('');
@@ -56,26 +59,57 @@ function RecipeProvider({ children }) {
   const [success, setSuccess] = useState();
 
   let [categoryList, setCategoryList] = useState();
+  
 
   useEffect(() => {
     recipeApi.getCategory()
     .then((response) => {
-      console.log("category: ", response);
+      // console.log("category: ", response);
       setCategoryList(response?.data?.data)
     })
 
+    recipeApi
+    .getRecipe(token, recipeId)
+    .then((response) => {
+      console.log('recipe info', response?.data?.data);
+      if (response?.data?.messageCode !== 1) throw { response };
+
+      const data = response?.data?.data;
+      setId(response?.data?.data?.recipe?.id);
+      setTitle(data?.recipe?.title);
+      setShortDescription(data?.recipe?.short_description);
+      setAmountOfPeople(data?.recipe?.amount_of_people);
+      setCookingTime(data?.recipe?.cooking_time);
+      setMainImageUrl({
+        preview: data?.recipe?.main_image_url
+      });
+      // console.log()
+      setCategory(data?.category?.length && data?.category.map(value => value.name));
+      // console.log('------------------------------------');
+      setIngredient(formatIngredient(data?.ingredient));
+      const arrStepContent = data?.step?.length ? data?.step.map(value => value?.content) : [''];
+      console.log('arrStepContent: ', arrStepContent);
+      setStepContent(arrStepContent);
+      // setImages(formatImages(data?.step))
+    })
+    .catch((err) => {
+      console.log(err);
+    });
   }, [])
 
   //Tạo links preview
   useEffect(() => {
-    // console.log("content ", stepContent, ' ', stepContent.length)
-    console.log("ingredient ", ingredient);
+    
     const linkImageList = [];
     for(let key in images) {
-      linkImageList[key] = ({
-        stepNumber: key,
-        links: handlePreviewAvatar(images[key]) 
-      })
+      if(images[key] !== undefined && images[key][0] instanceof File) {
+        console.log(images[key][0] instanceof File);
+        linkImageList[key] = ({
+          stepNumber: key,
+          links: (images[key][0] instanceof File) ? handlePreviewAvatar(images[key]) : images[key],
+        })
+      }
+      console.log(linkImageList);
     }
 
     setPreviewImageLinks(linkImageList);
@@ -93,24 +127,51 @@ function RecipeProvider({ children }) {
   }, [previewImageLinks])
 
   useEffect(() => {
+    // console.log('category', category)
     setValidCategory();
   }, [category])
 
   // Xoá link ảnh chính preview nếu không dùng đến
   useEffect(() => {
+    console.log('images', images)
     return () => {
+      console.log('clear')
       URL.revokeObjectURL(mainImageUrl?.preview);
     }
   }, [mainImageUrl])
 
   useEffect(() => {
-    console.log('success', success)
     if(success === true) {
+      console.log('success', success)
       navigate(`/user/recipe-pending`);
     }
   }, [success]);
 
+  const formatIngredient = (values) => {
+    const newArr = [];
+    for(let item of values) {
+      newArr.push({
+        name: item.name.trim(),
+        amount: item.quantity.split(' ')[0],
+        unit: item.quantity.split(' ')[0]
+      })
+    }
+    return newArr;
+  }
+  
   // Format lại mảng image
+  const formatImages = (arr) => {
+    const newObj = {};
+    console.log('arr: ', arr  )
+    for(let i = 0; i < arr.length; ++i) {
+      newObj[i] = (arr[i]?.image_url_list.trim().split(' ')[0].length === 0) ? [] : arr[i]?.image_url_list.trim().split(' ');
+
+      // console.log(arr[i].image_url_list.trim().split(' ').length)
+    }
+    console.log('newObj', newObj)
+    return newObj;
+  }
+  
   function handlePreviewAvatar(images = []) {
     // console.log('preview')
     const imageList = [];
@@ -239,6 +300,7 @@ function RecipeProvider({ children }) {
     event.preventDefault()
     setLoading(true);
     const formData = new FormData();
+    formData.append('recipe_id', id);
     formData.append("title", title);
     formData.append(
       "short_description",
@@ -252,18 +314,17 @@ function RecipeProvider({ children }) {
         "stepcontent",
         value
       );
-
     })
     console.log("stepContent", images);
     for(let i = 0; i < stepContent.length; ++i) {
       console.log("stepContentItem", images[i]);
       for(let j = 0; j < images[i]?.length; ++j) {
-        console.log(`imagestep${i+1}`, images[i][j]);
-        formData.append(
-          `imagestep${i+1}`, 
-          images[i][j]
-        )
-      } 
+          console.log(`imagestep${i+1}`, images[i][j]);
+          formData.append(
+            `imagestep${i+1}`, 
+            images[i][j]
+          )
+      }
     }
     
     for(let item of category) {
@@ -275,12 +336,12 @@ function RecipeProvider({ children }) {
 
     for(let i = ingredient.length - 1; i >= 0; --i) {
       console.log(`${ingredient[i].amount} ${ingredient[i]?.unit} ${ingredient[i]?.name}`)
-      formData.append('ingredient', `${ingredient[i]?.amount} ${ingredient[i]?.unit} ${ingredient[i]?.name}`)
+      formData.append('ingredient', `${ingredient[i]?.amount.trim()} ${ingredient[i]?.unit.trim()} ${ingredient[i]?.name.trim()}`)
     }
 
     console.log(formData);
     recipeApi
-      .createRecipe(token, formData)
+      .updateRecipe(token, formData)
       .then((response) => {
         console.log(response);
         if(response?.data?.data?.messageCode !== 1) throw {response};

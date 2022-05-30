@@ -7,7 +7,7 @@ import {
   faCircleMinus,
 } from "@fortawesome/free-solid-svg-icons";
 
-import { RecipeContext } from "./AddRecipeContext";
+import { RecipeContext } from "./UpdateRecipeContext";
 
 const recommentUnit = ['cái', 'miếng', 'hộp', 'ml', 'kilogram', 'gram', 'quả', 'Thìa cà phê', 'Thìa canh', 'Thìa tráng miệng', 'Pound', 'Pint', 'Quart', 'Gallon', 'lít', 'lát', 'chén', 'tách']
 
@@ -48,7 +48,7 @@ const Ingredient = () => {
       
       const slideArray = ingredientArray.splice(index - 1, 2);
       ingredientArray.splice(index - 1, 0, slideArray[1], slideArray[0]);
-      console.log(slideArray);
+      // console.log(slideArray);
       context.setIngredient([...ingredientArray]);
     }
     return [ newIngredient ];
@@ -73,9 +73,9 @@ const Ingredient = () => {
     const [amount, setAmount] = useState(context.ingredient[index].amount);
     const [unit, setUnit] = useState(context.ingredient[index].unit);
 
-    useEffect(() => {
-      console.log(ingredient);
-    }, [ingredient])
+    // useEffect(() => {
+      // console.log(ingredient);
+    // }, [ingredient])
     
     const handleIngredient = (event) => {
       setIngredient(event.target?.value);

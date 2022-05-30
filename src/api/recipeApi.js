@@ -30,6 +30,16 @@ class RecipeApi {
       }
     });
   };
+  updateRecipe = (token, formdata) => {
+    const CREATE_RECIPE_URL = '/api/recipe/update-recipe';
+    return axiosHost1.put(CREATE_RECIPE_URL, formdata,
+    {
+      headers: {
+        'token': `Bearer ${token}`,
+        // 'Content-Type': 'multipart/form-data'
+      }
+    });
+  };
   deleteRecipe = (token, idDElete) => {
     const COLLECTION_URL = process.env.REACT_APP_DELETE_RECIPE_URL + `?id=${idDElete}`;
     return axiosHost1.delete(COLLECTION_URL, {
