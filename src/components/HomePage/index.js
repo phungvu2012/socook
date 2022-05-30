@@ -6,6 +6,7 @@ import RecipesSearchResult from "../SearchPage/RecipeSearchResult/RecipeSearchRe
 import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/CollectionSearchResult";
 import RankRecipe from "./RankRecipe/RankRecipe";
 import RankUser from "./RankUser/RankUser";
+import SliderHome from "./slider";
 
 const Home = () => {
   const [categoryGroups, setCategoryGroups] = useState([]);
@@ -57,8 +58,11 @@ const Home = () => {
   }, [isInteractionCollection1, isInteractionCollection2]);
 
   return (
-    <React.Fragment>
+    <div className="home-page">
       <div className="container">
+        <div className="row mt-1 mt-xl-2">
+          <SliderHome />
+        </div>
         <div className="row">
           <div className="category-group-container">
             {categoryGroups?.map((categoryGroup, index) => {
@@ -154,7 +158,7 @@ const Home = () => {
         </div>
       </div>
       <Outlet />
-    </React.Fragment>
+    </div>
   );
 };
 

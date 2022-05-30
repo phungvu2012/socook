@@ -204,7 +204,7 @@ const StepComponent = () => {
   }
 
   return (
-    <div className="recipe-body__section shadow recipe-input-field">
+    <div className={"recipe-body__section shadow recipe-input-field" + ((context.validStepContent === false) ? ' error' : '')}>
       <div className="recipe-body__step-list">
         <h3 className="recipe-body__title">Cách làm</h3>
         {

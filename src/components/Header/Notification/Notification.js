@@ -44,7 +44,7 @@ function Notification({ notification }) {
 
   return (
     <span
-      className={`${styles.popUp__Item} ${
+      className={`${styles.popUp__Item} + ${
         notification?.isView ? "" : "notification-not-view"
       }`}
       onClick={() =>

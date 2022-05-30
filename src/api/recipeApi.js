@@ -76,6 +76,11 @@ class RecipeApi {
     })
   }
 
+  getCategory = () => {
+    const GET_CATEGORY_URL = '/api/recipe/get-category';
+    return axiosHost1.get(GET_CATEGORY_URL);
+  }
+
   getRecipeComment = (idRecipe, token) => {
     const COLLECTION_URL = process.env.REACT_APP_GET_RECIPE_COMMENT_URL + `/?id=${idRecipe}`;
     if(token) {
