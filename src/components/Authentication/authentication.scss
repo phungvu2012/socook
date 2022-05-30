@@ -146,6 +146,7 @@
 }
 
 .social-form__link {
+  display: block;
   width: 46px;
   height: 46px;
   border: 1px solid var(--bs-gray-800);
@@ -155,17 +156,21 @@
   align-items: center;
   text-decoration: none;
   color: var(--bs-gray-800);
-  border-radius: 50%;
+  border-radius: 50% !important;
+  overflow: hidden;
   transition: .3s;
+
+  & * {
+    text-align: center;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
 }
 
 .social-form__link:hover {
   opacity: 0.6;
   color: var(--bs-primary);
-}
-
-.social-form__link:hover {
-  filter: invert(36%) sepia(55%) saturate(1852%) hue-rotate(343deg) brightness(117%) contrast(98%);
+  // filter: invert(36%) sepia(55%) saturate(1852%) hue-rotate(343deg) brightness(117%) contrast(98%);
 }
 
 .social-form__icon {

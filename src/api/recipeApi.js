@@ -31,8 +31,8 @@ class RecipeApi {
     });
   };
   updateRecipe = (token, formdata) => {
-    const CREATE_RECIPE_URL = '/api/recipe/update-recipe';
-    return axiosHost1.put(CREATE_RECIPE_URL, formdata,
+    const UPDATE_RECIPE_URL = process.env.REACT_APP_UPDATE_RECIPE;
+    return axiosHost1.put(UPDATE_RECIPE_URL, formdata,
     {
       headers: {
         'token': `Bearer ${token}`,
@@ -87,7 +87,7 @@ class RecipeApi {
   }
 
   getCategory = () => {
-    const GET_CATEGORY_URL = '/api/recipe/get-category';
+    const GET_CATEGORY_URL = process.env.REACT_APP_CATEGORY_ALL;
     return axiosHost1.get(GET_CATEGORY_URL);
   }
 

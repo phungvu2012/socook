@@ -7,9 +7,12 @@ import {
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
 import { setUserSession } from "../../../features/sessionStorage";
+import FacebookLogin from "react-facebook-login";
+import { GoogleLogin } from "react-google-login";
 
 import auth from "../../../api/auth";
 import fullLogoImage from "../../../assets/image/logo/Logo_SoCook_vertical_4.png";
+import { faGoogle } from "@fortawesome/free-brands-svg-icons";
 
 const EMAIL_REGEX =
   /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
@@ -19,8 +22,8 @@ const LoginForm = () => {
   const userRef = useRef();
   const errRef = useRef();
   const [params] = useSearchParams();
-  const [backPage, setBackPage] = useState(params.get('page') || '');
-  
+  const [backPage, setBackPage] = useState(params.get("page") || "");
+
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
 
@@ -28,6 +31,7 @@ const LoginForm = () => {
   const [validPwd, setValidPwd] = useState(false);
 
   const [loading, setLoading] = useState(false);
+  const [success, setSuccess] = useState();
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
@@ -41,6 +45,12 @@ const LoginForm = () => {
   useEffect(() => {
     setErrMsg("");
   }, [email, pwd]);
+
+  useEffect(() => {
+    if (success) {
+      navigate("/" + backPage);
+    }
+  }, [success]);
 
   const handleSubmit = async (e) => {
     setLoading(true);
@@ -61,17 +71,12 @@ const LoginForm = () => {
         if (response?.data?.messageCode !== 1) {
           throw { response };
         }
-        setUserSession(response?.data?.accessToken, response?.data?.user);
+        setSuccess(true);
         setLoading(false);
+        setUserSession(response?.data?.accessToken, response?.data?.user);
         // clear state and controlled inputs
         setEmail("");
         setPwd("");
-        if (
-          response?.data?.messageCode !== undefined &&
-          response?.data?.messageCode === 1
-        )
-          navigate('/' + backPage);
-        else navigate("/activeEmail");
       })
       .catch(function (err) {
         if (!err?.response) {
@@ -89,6 +94,63 @@ const LoginForm = () => {
           setErrMsg("Không thể đăng nhập");
         }
         setLoading(false);
+      });
+  };
+
+  const loginGoogle = (data) => {
+    auth
+      .responseGoogle(data)
+      .then((response) => {
+        if (response?.data?.messageCode !== 1) {
+          throw { response };
+        }
+        setSuccess(true);
+        setUserSession(response?.data?.accessToken, response?.data?.user);
+      })
+      .catch((err) => {
+        if (!err?.response) {
+          setErrMsg("Server không phản hồi");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else if (
+          err.response?.status === 422 ||
+          err?.response?.data?.messageCode === 3 ||
+          err?.response?.data?.messageCode === 2 ||
+          err?.response?.data?.messageCode === 0
+        ) {
+          setErrMsg("Tài khoản hoặc mật khẩu không đúng");
+        } else {
+          setErrMsg("Không thể đăng nhập");
+        }
+      });
+  };
+
+  const loginFacebook = (data) => {
+    auth
+      .responseGoogle(data)
+      .then((response) => {
+        console.log(response);
+        if (response?.data?.messageCode !== 1) {
+          throw { response };
+        }
+        setSuccess(true);
+        setUserSession(response?.data?.accessToken, response?.data?.user);
+      })
+      .catch((err) => {
+        if (!err?.response) {
+          setErrMsg("Server không phản hồi");
+        } else if (err.response?.status === 409) {
+          setErrMsg("Username Taken");
+        } else if (
+          err.response?.status === 422 ||
+          err?.response?.data?.messageCode === 3 ||
+          err?.response?.data?.messageCode === 2 ||
+          err?.response?.data?.messageCode === 0
+        ) {
+          setErrMsg("Tài khoản hoặc mật khẩu không đúng");
+        } else {
+          setErrMsg("Không thể đăng nhập");
+        }
       });
   };
 
@@ -189,7 +251,14 @@ const LoginForm = () => {
             Hoặc đăng nhập bằng phương thức khác
           </p>
           <div className="social-form__media">
-            <a href="#" className="social-form__link">
+            {/* <FacebookLogin
+              appId="336284341932251"
+              autoLoad={true}
+              fields="email"
+              // onClick={componentClicked}
+              // onFailure={failGoogle}
+              callback={loginFacebook}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 0 320 512"
@@ -197,16 +266,22 @@ const LoginForm = () => {
               >
                 <path d="M279.14 288l14.22-92.66h-88.91v-60.13c0-25.35 12.42-50.06 52.24-50.06h40.42V6.26S260.43 0 225.36 0c-73.22 0-121.08 44.38-121.08 124.72v70.62H22.89V288h81.39v224h100.17V288z" />
               </svg>
-            </a>
-            <a href="#" className="social-form__link">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 488 512"
-                className="social-form__icon"
-              >
-                <path d="M488 261.8C488 403.3 391.1 504 248 504 110.8 504 0 393.2 0 256S110.8 8 248 8c66.8 0 123 24.5 166.3 64.9l-67.5 64.9C258.5 52.6 94.3 116.6 94.3 256c0 86.5 69.1 156.6 153.7 156.6 98.2 0 135-70.4 140.8-106.9H248v-85.3h236.1c2.3 12.7 3.9 24.9 3.9 41.4z" />
-              </svg>
-            </a>
+            </FacebookLogin> */}
+            <GoogleLogin
+              clientId="502517293767-5r4ut28qecrla1h94mfhdb2t8p3qim0h.apps.googleusercontent.com"
+              buttonText="Login"
+              onSuccess={loginGoogle}
+              onFailure={(data) => {
+                console.log(data);
+              }}
+              cookiePolicy={"single_host_origin"}
+              className="social-form__link m-0"
+              // icon={false}
+              style={{ margin: 0 }}
+            >
+              <div>
+              </div>
+            </GoogleLogin>
           </div>
         </div>
         <p className="form-auth__text-gray text-center">

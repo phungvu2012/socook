@@ -171,8 +171,8 @@ const LazyLoadingStepImage = () => {
 };
 
 export function StepListImages({ loading, stepNumber, images = [] }) {
-  if(!Array.isArray(images))  return;
   const [visible, setVisible] = useState(false);
+  if(!Array.isArray(images))  return;
   return (
     <div className="recipe-body__repice-image">
       {loading ? (

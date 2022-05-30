@@ -49,6 +49,20 @@ class Auth {
       JSON.stringify({ newPassword: newPwd, access: accessToken })
     );
   };
+
+  responseGoogle = (data) => {
+    const LOGIN_GOOGLE_URL = process.env.REACT_APP_LOGIN_GOOGLE;
+    return axiosHost1.post(LOGIN_GOOGLE_URL, {
+      token: data.tokenId
+    })
+  }
+
+  responseFacebook = (data) => {
+    const LOGIN_FACEBOOK_URL = process.env.REACT_APP_LOGIN_FACEBOOK;
+    return axiosHost1.post(LOGIN_FACEBOOK_URL, {
+      token: data.accessToken
+    })
+  }
 }
 
 const auth = new Auth();
