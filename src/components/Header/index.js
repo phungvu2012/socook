@@ -4,13 +4,13 @@ import {
   faMagnifyingGlass,
   faRightFromBracket,
   faXmark,
-  faFileUpload
+  faFileUpload,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretDown,
   faBell,
   faStickyNote,
-  faUser
+  faUser,
 } from "@fortawesome/free-regular-svg-icons";
 
 import styles from "./header.module.scss";
@@ -21,7 +21,7 @@ import {
   removeUserSession,
   getToken,
 } from "./../../features/sessionStorage";
-import { useRef, useState, useEffect } from "react";
+import React, { useRef, useState, useEffect } from "react";
 
 import searchApi from "../../api/searchApi";
 import homePage from "../../api/homePageApi";
@@ -49,90 +49,92 @@ const Header = () => {
       homePage
         .getNotificationList(token)
         .then((res) => {
-          const mapData = res.data.data && res.data.data.map((notification) => {
-            if (notification.type === "đăng bài viết mới") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã đăng bài viết mới`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "follow") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã theo dõi bạn`,
-                urlRedirect: `/user-page/${notification.create_user_name}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "comment") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã bình luận bài viết của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "like") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã thích bài viết của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "likeComment") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã thích bình luận của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "childcomment") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã trả lời bình luận của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-            if (notification.type === "từ chối bài viết") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã từ chối duyệt bài viết của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
+          const mapData =
+            res.data.data &&
+            res.data.data.map((notification) => {
+              if (notification.type === "đăng bài viết mới") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã đăng bài viết mới`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "follow") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã theo dõi bạn`,
+                  urlRedirect: `/user-page/${notification.create_user_name}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "comment") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã bình luận bài viết của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "like") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã thích bài viết của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "likeComment") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã thích bình luận của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "childcomment") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã trả lời bình luận của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+              if (notification.type === "từ chối bài viết") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã từ chối duyệt bài viết của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
 
-            if (notification.type === "duyệt bài viết") {
-              return {
-                id: notification.id,
-                avatar: notification.avatar_image,
-                notiContent: `${notification.create_user_name} đã duyệt bài viết của bạn`,
-                urlRedirect: `/recipe/${notification.recipe_id}`,
-                time: new Date(notification.create_time),
-                isView: notification.is_viewed,
-              };
-            }
-          });
-          if(mapData?.length) setNotificationList([...mapData.reverse()]);
+              if (notification.type === "duyệt bài viết") {
+                return {
+                  id: notification.id,
+                  avatar: notification.avatar_image,
+                  notiContent: `${notification.create_user_name} đã duyệt bài viết của bạn`,
+                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  time: new Date(notification.create_time),
+                  isView: notification.is_viewed,
+                };
+              }
+            });
+          if (mapData?.length) setNotificationList([...mapData.reverse()]);
         })
         .catch((err) => console.log(err));
     }
@@ -286,152 +288,171 @@ const Header = () => {
           <div className="col-12 col-md">
             <div className={styles.headerRight}>
               <div className={styles.feature}>
-                {userInfo && (
-                  <div className={styles.featureItem} onClick={hanlePopup}>
-                    <div className={styles.featureItem__IconBox}>
-                      <FontAwesomeIcon
-                        icon={faSquareCaretDown}
-                        className={styles.featureItem__Icon}
-                      />
+                {userInfo && token ? (
+                  <React.Fragment>
+                    <div className={styles.featureItem} onClick={hanlePopup}>
+                      <div className={styles.featureItem__IconBox}>
+                        <FontAwesomeIcon
+                          icon={faSquareCaretDown}
+                          className={styles.featureItem__Icon}
+                        />
+                      </div>
+                      <div
+                        className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
+                      >
+                        <Link
+                          to="/user/user-info"
+                          className={styles.popUp__SettingItem}
+                        >
+                          <div className={styles.popUp__SettingIcon}>
+                            <FontAwesomeIcon icon={faUser} />
+                          </div>
+                          <div className={styles.popUp__SettingContent}>
+                            <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                              Quản lý tài khoản
+                            </h5>
+                          </div>
+                        </Link>
+                        <Link
+                          to="/create-recipe"
+                          className={styles.popUp__SettingItem}
+                        >
+                          <div className={styles.popUp__SettingIcon}>
+                            <FontAwesomeIcon icon={faFileUpload} />
+                          </div>
+                          <div className={styles.popUp__SettingContent}>
+                            <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                              Tạo công thức mới
+                            </h5>
+                          </div>
+                        </Link>
+                        <Link
+                          to="/"
+                          className={styles.popUp__SettingItem}
+                          onClick={removeUserSession}
+                        >
+                          <div className={styles.popUp__SettingIcon}>
+                            <FontAwesomeIcon icon={faRightFromBracket} />
+                          </div>
+                          <div className={styles.popUp__SettingContent}>
+                            <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                              Đăng xuất
+                            </h5>
+                          </div>
+                        </Link>
+                      </div>
                     </div>
-                    <div
-                      className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
-                    >
-                      <Link
-                        to="/user/user-info"
-                        className={styles.popUp__SettingItem}
+                    <div className={styles.featureItem} onClick={hanlePopup}>
+                      <div className={styles.featureItem__IconBox}>
+                        <FontAwesomeIcon
+                          icon={faBell}
+                          className={styles.featureItem__Icon}
+                        />
+                        {notificationList?.filter((noti) => noti?.isView === 0)
+                          ?.length > 0 && (
+                          <span>
+                            {
+                              notificationList?.filter(
+                                (noti) => noti?.isView === 0
+                              )?.length
+                            }
+                          </span>
+                        )}
+                      </div>
+                      <div
+                        className={`${styles.popUp} ${
+                          notificationList?.length > 3
+                            ? styles.notificationScrollY
+                            : ""
+                        }`}
                       >
-                        <div className={styles.popUp__SettingIcon}>
-                          <FontAwesomeIcon icon={faUser} />
+                        <div className={styles.notificationHeader}>
+                          <h5>Thông báo</h5>
+                          <span onClick={setViewAllNotification}>
+                            Đánh dấu tất cả đã đọc
+                          </span>
                         </div>
-                        <div className={styles.popUp__SettingContent}>
-                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
-                            Quản lý tài khoản
-                          </h5>
+                        <div className={styles.notificationFilter}>
+                          <button
+                            className={
+                              filterValue === "all"
+                                ? styles.notificationFilter_active
+                                : ""
+                            }
+                            onClick={() => setFilterValue("all")}
+                          >
+                            Tất cả
+                          </button>
+                          <button
+                            className={
+                              filterValue === "notview"
+                                ? styles.notificationFilter_active
+                                : ""
+                            }
+                            onClick={() => setFilterValue("notview")}
+                          >
+                            Chưa đọc
+                          </button>
+                          <button
+                            className={
+                              filterValue === "viewed"
+                                ? styles.notificationFilter_active
+                                : ""
+                            }
+                            onClick={() => setFilterValue("viewed")}
+                          >
+                            Đã đọc
+                          </button>
                         </div>
-                      </Link>
-                      <Link
-                        to="/create-recipe"
-                        className={styles.popUp__SettingItem}
-                      >
-                        <div className={styles.popUp__SettingIcon}>
-                          <FontAwesomeIcon icon={faFileUpload} />
-                        </div>
-                        <div className={styles.popUp__SettingContent}>
-                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
-                            Tạo công thức mới
-                          </h5>
-                        </div>
-                      </Link>
-                      <Link
-                        to="/login"
-                        className={styles.popUp__SettingItem}
-                        onClick={removeUserSession}
-                      >
-                        <div className={styles.popUp__SettingIcon}>
-                          <FontAwesomeIcon icon={faRightFromBracket} />
-                        </div>
-                        <div className={styles.popUp__SettingContent}>
-                          <h5 className={`${styles.popUp__SettingTitle} m-0`}>
-                            Đăng xuất
-                          </h5>
-                        </div>
-                      </Link>
+                        {filterNotification(notificationList).map(
+                          (notification, index) => {
+                            return (
+                              <Notification
+                                notification={notification}
+                                key={index}
+                              />
+                            );
+                          }
+                        )}
+                      </div>
                     </div>
-                  </div>
-                )}
-                <div className={styles.featureItem} onClick={hanlePopup}>
-                  <div className={styles.featureItem__IconBox}>
-                    <FontAwesomeIcon
-                      icon={faBell}
-                      className={styles.featureItem__Icon}
-                    />
-                    {notificationList?.filter((noti) => noti?.isView === 0)
-                      ?.length > 0 && (
-                      <span>
-                        {
-                          notificationList?.filter((noti) => noti?.isView === 0)
-                            ?.length
-                        }
-                      </span>
-                    )}
-                  </div>
-                  <div
-                    className={`${styles.popUp} ${
-                      notificationList?.length > 3
-                        ? styles.notificationScrollY
-                        : ""
-                    }`}
+                    <div className={styles.featureItem} onClick={hanlePopup}>
+                      <div className={styles.featureItem__IconBox}>
+                        <FontAwesomeIcon
+                          icon={faStickyNote}
+                          className={styles.featureItem__Icon}
+                        />
+                      </div>
+                      <div className={`${styles.popUp} ${styles.popUp__Auto}`}>
+                        <a href="#" className={styles.popUp__Item}>
+                          <div className={styles.popUp__CollectionAvatar}>
+                            <img src={avatar} className={styles.popUp__Image} />
+                          </div>
+                          <div className={styles.popUp__Message}>
+                            <h5 className={styles.popUp__CollectionTitle}>
+                              Love
+                            </h5>
+                            <p></p>
+                          </div>
+                        </a>
+                      </div>
+                    </div>
+                  </React.Fragment>
+                ) : (
+                  <Link
+                    to="/login"
+                    className={`px-3 fw-bolder border-bottom ${styles.userAvatar}`}
+                    style={{ border: 0 }}
                   >
-                    <div className={styles.notificationHeader}>
-                      <h5>Thông báo</h5>
-                      <span onClick={setViewAllNotification}>
-                        Đánh dấu tất cả đã đọc
-                      </span>
-                    </div>
-                    <div className={styles.notificationFilter}>
-                      <button
-                        className={
-                          filterValue === "all" ?
-                          styles.notificationFilter_active : ''
-                        }
-                        onClick={() => setFilterValue("all")}
-                      >
-                        Tất cả
-                      </button>
-                      <button
-                        className={
-                          filterValue === "notview" ?
-                          styles.notificationFilter_active : ''
-                        }
-                        onClick={() => setFilterValue("notview")}
-                      >
-                        Chưa đọc
-                      </button>
-                      <button
-                        className={
-                          filterValue === "viewed" ?
-                          styles.notificationFilter_active : ''
-                        }
-                        onClick={() => setFilterValue("viewed")}
-                      >
-                        Đã đọc
-                      </button>
-                    </div>
-                    {filterNotification(notificationList).map(
-                      (notification, index) => {
-                        return (
-                          <Notification
-                            notification={notification}
-                            key={index}
-                          />
-                        );
-                      }
-                    )}
-                  </div>
-                </div>
-                <div className={styles.featureItem} onClick={hanlePopup}>
-                  <div className={styles.featureItem__IconBox}>
-                    <FontAwesomeIcon
-                      icon={faStickyNote}
-                      className={styles.featureItem__Icon}
-                    />
-                  </div>
-                  <div className={`${styles.popUp} ${styles.popUp__Auto}`}>
-                    <a href="#" className={styles.popUp__Item}>
-                      <div className={styles.popUp__CollectionAvatar}>
-                        <img src={avatar} className={styles.popUp__Image} />
-                      </div>
-                      <div className={styles.popUp__Message}>
-                        <h5 className={styles.popUp__CollectionTitle}>Love</h5>
-                        <p></p>
-                      </div>
-                    </a>
-                  </div>
-                </div>
+                    Đăng ký
+                  </Link>
+                )}
               </div>
-              {userInfo ? (
-                <Link to={`/user-page/${username}`} className={styles.userAvatar}>
+              {(userInfo && token )? (
+                <Link
+                  to={`/user-page/${username}`}
+                  className={styles.userAvatar}
+                >
                   <div
                     className={styles.userAvatar__ImageBox}
                     style={{
@@ -445,7 +466,7 @@ const Header = () => {
               ) : (
                 <Link
                   to="/login"
-                  className={styles.userAvatar}
+                  className={`px-3 fw-bolder border-bottom border-right ${styles.userAvatar}`}
                   style={{ border: 0 }}
                 >
                   Đăng nhập

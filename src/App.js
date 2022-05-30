@@ -102,7 +102,7 @@ function App() {
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
             <Route path="" element={<PublicRoute />}>
               <Route path="" element={<Auth />}>
-                <Route exact path="/login" element={<LoginForm />} />
+                <Route path="/login" element={<LoginForm />} />
                 <Route exact path="/register" element={<RegisterForm />} />
                 <Route
                   exact

@@ -1,6 +1,7 @@
 import React, { createContext, useEffect, useState } from "react";
-import { getToken } from "../../../features/sessionStorage";
+import { getToken, getUser } from "../../../features/sessionStorage";
 import recipeApi from "../../../api/recipeApi";
+import userApi from '../../../api/userApi';
 import { useNavigate, useParams } from "react-router-dom";
 
 const RecipeContext = createContext();
@@ -9,6 +10,8 @@ const NUMBER_REGEX = /^\d+$/;
 
 function RecipeProvider({ children }) {
   const token = getToken();
+  let username;
+  console.log(username)
   const navigate = useNavigate();
   const params = useParams();
   const recipeId = params.recipeId;
@@ -62,18 +65,30 @@ function RecipeProvider({ children }) {
   
 
   useEffect(() => {
+    if(recipeId === undefined) navigate('/not-found')
+    
     recipeApi.getCategory()
     .then((response) => {
-      // console.log("category: ", response);
       setCategoryList(response?.data?.data)
     })
 
+    userApi
+    .userInfo(token)
+    .then((response) => {
+      username = response?.data?.user?.user_name
+      console.log(username)
+    })
+    .catch((err) => {
+      
+    });
+
+    console.log(window.referrer)
     recipeApi
     .getRecipe(token, recipeId)
     .then((response) => {
-      console.log('recipe info', response?.data?.data);
+      console.log('recipe info', username === response?.data?.data?.recipe?.user_name);
       if (response?.data?.messageCode !== 1) throw { response };
-
+      if(username !== response?.data?.data?.recipe?.user_name) navigate('/not-found')
       const data = response?.data?.data;
       setId(response?.data?.data?.recipe?.id);
       setTitle(data?.recipe?.title);
@@ -83,9 +98,7 @@ function RecipeProvider({ children }) {
       setMainImageUrl({
         preview: data?.recipe?.main_image_url
       });
-      // console.log()
       setCategory(data?.category?.length && data?.category.map(value => value.name));
-      // console.log('------------------------------------');
       setIngredient(formatIngredient(data?.ingredient));
       const arrStepContent = data?.step?.length ? data?.step.map(value => value?.content) : [''];
       console.log('arrStepContent: ', arrStepContent);

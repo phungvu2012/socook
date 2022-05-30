@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faLock,
@@ -18,7 +18,9 @@ const LoginForm = () => {
   const navigate = useNavigate();
   const userRef = useRef();
   const errRef = useRef();
-
+  const [params] = useSearchParams();
+  const [backPage, setBackPage] = useState(params.get('page') || '');
+  
   const [email, setEmail] = useState("");
   const [validEmail, setValidEmail] = useState(false);
 
@@ -68,7 +70,7 @@ const LoginForm = () => {
           response?.data?.messageCode !== undefined &&
           response?.data?.messageCode === 1
         )
-          navigate(-1);
+          navigate('/' + backPage);
         else navigate("/activeEmail");
       })
       .catch(function (err) {
