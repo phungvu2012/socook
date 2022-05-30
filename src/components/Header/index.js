@@ -342,8 +342,8 @@ const Header = () => {
                     <div className={styles.notificationFilter}>
                       <button
                         className={
-                          filterValue === "all" &&
-                          styles.notificationFilter_active
+                          filterValue === "all" ?
+                          styles.notificationFilter_active : ""
                         }
                         onClick={() => setFilterValue("all")}
                       >
@@ -351,8 +351,8 @@ const Header = () => {
                       </button>
                       <button
                         className={
-                          filterValue === "notview" &&
-                          styles.notificationFilter_active
+                          filterValue === "notview" ?
+                          styles.notificationFilter_active : ""
                         }
                         onClick={() => setFilterValue("notview")}
                       >
@@ -360,8 +360,8 @@ const Header = () => {
                       </button>
                       <button
                         className={
-                          filterValue === "viewed" &&
-                          styles.notificationFilter_active
+                          filterValue === "viewed" ?
+                          styles.notificationFilter_active : ""
                         }
                         onClick={() => setFilterValue("viewed")}
                       >
