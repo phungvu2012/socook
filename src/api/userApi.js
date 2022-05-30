@@ -1,4 +1,5 @@
 import axiosHost1 from "./axiosHost1";
+import axiosHost2 from "./axiosHost2";
 class UserApi {
   userInfo = (token) => {
     const MYINFO_URL = process.env.REACT_APP_MYINFO_URL;
@@ -51,6 +52,15 @@ class UserApi {
       },
     });
   };
+
+  reportUser = (token, reportObj) => {
+    const REPORT_USER_URL = process.env.REACT_APP_REPORT_USER_URL;
+    return axiosHost2.post(REPORT_USER_URL, reportObj, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      }
+    })
+  }
 }
 
 const userApi = new UserApi();
