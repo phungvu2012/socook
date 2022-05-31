@@ -10,7 +10,7 @@ import { getUser } from "../../../../../features/sessionStorage";
 import { useState } from "react";
 import ReportInput from "../../../../ReportInput/ReportInput";
 
-function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
+function Comment({ comment, isGetCommentList, setIsGetCommentList, isAdmin }) {
   const token = getToken();
   const userInfo = getUser();
   const navigate = useNavigate();
@@ -270,7 +270,26 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
                   >
                     x
                   </li>
-                  {userInfo?.user_id === comment.user_id ? (
+                  {isAdmin && userInfo?.user_id !== comment.user_id ? (
+                    <>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDeleteComment(true);
+                          setIsDisplayCommentAction(false);
+                        }}
+                      >
+                        Xóa
+                      </li>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={handleGetIdRecipeReport}
+                      >
+                        Báo cáo
+                      </li>
+                    </>
+                  ) : userInfo?.user_id === comment.user_id ? (
                     <>
                       <li
                         className="comment-actions-update"
@@ -339,6 +358,7 @@ function Comment({ comment, isGetCommentList, setIsGetCommentList }) {
               convertTimeToDate={convertTimeToDate}
               renderCommentVariable={renderCommentVariable}
               triggerRenderParentComment={triggerRenderParentComment}
+              isAdmin={isAdmin}
             />
           ))}
       </div>

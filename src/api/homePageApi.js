@@ -28,7 +28,7 @@ class HomePage {
   }
 
   getTopUserDependTotalRecipe = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_USER_DEPEND_TOTAL_RECIPE_URL + '?Limit=10';
+    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_USER_DEPEND_TOTAL_RECIPE_URL + '?Limit=5';
     return axiosHost1.get(COLLECTION_URL);
   }
   getCategoryInGroup = (idCategoryGroup) => {

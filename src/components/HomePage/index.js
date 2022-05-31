@@ -94,7 +94,7 @@ const Home = () => {
                   {topViewRecipe?.map((recipe) => {
                     return (
                       <div
-                        className="col-xl-3 col-lg-4 col-sm-6 col-6"
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
                         key={recipe.id}
                       >
                         <RecipesSearchResult recipe={recipe} />
@@ -112,7 +112,7 @@ const Home = () => {
                   {topNewRecipe?.slice(0, 8).map((recipe) => {
                     return (
                       <div
-                        className="col-xl-3 col-lg-4 col-sm-6 col-6"
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
                         key={recipe.id}
                       >
                         <RecipesSearchResult recipe={recipe} />
@@ -131,7 +131,7 @@ const Home = () => {
                   {topSaveCollection?.map((collection) => {
                     return (
                       <div
-                        className="col-xl-3 col-lg-4 col-sm-6 col-6"
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
                         key={collection.id}
                       >
                         <CollectionsSearchResult
@@ -155,7 +155,7 @@ const Home = () => {
                   {topNewCollection?.slice(0, 8).map((collection) => {
                     return (
                       <div
-                        className="col-xl-3 col-lg-4 col-sm-6 col-6"
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
                         key={collection.id}
                       >
                         <CollectionsSearchResult
