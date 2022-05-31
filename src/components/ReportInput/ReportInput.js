@@ -15,6 +15,8 @@ function ReportInput({ idReport, typeReport, resetIdDelete }) {
         return "công thức";
       case "comment":
         return "bình luận";
+      case "user": 
+        return "người dùng"
       default:
         return "";
     }

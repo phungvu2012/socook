@@ -3,10 +3,12 @@ import { getToken } from "../../../features/sessionStorage";
 import userApi from "../../../api/userApi";
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import Loading from "../../Loading/Loading";
 
 function MyComment() {
   const token = getToken();
   const [myComment, setMyComment] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   const convertTimeToDate = (str) => {
     let date = new Date(str);
@@ -37,11 +39,16 @@ function MyComment() {
       .getMyComment(token)
       .then((res) => {
         setMyComment([...res.data.data.reverse()]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, []);
   return (
     <div className="my-comment-history-cotainer">
+      {isLoading && <Loading />}
       <h5>Lịch sử bình luận</h5>
       {myComment?.map((comment) => {
         return (

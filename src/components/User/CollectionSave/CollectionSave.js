@@ -8,6 +8,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 import Pagination from "../../Pagination/Pagination";
+import Loading from "../../Loading/Loading";
 
 function CollectionSave() {
   const [saveCollection, setSaveCollection] = useState([]);
@@ -16,6 +17,7 @@ function CollectionSave() {
   const userInfo = getUser();
   const [userHeader, setUserHeader] = useState("Bộ sưu tập đã lưu");
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const limitItemInPage = 8;
 
   const receiveValuePagination = (curPage) => {
@@ -31,25 +33,38 @@ function CollectionSave() {
 
   const handleSaveCollection = (e, collectionId) => {
     e.preventDefault();
+    setIsLoading(true);
     collection
       .unsaveCollection(token, collectionId)
       .then((res) => {
         setIsInteractionCollection((prevState) => !prevState);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   useEffect(() => {
     async function getCollectionSave() {
       await collection
         .getCollectionSave(token)
-        .then((res) => setSaveCollection(res.data));
+        .then((res) => {
+          setSaveCollection(res.data);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
     getCollectionSave();
   }, [isInteractionCollection]);
 
   return (
     <>
+      {isLoading && <Loading />}
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-container">
         <div className="container">

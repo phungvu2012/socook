@@ -14,9 +14,10 @@ import {
   faBookmark,
   faBan,
   faWater,
-  faComment
+  faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import CoverImage from "./CoverImage/CoverImage";
+import Loading from "../Loading/Loading";
 
 function User() {
   const token = getToken();
@@ -25,6 +26,7 @@ function User() {
     setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)));
   };
   const [userInfo, setUserInfo] = useState(getUser());
+  const [isLoading, setIsLoading] = useState(false);
   const mapUserHeader = (header) => {
     switch (header) {
       case "cover-image":
@@ -37,12 +39,12 @@ function User() {
         return "Công thức của tôi";
       case "collection-save":
         return "Bộ sưu tập đã lưu";
-      case "recipe-pending": 
+      case "recipe-pending":
         return "Công thức chờ duyệt";
       case "recipe-reject":
-        return "Công thức bị từ chối"
-      case "my-comment": 
-        return "Lịch sử bình luận"
+        return "Công thức bị từ chối";
+      case "my-comment":
+        return "Lịch sử bình luận";
       default:
         return "Thông tin cá nhân";
     }
@@ -53,18 +55,24 @@ function User() {
   const handleChangeAvatar = (e) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
+    setIsLoading(true);
     userApi
       .changeAvatar(token, fd)
       .then((res) => {
         if (res.data.user) {
           setUserSession(token, res.data.user);
           setUserInfo({ ...getUser() });
+          setIsLoading(false);
         }
       })
-      .catch((err) => console.log("F: ", err));
+      .catch((err) => {
+        console.log("F: ", err);
+        setIsLoading(false);
+      });
   };
   return (
     <div className=" user-info-container">
+      {isLoading && <Loading />}
       <div className="container">
         <div className="row">
           <div className="user-info-header-image">
@@ -263,10 +271,7 @@ function User() {
                       : ""
                   }`}
                 >
-                  <Link
-                    to="my-comment"
-                    className="user-function-button-link"
-                  >
+                  <Link to="my-comment" className="user-function-button-link">
                     <FontAwesomeIcon
                       className="user-function-button-icon"
                       icon={faComment}

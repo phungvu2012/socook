@@ -3,6 +3,7 @@ import recipeApi from "../../../api/recipeApi";
 import { getToken } from "../../../features/sessionStorage";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../../Loading/Loading";
 
 function RecipePending() {
   const token = getToken();
@@ -11,6 +12,7 @@ function RecipePending() {
   const [recipePendingList, setRecipePendingList] = useState([]);
   const [isDeleteRecipe, setIsDeleteRecipe] = useState(0);
   const [isGetPendingRecipeList, setIsGetPendingRecipeList] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const convertTimeToDate = (str) => {
     let date = new Date(str);
@@ -30,13 +32,18 @@ function RecipePending() {
   };
 
   const confirmDeletePendingRecipe = () => {
+    setIsLoading(true);
     recipeApi
       .deleteRecipe(token, isDeleteRecipe)
       .then((res) => {
         setIsDeleteRecipe(0);
         setIsGetPendingRecipeList((prev) => !prev);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   const cancelDeleteRecipeCollection = () => {
@@ -48,11 +55,16 @@ function RecipePending() {
       .getMyPendingRecipe(token)
       .then((res) => {
         setRecipePendingList([...res.data.waitRecipe]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, [isGetPendingRecipeList]);
   return (
     <div className="pending-recipe-container">
+      {isLoading && <Loading />}
       <h5>{header}</h5>
       {recipePendingList?.map((recipe) => {
         return (

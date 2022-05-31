@@ -11,6 +11,7 @@ import {
 } from "@fortawesome/free-regular-svg-icons";
 import { faCirclePlus } from "@fortawesome/free-solid-svg-icons";
 import Pagination from "../../Pagination/Pagination";
+import Loading from "../../Loading/Loading";
 
 function MyRecipe() {
   const [myRecipe, setMyRecipe] = useState([]);
@@ -19,6 +20,7 @@ function MyRecipe() {
   const [userHeader, setUserHeader] = useState("Công thức của tôi");
   const token = getToken();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const limitItemInPage = 8;
 
   const receiveValuePagination = (curPage) => {
@@ -35,14 +37,19 @@ function MyRecipe() {
   };
 
   const confirmDeleteRecipeCollection = () => {
+    setIsLoading(true);
     async function deleteRecipe() {
       await recipeApi
         .deleteRecipe(token, idRecipeDelete)
         .then((res) => {
           setIdRecipeDelete(0);
           setIsReRender((prevState) => !prevState);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
     deleteRecipe();
   };
@@ -53,6 +60,7 @@ function MyRecipe() {
         .getMyRecipe(token)
         .then((res) => {
           setMyRecipe([...res.data.myListRecipe]);
+          setIsLoading(false);
         })
         .catch((err) => console.log("F: ", err));
     }
@@ -60,6 +68,7 @@ function MyRecipe() {
   }, [isReRender]);
   return (
     <>
+      {isLoading && <Loading />}
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-display-container">
         <Link

@@ -1,0 +1,33 @@
+.loading-container {
+  position: relative;
+}
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  background-color: #ccc;
+  z-index: 50;
+  opacity: 0.5;
+}
+
+.loading-icon-wrapper {
+  z-index: 100;
+  position: fixed;
+  font-size: 2rem;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading-icon {
+  animation: loading-rotate 0.8s infinite;
+}
+
+@keyframes loading-rotate {
+  100% {
+    transform: rotate(360deg);
+  }
+}

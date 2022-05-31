@@ -5,6 +5,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faMagnifyingGlass } from "@fortawesome/free-solid-svg-icons";
 import RecipesSearchResult from "../SearchPage/RecipeSearchResult/RecipeSearchResult";
 import Pagination from "../Pagination/Pagination";
+import Loading from "../Loading/Loading";
 
 function AdvanceSearchPage() {
   const [keywords, setKeyWords] = useState([]);
@@ -14,6 +15,7 @@ function AdvanceSearchPage() {
   const [isDisplaySearchIngredientResult, setIsDisplaySearchIngredientResult] =
     useState(false);
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
   const limitItemInPage = 8;
 
   const receiveValuePagination = (curPage) => {
@@ -62,13 +64,18 @@ function AdvanceSearchPage() {
 
   const handleAdvanceSearch = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     if (mapKeywordsListToQuery(keywords)) {
       searchApi
         .searchRecipesByIngredient(mapKeywordsListToQuery(keywords))
         .then((res) => {
           setRecipeResult([...res.data]);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } else {
       setRecipeResult([]);
     }
@@ -76,6 +83,7 @@ function AdvanceSearchPage() {
 
   return (
     <div className="advance-search-container">
+      {isLoading && <Loading />}
       <div className="container">
         <div className="row">
           <div className="col-4">
