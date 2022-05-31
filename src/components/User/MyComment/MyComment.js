@@ -68,7 +68,7 @@ function MyComment() {
                 <span className="my-comment-history-title">
                   {comment.title}
                 </span>
-                . Nhấn vào để xem bài viết.
+                <span className="my-comment-history-more-text">. Nhấn vào để xem bài viết.</span>
               </p>
               <span className="my-comment-history-time">
                 {convertTimeToDate(comment.create_time)} trước

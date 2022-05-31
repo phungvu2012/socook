@@ -76,7 +76,7 @@ function CollectionSave() {
               )
               .map((collection) => {
                 return (
-                  <div className="col-3" key={collection.id}>
+                  <div className="col-xl-3 col-lg-4 col-md-6 col-12" key={collection.id}>
                     <div className="collection-wrapper">
                       <Link
                         to={

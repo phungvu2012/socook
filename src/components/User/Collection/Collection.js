@@ -193,7 +193,7 @@ function Collection() {
                 return (
                   <Link
                     to={`${collection.id}`}
-                    className="col-3"
+                    className="col-xxl-3 col-xl-4 col-lg-6 col-12"
                     key={collection.id}
                     state={{
                       collectionName: capitalize(collection.name),

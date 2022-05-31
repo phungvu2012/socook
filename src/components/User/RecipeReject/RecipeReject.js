@@ -60,7 +60,7 @@ function RecipeReject() {
     <div className="pending-recipe-container">
       {isLoading && <Loading />}
       <h5>Công thức bị từ chối</h5>
-      <div className="pending-recipe-wrapper">
+      <div className="pending-recipe-wrapper reject-recipe-header">
         <div className="reject-recipe-info">
           <span className="reject-recipe-title">Tên công thức</span>
           <span className="reject-recipe-reason reject-recipe-reason-header">

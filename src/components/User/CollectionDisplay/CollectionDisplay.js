@@ -91,7 +91,7 @@ function CollectionDisplay() {
                 )
                 .map((recipe) => {
                   return (
-                    <div className="col-3" key={recipe.id}>
+                    <div className="col-xxl-3 col-xl-4 col-lg-6 col-12" key={recipe.id}>
                       <div className="collection-recipe-container">
                         <Link
                           to={`/recipe/${recipe.id}`}

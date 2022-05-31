@@ -15,6 +15,8 @@ import {
   faBan,
   faWater,
   faComment,
+  faBars,
+  faX
 } from "@fortawesome/free-solid-svg-icons";
 import CoverImage from "./CoverImage/CoverImage";
 import Loading from "../Loading/Loading";
@@ -27,6 +29,8 @@ function User() {
   };
   const [userInfo, setUserInfo] = useState(getUser());
   const [isLoading, setIsLoading] = useState(false);
+  const [isDisplayUserInfoSidebar, setIsDisplayUserInfoSidebar] =
+    useState(false);
   const mapUserHeader = (header) => {
     switch (header) {
       case "cover-image":
@@ -100,8 +104,21 @@ function User() {
       </div>
       <div className="container">
         <div className="row">
-          <div className="col-3">
-            <div className="user-info-sidebar">
+          <div className="col-lg-3 col-12">
+            <button
+              className="user-info-sidebar-button-display"
+              onClick={() =>
+                setIsDisplayUserInfoSidebar((prev) => !prev)
+              }
+            >
+              <FontAwesomeIcon icon={isDisplayUserInfoSidebar ? faX : faBars} />
+            </button>
+            <div
+              className={`user-info-sidebar ${
+                isDisplayUserInfoSidebar ? "user-info-sidebar--display" : ""
+              }`}
+            >
+              {console.log(isDisplayUserInfoSidebar)}
               <div className="user-function">
                 <div
                   className={`user-function-button ${
@@ -118,6 +135,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Thông tin cá nhân
@@ -142,6 +160,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Đổi mật khẩu
@@ -163,6 +182,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Bộ sưu tập
@@ -184,6 +204,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức của tôi
@@ -208,6 +229,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Bộ sưu tập đã lưu
@@ -232,6 +254,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức đang chờ duyệt
@@ -257,6 +280,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức bị từ chối
@@ -279,6 +303,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Lịch sử bình luận
@@ -289,7 +314,7 @@ function User() {
             </div>
           </div>
 
-          <div className="col-9">
+          <div className="col-lg-9 col-12">
             <div className="user-container">
               <Outlet />
             </div>

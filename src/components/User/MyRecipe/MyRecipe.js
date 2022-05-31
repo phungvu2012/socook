@@ -87,7 +87,7 @@ function MyRecipe() {
               )
               .map((recipe) => {
                 return (
-                  <div className="col-4" key={recipe.id}>
+                  <div className="col-xl-4 col-md-6 col-12" key={recipe.id}>
                     <div className="collection-recipe-container">
                       <Link
                         to={`/recipe/${recipe.id}`}

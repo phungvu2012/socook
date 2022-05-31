@@ -64,7 +64,7 @@ function FilterRecipePage() {
       {isLoading && <Loading />}
       <div className="container">
         <div className="row">
-          <div className="col-4">
+          <div className="col-lg-4 col-12">
             <div className="category-area-container">
               <p>
                 Chọn nhãn món ăn thuộc nhóm{" "}
@@ -109,7 +109,7 @@ function FilterRecipePage() {
             </div>
           </div>
 
-          <div className="col-8">
+          <div className="col-lg-8 col-12">
             <div className="filter-recipe-result-container">
               <div className="container">
                 <div className="row">
@@ -123,7 +123,7 @@ function FilterRecipePage() {
                       )
                       .map((recipe) => {
                         return (
-                          <div className="col-3" key={recipe.id}>
+                          <div className="col-xl-3 col-lg-4 col-md-4 col-6" key={recipe.id}>
                             <RecipesSearchResult recipe={recipe} />
                           </div>
                         );
