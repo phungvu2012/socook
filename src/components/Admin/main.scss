@@ -689,6 +689,31 @@
     }
   }
 
+  .user_section .search_wrapper {
+    position: relative;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    border: 1px solid #ccc;
+    border-radius: 30px;
+    overflow-x: hidden;
+  }
+
+  .user_section .search_wrapper input {
+    position: relative;
+    height: 100%;
+    padding: 0.5rem;
+    border: none;
+    outline: none;
+  }
+
+  .user_section .search_wrapper span {
+    display: inline-block;
+    padding: 0rem 1rem;
+    transform: translateY(20%);
+    font-size: 1.5rem;
+  }
+
 }
 
 .recipe-feedback {

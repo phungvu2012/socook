@@ -2,44 +2,90 @@ import React, { useEffect, useState } from "react";
 import styles from "./style.module.scss";
 import logo from "./../../assets/image/logo/Logo_SoCook_vertical_3.png";
 import recipeApi from "../../api/recipeApi";
+import { Link } from "react-router-dom";
 
 const Footer = () => {
   const category = [
     {
       name: "Món khai vị",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 1,
+        name: "Món khai vị",
+      },
     },
     {
       name: "Món tráng miệng",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 2,
+        name: "Món tráng miệng",
+      },
     },
     {
       name: "Món chay",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 3,
+        name: "Món chay",
+      },
     },
     {
       name: "Món ăn sáng",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 3,
+        name: "Món ăn sáng",
+      },
     },
     {
       name: "Món chính",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 4,
+        name: "Món chính",
+      },
     },
     {
       name: "Món cho trẻ",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 5,
+        name: "Món cho trẻ",
+      },
     },
     {
       name: "Thức uống",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 6,
+        name: "Thức uống",
+      },
     },
     {
       name: "Bánh - Bánh ngọt",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 6,
+        name:"Bánh - Bánh ngọt",
+      },
     },
     {
       name: "Đồ ăn nhanh",
-      url: "#",
+      url: "/filter-recipe/1",
+      state: {
+        categoryGroupName: "Thực đơn",
+        id: 7,
+        name: "Nhanh và dễ",
+      },
     },
   ];
   return (
@@ -72,10 +118,15 @@ const Footer = () => {
                   {category?.length &&
                     category.map((value, index) => {
                       return (
-                        <span key={index} className={styles.footerTag}>
+                        <Link
+                          to={value?.url || "#"}
+                          key={index}
+                          className={styles.footerTag}
+                          state={value?.state}
+                        >
                           {" "}
                           {value.name}{" "}
-                        </span>
+                        </Link>
                       );
                     })}
                 </div>

@@ -35,11 +35,11 @@ const LoginForm = () => {
   const [errMsg, setErrMsg] = useState("");
 
   useEffect(() => {
-    document.title = 'Đăng nhập | Socook';
+    document.title = "Đăng nhập | Socook";
     userRef.current.focus();
     return () => {
-      document.title = 'Socook';
-    }
+      document.title = "Socook";
+    };
   }, []);
 
   useEffect(() => {
@@ -161,7 +161,9 @@ const LoginForm = () => {
   return (
     <div className="form-box">
       <form onSubmit={handleSubmit} className="form-auth">
-        <img src={fullLogoImage} className="logo-image my-2"></img>
+        <Link to="/">
+          <img src={fullLogoImage} className="logo-image my-2"></img>
+        </Link>
         <h2 className="form-auth__title m-0">Đăng nhập</h2>
         <div
           className={
@@ -283,8 +285,7 @@ const LoginForm = () => {
               // icon={false}
               style={{ margin: 0 }}
             >
-              <div>
-              </div>
+              <div></div>
             </GoogleLogin>
           </div>
         </div>

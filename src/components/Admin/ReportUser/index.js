@@ -42,7 +42,20 @@ const ReportUser = () => {
         <td style={{ textAlign: "center" }}>{value?.reportedUserId}</td>
         <td style={{ textAlign: "center" }}>{value?.response}</td>
         <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td>
-        <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td>
+        <td style={{ textAlign: 'center'}}>
+          <button
+            className="section-button section-button--delete"
+          >
+               Xoá
+          </button>
+        </td>
+        <td style={{ textAlign: 'center'}}>
+          <button
+            className="section-button section-button--warning"
+          >
+               Xoá
+          </button>
+        </td>
       </tr>
     )
   }
@@ -61,8 +74,8 @@ const ReportUser = () => {
               <td style={{ textAlign: "center" }}>Người báo cáo</td>
               <td style={{ textAlign: "center" }}>Nội dung báo cáo</td>
               <td style={{ textAlign: "center" }}>Nội dung phản hồi</td>
-              <td style={{ textAlign: "center" }}>Duyệt</td>
               <td style={{ textAlign: "center" }}>Xoá</td>
+              <td style={{ textAlign: "center" }}>Khoá người dùng</td>
             </tr>
           </thead>
           <TableComponent data={data}/>

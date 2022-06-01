@@ -10,7 +10,7 @@ function FilterRecipePage() {
   const { idFilter } = useParams();
   const { state } = useLocation();
   const [categoryFromGroup, setCategoryFromGroup] = useState([]);
-  const [categorySelect, setCategorySelect] = useState({ id: 0, name: "all" });
+  const [categorySelect, setCategorySelect] = useState((state?.name) ? {id: state?.id || 0, name: state?.name} : { id: 0, name: "all" });
   const [recipeFromCategoryGroup, setRecipeFromCategoryGroup] = useState([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [isLoading, setIsLoading] = useState(true);
@@ -19,6 +19,10 @@ function FilterRecipePage() {
   const receiveValuePagination = (curPage) => {
     setCurrentPage(curPage);
   };
+
+  useEffect(() => {
+    setCategorySelect((state?.name) ? {id: state?.id || 0, name: state?.name} : { id: 0, name: "all" });
+  }, [state])
 
   useEffect(() => {
     homePage
@@ -62,6 +66,7 @@ function FilterRecipePage() {
   return (
     <div className="filter-recipe-by-category-container">
       {isLoading && <Loading />}
+      {console.log(state)}
       <div className="container">
         <div className="row">
           <div className="col-lg-4 col-12">

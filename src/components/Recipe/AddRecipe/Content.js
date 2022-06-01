@@ -48,7 +48,7 @@ const Content = () => {
                   onChange={(event) =>
                     context?.handleChangeMainImage(event.target.files)
                   }
-                  accept="jpg|jpge|png"
+                  accept="image/jpg, image/jpeg, image/png, image/svg"
                   style={{ display: "none" }}
                   id="main-image"
                 />

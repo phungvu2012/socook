@@ -38,13 +38,14 @@ const Content = () => {
                     lineHeight: "5rem",
                   }}
                 >
-                  {context?.validMainImageUrl === false && (
+                  {/* {context?.validMainImageUrl === false && (
                     <p className="bg-danger opacity-75 text-light fw-bolder rounded">- {context?.errMainImageUrl}</p>
-                  )}
+                  )} */}
                 </label>
                 <input
                   type="file"
                   multiple
+                  accept="image/jpg, image/jpeg, image/png, image/svg"
                   onChange={(event) =>
                     context?.handleChangeMainImage(event.target.files)
                   }
