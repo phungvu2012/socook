@@ -18,7 +18,8 @@ class Collection {
     });
   };
   updateCollection = (token, idCollectionUpdate, collectionObj) => {
-    const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL + `/${idCollectionUpdate}`;
+    const COLLECTION_URL =
+      process.env.REACT_APP_COLLECTION_URL + `/${idCollectionUpdate}`;
     return axiosHost2.put(COLLECTION_URL, collectionObj, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -33,6 +34,24 @@ class Collection {
       },
     });
   };
+
+  addRecipeToCollection = (token, idCollection, idRecipeDelete) => {
+    const COLLECTION_URL =
+      process.env.REACT_APP_COLLECTION_URL +
+      `/${idCollection}/${idRecipeDelete}`;
+    return axiosHost2.post(
+      COLLECTION_URL,
+      {
+        testData: "Add success",
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
+
   deleteRecipeInCollection = (token, idCollection, idRecipeDelete) => {
     const COLLECTION_URL =
       process.env.REACT_APP_COLLECTION_URL +
@@ -52,27 +71,29 @@ class Collection {
       },
     });
   };
-  
+
   saveCollection = (token, collectionId) => {
-    const COLLECTION_URL = process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
+    const COLLECTION_URL =
+      process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
     const fakeData = {
-      id: collectionId
-    }
+      id: collectionId,
+    };
     return axiosHost2.post(COLLECTION_URL, fakeData, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  }
+  };
 
   unsaveCollection = (token, collectionId) => {
-    const COLLECTION_URL = process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
+    const COLLECTION_URL =
+      process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
     return axiosHost2.delete(COLLECTION_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
     });
-  }
+  };
 }
 
 const collection = new Collection();

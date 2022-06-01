@@ -15,25 +15,26 @@ import TagRecipe, {
 import { useParams } from "react-router-dom";
 import "./recipe.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFlag } from "@fortawesome/free-regular-svg-icons";
+import { faFlag, faBookmark } from "@fortawesome/free-regular-svg-icons";
+import RecipeSaveCollection from "./RecipeSaveCollection/RecipeSaveCollection";
 
 const RepiceInfo = () => {
   const params = useParams();
   const recipeId = params.recipeId;
   const tokenAccess = getToken();
   let [recipeInfo, setRecipeInfo] = useState();
-  const [idRecipeReport, setIdRecipeReport] = useState(0)
+  const [idRecipeReport, setIdRecipeReport] = useState(0);
 
   const handleGetIdRecipeReport = (e) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setIdRecipeReport(recipeId)
-  }
+    e.preventDefault();
+    e.stopPropagation();
+    setIdRecipeReport(recipeId);
+  };
 
   const resetIdRecipeDelete = (data) => {
-    console.log(data)
-    setIdRecipeReport(data)
-  }
+    console.log(data);
+    setIdRecipeReport(data);
+  };
 
   const [id, setId] = useState();
   const [title, setTitle] = useState("");
@@ -45,6 +46,8 @@ const RepiceInfo = () => {
   const [category, setCategory] = useState("");
   const [ingredient, setIngredient] = useState();
   const [numberLikes, setNumberLikes] = useState();
+  const [collectionSaved, setCollectionSaved] = useState([]);
+  const [isGetCollectionSaveListAgain, setIsGetCollectionListAgain] = useState(false)
 
   useEffect(() => {
     recipeApi
@@ -65,19 +68,28 @@ const RepiceInfo = () => {
         setCategory(data?.category);
         setIngredient(data?.ingredient);
         setNumberLikes(data?.likes);
-        document.title = data?.recipe?.title + ' | Socook';
+        document.title = data?.recipe?.title + " | Socook";
+        setCollectionSaved([...data.collections]);
       })
       .catch((err) => {
         console.log(err);
       });
-      return () => {
-        document.title = 'Socook';
-      }
-  }, [recipeId]);
+    return () => {
+      document.title = "Socook";
+    };
+  }, [recipeId, isGetCollectionSaveListAgain]);
 
   return (
     <div className="recipe-page" style={{ backgroundColor: "" }}>
-      {idRecipeReport ? <ReportInput idReport={idRecipeReport} typeReport="recipe" resetIdDelete={resetIdRecipeDelete}/>  : (<></>)}
+      {idRecipeReport ? (
+        <ReportInput
+          idReport={idRecipeReport}
+          typeReport="recipe"
+          resetIdDelete={resetIdRecipeDelete}
+        />
+      ) : (
+        <></>
+      )}
       <div className="container py-3">
         <RecipeBreadcrumb
           list={[
@@ -106,6 +118,12 @@ const RepiceInfo = () => {
               >
                 {title ? title : <span>&nbsp;</span>}
               </h1>
+              <RecipeSaveCollection
+                collectionSaved={collectionSaved}
+                recipeId={id}
+                isGetCollectionSaveListAgain={isGetCollectionSaveListAgain}
+                setIsGetCollectionListAgain={(data) => setIsGetCollectionListAgain(data)}
+              />
               {shortDescription ? (
                 <p className="recipe-header__description">
                   <ReadMore maxLine={3}>{shortDescription}</ReadMore>
@@ -126,10 +144,12 @@ const RepiceInfo = () => {
               amount={amountOfPeople}
               numberLikes={numberLikes}
             />
-            <span className="recipe-report-icon" onClick={handleGetIdRecipeReport}>
-                <FontAwesomeIcon icon={faFlag} />
+            <span
+              className="recipe-report-icon"
+              onClick={handleGetIdRecipeReport}
+            >
+              <FontAwesomeIcon icon={faFlag} />
             </span>
-            
           </div>
         </div>
         <div className="recipe-body">
@@ -140,7 +160,7 @@ const RepiceInfo = () => {
               <StepComponent loading={!recipeInfo} stepList={step} />
             </div>
             <TagRecipe categorys={category} />
-            <RecipeComment recipeId={recipeId}/>
+            <RecipeComment recipeId={recipeId} />
           </div>
         </div>
       </div>
