@@ -192,7 +192,8 @@ const Header = () => {
     setIsDisplayAdvanceSearch(true);
   };
 
-  const handleCloseAdvanceSearch = () => {
+  const handleCloseAdvanceSearch = (e) => {
+    e.preventDefault()
     setIsDisplayAdvanceSearch(false);
   };
 
