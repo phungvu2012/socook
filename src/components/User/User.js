@@ -16,7 +16,7 @@ import {
   faWater,
   faComment,
   faBars,
-  faX
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import CoverImage from "./CoverImage/CoverImage";
 import Loading from "../Loading/Loading";
@@ -59,20 +59,29 @@ function User() {
   const handleChangeAvatar = (e) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
-    setIsLoading(true);
-    userApi
-      .changeAvatar(token, fd)
-      .then((res) => {
-        if (res.data.user) {
-          setUserSession(token, res.data.user);
-          setUserInfo({ ...getUser() });
+    if (
+      e.target.files[0]?.type === "image/png" ||
+      e.target.files[0]?.type === "image/jpeg" ||
+      e.target.files[0]?.type === "image/jpg" ||
+      e.target.files[0]?.type === "image/svg"
+    ) {
+      setIsLoading(true);
+      userApi
+        .changeAvatar(token, fd)
+        .then((res) => {
+          if (res.data.user) {
+            setUserSession(token, res.data.user);
+            setUserInfo({ ...getUser() });
+            setIsLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log("F: ", err);
           setIsLoading(false);
-        }
-      })
-      .catch((err) => {
-        console.log("F: ", err);
-        setIsLoading(false);
-      });
+        });
+    } else {
+      alert("Ảnh chỉ có thể là tệp .png, .jpg, .jpeg, .svg");
+    }
   };
   return (
     <div className=" user-info-container">
@@ -86,6 +95,7 @@ function User() {
                   type="file"
                   id="upload-avatar"
                   onChange={handleChangeAvatar}
+                  accept="image/png, image/jpg, image/jpeg, image/svg"
                 />
                 <img
                   id="avatar"
@@ -107,9 +117,7 @@ function User() {
           <div className="col-lg-3 col-12">
             <button
               className="user-info-sidebar-button-display"
-              onClick={() =>
-                setIsDisplayUserInfoSidebar((prev) => !prev)
-              }
+              onClick={() => setIsDisplayUserInfoSidebar((prev) => !prev)}
             >
               <FontAwesomeIcon icon={isDisplayUserInfoSidebar ? faX : faBars} />
             </button>
