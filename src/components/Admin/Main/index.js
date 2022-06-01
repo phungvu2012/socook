@@ -1,6 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useOutletContext } from "react-router-dom";
 
 const Main = () => {
+  const [urlPage, setUrlPage] = useOutletContext();
+  
+  useEffect(() => {
+    setUrlPage('');
+  }, [])
+
   return (
     <React.Fragment>
       {/* <!-- End Top Bar --> */}

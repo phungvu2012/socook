@@ -80,19 +80,19 @@ const Ingredient = () => {
     const handleIngredient = (event) => {
       setIngredient(event.target?.value);
       context.ingredient[index].name = event.target?.value;
-      context.setValidIngredient();
+      // context.setValidIngredient();
     }
 
     const handleAmount = (event) => {
       setAmount(event.target?.value);
       context.ingredient[index].amount = event.target?.value;
-      context.setValidIngredient();
+      // context.setValidIngredient();
     }
 
     const handleUnit = (event) => {
       setUnit(event.target?.value);
       context.ingredient[index].unit = event.target?.value;
-      context.setValidIngredient();
+      // context.setValidIngredient();
     }
 
     return (

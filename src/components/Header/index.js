@@ -5,6 +5,8 @@ import {
   faRightFromBracket,
   faXmark,
   faFileUpload,
+  faBarsProgress,
+  faFilePen,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   faSquareCaretDown,
@@ -22,7 +24,7 @@ import {
   getToken,
 } from "./../../features/sessionStorage";
 import React, { useRef, useState, useEffect } from "react";
-
+import adminApi from "../../api/adminApi";
 import searchApi from "../../api/searchApi";
 import homePage from "../../api/homePageApi";
 import Notification from "./Notification/Notification";
@@ -41,6 +43,7 @@ const Header = () => {
   const [filterValue, setFilterValue] = useState("all");
 
   const [userInfo, setUserInfo] = useState();
+  let [isAdmin, setIsAdmin] = useState(false);
   const token = getToken();
 
   useEffect(() => {
@@ -137,6 +140,17 @@ const Header = () => {
           if (mapData?.length) setNotificationList([...mapData.reverse()]);
         })
         .catch((err) => console.log(err));
+
+      adminApi
+        .checkToken(token)
+        .then((res) => {
+          if (res.data.messageCode !== 1) throw { res };
+          setIsAdmin(res.data.user.role === "admin");
+        })
+        .catch((err) => {
+          console.log("err ", err);
+          setIsAdmin(false);
+        });
     }
   }, []);
 
@@ -300,6 +314,23 @@ const Header = () => {
                       <div
                         className={`${styles.popUp} ${styles.popUp__Auto} ${styles.popUp__Square}`}
                       >
+                        {isAdmin && (
+                          <Link
+                            to="/socook/admin"
+                            className={styles.popUp__SettingItem}
+                          >
+                            <div className={styles.popUp__SettingIcon}>
+                              <FontAwesomeIcon icon={faBarsProgress} />
+                            </div>
+                            <div className={styles.popUp__SettingContent}>
+                              <h5
+                                className={`${styles.popUp__SettingTitle} m-0`}
+                              >
+                                Trang quản lý
+                              </h5>
+                            </div>
+                          </Link>
+                        )}
                         <Link
                           to="/user/user-info"
                           className={styles.popUp__SettingItem}
@@ -323,6 +354,19 @@ const Header = () => {
                           <div className={styles.popUp__SettingContent}>
                             <h5 className={`${styles.popUp__SettingTitle} m-0`}>
                               Tạo công thức mới
+                            </h5>
+                          </div>
+                        </Link>
+                        <Link
+                          to="/user/recipe-pending"
+                          className={styles.popUp__SettingItem}
+                        >
+                          <div className={styles.popUp__SettingIcon}>
+                            <FontAwesomeIcon icon={faFilePen} />
+                          </div>
+                          <div className={styles.popUp__SettingContent}>
+                            <h5 className={`${styles.popUp__SettingTitle} m-0`}>
+                              Công thức chờ duyệt
                             </h5>
                           </div>
                         </Link>
@@ -440,7 +484,7 @@ const Header = () => {
                   </React.Fragment>
                 ) : (
                   <Link
-                    to="/login"
+                    to="/register"
                     className={`px-3 fw-bolder border-bottom ${styles.userAvatar}`}
                     style={{ border: 0 }}
                   >
@@ -448,7 +492,7 @@ const Header = () => {
                   </Link>
                 )}
               </div>
-              {(userInfo && token )? (
+              {userInfo && token ? (
                 <Link
                   to={`/user-page/${username}`}
                   className={styles.userAvatar}

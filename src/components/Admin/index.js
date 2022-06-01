@@ -1,21 +1,62 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import "./main.scss";
 import logo from "./../../assets/image/logo/Logo_SoCook_vertical_3.png";
-import { Link, Outlet } from "react-router-dom";
-import {getUser, getToken, removeUserSession} from "./../../features/sessionStorage"
+import { Link, Outlet, useOutletContext } from "react-router-dom";
+import {
+  getUser,
+  getToken,
+  removeUserSession,
+} from "./../../features/sessionStorage";
+import { useLocation } from "react-router-dom";
+
+const list = [
+  {
+    tilte: "Dashboard",
+    url: "",
+  },
+  {
+    tilte: "Report Comment",
+    url: "reportComment",
+  },
+  {
+    tilte: "Report User",
+    url: "reportUser",
+  },
+  {
+    tilte: "Report Recipe",
+    url: "reportRecipe",
+  },
+  {
+    tilte: "Profile",
+    url: "#",
+  },
+  {
+    tilte: "Recipe",
+    url: "recipe",
+  },
+  {
+    tilte: "Setting",
+    url: "#",
+  },
+];
 
 const Admin = () => {
   const user = getUser();
   const token = getToken();
+  const [urlPage, setUrlPage] = useState();
 
   useEffect(() => {
-    document.title = 'Admin | Socook';
+    document.title = "Admin | Socook";
 
     return () => {
-      document.title = 'Socook';
-    }
-  })
-  
+      document.title = "Socook";
+    };
+  }, []);
+
+  useEffect(() => {
+    console.log(urlPage);
+  }, [urlPage]);
+
   const handleOpenSideBar = () => {
     let sidebar = document.querySelector(".sidebar");
     let closeBtn = document.querySelector("#btn");
@@ -28,8 +69,7 @@ const Admin = () => {
     }
   };
 
-  function changeBtn() {
-  }
+  function changeBtn() {}
 
   return (
     <div className="admin">
@@ -45,66 +85,21 @@ const Admin = () => {
           </div>
         </div>
         <ul>
-          <li>
-            <Link to='' className="active">
-              <i className="bx bx-grid-alt"></i>
-              <span className="links_name">Dashboard</span>
-            </Link>
-          </li>
-          <li>
-            <Link to=''>
-              <i className="bx bx-user"></i>
-              <span className="links_name">Report comment</span>
-            </Link>
-          </li>
-          <li>
-            <Link to=''>
-              <i className="bx bx-user"></i>
-              <span className="links_name">Report user </span>
-            </Link>
-          </li>
-          <li>
-            <Link to=''>
-              <i className="bx bx-user"></i>
-              <span className="links_name">Profile</span>
-            </Link>
-          </li>
-          {/* <li>
-            <a href="#">
-              <i className="bx bxs-truck"></i>
-              <span className="links_name">Sales</span>
-            </a>
-          </li> */}
-          {/* <li>
-            <a href="#">
-              <i className="bx bx-dollar"></i>
-              <span className="links_name">Earning</span>
-            </a>
-          </li> */}
-          {/* <li>
-            <a href="#">
-              <i className="bx bxs-user-plus"></i>
-              <span className="links_name">Visitors</span>
-            </a>
-          </li> */}
-          {/* <li>
-            <a href="#">
-              <i className="bx bx-cart-alt"></i>
-              <span className="links_name">Order</span>
-            </a>
-          </li> */}
-          <li>
-            <Link to="recipe">
-              <i className="bx bx-receipt"></i>
-              <span className="links_name">Recipe</span>
-            </Link>
-          </li>
-          <li>
-            <a href="#">
-              <i className="bx bx-cog"></i>
-              <span className="links_name">Setting</span>
-            </a>
-          </li>
+          {list.length &&
+            list.map((value, index) => {
+              return (
+                <li key={index}>
+                  <Link
+                    to={value.url}
+                    className={value.url === urlPage ? "active" : ""}
+                    key={index}
+                  >
+                    <i className="bx bx-grid-alt"></i>
+                    <span className="links_name">{value.tilte}</span>
+                  </Link>
+                </li>
+              );
+            })}
           <li className="login">
             <Link to="/" onClick={removeUserSession}>
               <span className="links_name login_out">Login Out</span>
@@ -131,7 +126,7 @@ const Admin = () => {
             <img src={user.avatar_image} alt="" />
           </a>
         </div>
-        <Outlet />
+        <Outlet context={[urlPage, setUrlPage]} />
       </section>
     </div>
   );

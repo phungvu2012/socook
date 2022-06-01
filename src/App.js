@@ -49,6 +49,9 @@ import MyComment from "./components/User/MyComment/MyComment";
 import FilterRecipePage from "./../src/components/HomePage/FilterRecipePage/FilterRecipePage";
 import AdvanceSearchPage from "./components/AdvanceSearchPage/AdvanceSearchPage";
 import NotFound from "./components/NotFound";
+import ReportComment from "./components/Admin/ReportComment";
+import ReportUser from "./components/Admin/ReportUser";
+import ReportRecipe from "./components/Admin/ReportRecipe";
 
 // import ThemeTest from './ThemeTest'
 
@@ -92,9 +95,7 @@ function App() {
                 path="collection/:collectionId"
                 element={<CollectionSaveDisplay />}
               ></Route>
-              <Route path="/recipe">
-                <Route path=":recipeId" element={<RepiceInfo />} />
-              </Route>
+              <Route path="recipe/:recipeId" element={<RepiceInfo />} />
               <Route
                 path="/filter-recipe/:idFilter"
                 element={<FilterRecipePage />}
@@ -103,11 +104,6 @@ function App() {
               <Route path="*" element={<NotFound />} />
             </Route>
             {/* Có thể truy cập mà không cần đăng nhập, không thể truy cập khi đăng nhập*/}
-            {/* <Route element={<PublicRoute />}>
-              <Route element={<Auth />}>
-                <Route exact path="/register" element={<RegisterForm />} />
-              </Route>
-            </Route> */}
             <Route path="" element={<PublicRoute />}>
               <Route path="" element={<Auth />}>
                 <Route path="/login" element={<LoginForm />} />
@@ -161,6 +157,9 @@ function App() {
               <Route exact path="admin" element={<Admin />}>
                 <Route index element={<Main />} />
                 <Route path="recipe" element={<Recipe />} />
+                <Route path="reportUser" element={<ReportUser />} />
+                <Route path="reportComment" element={<ReportComment />} />
+                <Route path="reportRecipe" element={<ReportRecipe />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

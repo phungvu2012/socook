@@ -494,9 +494,9 @@
       justify-content: flex-end;
     }
   }
-
-
-  .recipe-box {
+  
+  
+  .section-box {
     position: relative;
     background: var(--white);
     padding: 30px;
@@ -505,8 +505,9 @@
     justify-content: space-between;
     border-radius: 20px;
     box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
-
-    .recipe-button {
+    
+    .section-button {
+      color: var(--bs-white);
       border: none;
       outline: none;
       background-color: var(--color-1);
@@ -537,7 +538,6 @@
       }
 
       &--delete {
-        color: var(--bs-white);
         background-color: var(--bs-danger);
         
         &:active {
@@ -558,9 +558,75 @@
           }
         }
       }
+      
+      &--warning {
+        background-color: var(--bs-warning);
+        
+        &:active {
+          background-color: var(--bs-warning);
+        }
+
+        &.active {
+          opacity: 0.5;
+          color: var(--bs-white);
+          background-color: var(--bs-warning);
+  
+          &:hover {
+            opacity: 0.5;
+          }
+  
+          &:active {
+            background-color: var(--bs-warning);
+          }
+        }
+      }
+      
+      &--publish {
+        background-color: var(--bs-teal);
+        
+        &:active {
+          background-color: var(--bs-teal);
+        }
+
+        &.active {
+          opacity: 0.5;
+          color: var(--bs-white);
+          background-color: var(--bs-teal);
+  
+          &:hover {
+            opacity: 0.5;
+          }
+  
+          &:active {
+            background-color: var(--bs-teal);
+          }
+        }
+      }
+
+      &--info {
+        background-color: var(--bs-info);
+        
+        &:active {
+          background-color: var(--bs-info);
+        }
+  
+        &.active {
+          opacity: 0.5;
+          color: var(--bs-white);
+          background-color: var(--bs-info);
+  
+          &:hover {
+            opacity: 0.5;
+          }
+  
+          &:active {
+            background-color: var(--bs-info);
+          }
+        }
+      }
     }
 
-    .recipe-link {
+    .section-link {
       color: var(--bs-blue);
       font-weight: 500;
     }
@@ -569,13 +635,13 @@
     .recent_customers {
       width: 100%;
     }
-
+    
     table {
       width: 100%;
       margin-top: 10px;
       border-collapse: collapse;
     }
-
+    
     .card_header h2 {
       position: relative;
       font-weight: 500;
@@ -586,15 +652,15 @@
     .recent_project table tr {
       border-bottom: 1px solid #f0f0f0;
     }
-
+    
     .recent_project table tbody tr:last-child {
       border-bottom: none;
     }
-
+    
     .recent_project table tr td {
       padding: 1rem 1rem;
     }
-
+    
     .recent_project table tbody tr td {
       position: relative;
       font-size: .938rem;
@@ -606,7 +672,7 @@
     .recent_project table tbody tr td:nth-child(2) {
       padding-left: 2rem;
     }
-
+    
     .recent_project table tbody tr td:last-child {
       padding-left: 2rem;
     }
@@ -621,5 +687,127 @@
       color: var(--white);
       border-radius: 0.375rem;
     }
+  }
+
+}
+
+.recipe-feedback {
+  padding: 1rem 0.25rem 0.5rem;
+  
+  &__input {
+    height: 25rem;
+    width: 100%;
+    padding: 0.5rem 0.5rem;
+    resize: none;
+    transition: 0.4s all ease;
+    border: 0.125rem solid var(--color-1);
+    margin: 0.5rem 0;
+    box-shadow: var(--box-shadow-sm);
+    border-radius: 0.25rem;
+    outline: none;
+
+    &:focus {
+      box-shadow: 0 10px 20px rgb(254 147 36 / 30%);
+      border: 0.125rem outset var(--color-1);
+    }
+  }
+
+  .recipe-button {
+    border: none;
+    outline: none;
+    color: var(--bs-white);
+    background-color: var(--color-1);
+    padding: 0.75rem 1rem;
+    border-radius: 0.25rem;
+    box-shadow: var(--box-shadow-sm);
+    margin-bottom: 0.5rem;
+
+    &:hover {
+      opacity: 0.8;
+    }
+
+    &:active {
+      background-color: var(--color-2);
+    }
+
+    &.active {
+      opacity: 0.5;
+      color: var(--bs-white);
+      background-color: #198754;
+
+      &:hover {
+        opacity: 0.5;
+      }
+
+      &:active {
+        background-color: #198754;
+      }
+    }
+
+    &--delete {
+      background-color: var(--bs-danger);
+      
+      &:active {
+        background-color: var(--bs-danger);
+      }
+
+      &.active {
+        opacity: 0.5;
+        color: var(--bs-white);
+        background-color: var(--bs-danger);
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        &:active {
+          background-color: var(--bs-danger);
+        }
+      }
+    }
+    
+    &--warning {
+      background-color: var(--bs-warning);
+      
+      &:active {
+        background-color: var(--bs-warning);
+      }
+
+      &.active {
+        opacity: 0.5;
+        color: var(--bs-white);
+        background-color: var(--bs-warning);
+
+        &:hover {
+          opacity: 0.5;
+        }
+
+        &:active {
+          background-color: var(--bs-warning);
+        }
+      }
+    }
+
+    &--publish {
+        background-color: var(--bs-teal);
+        
+        &:active {
+          background-color: var(--bs-teal);
+        }
+
+        &.active {
+          opacity: 0.5;
+          color: var(--bs-white);
+          background-color: var(--bs-teal);
+  
+          &:hover {
+            opacity: 0.5;
+          }
+  
+          &:active {
+            background-color: var(--bs-teal);
+          }
+        }
+      }
   }
 }

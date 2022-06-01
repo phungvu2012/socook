@@ -23,6 +23,7 @@ const AdminRoute = () => {
       })
       .catch(err => {
         console.log("err ", err);
+        setIsAdmin(false);
         setAutoLoading(false);
       })
     }, []);
