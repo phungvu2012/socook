@@ -168,7 +168,7 @@ const RegisterForm = () => {
         <div className='form-auth__text text-start'>
           <p className={"text-danger m-0 "  + (pwd && !validPwd ? "" : "d-none")}>
             Mật khẩu trên 8 ký tự<br />
-            Phải có ít nhất 1 chữ cái thường, 1 số và 1 ký tự đặc biệt(<span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>)<br />
+            Phải có ít nhất 1 chữ cái thường, 1 chữ cái hoa, 1 số và 1 ký tự đặc biệt(<span aria-label="exclamation mark">!</span> <span aria-label="at symbol">@</span> <span aria-label="hashtag">#</span> <span aria-label="dollar sign">$</span> <span aria-label="percent">%</span>)<br />
           </p>
         </div>
         <div className={'form-auth__input-field '+ (!validMatch && matchPwd ? "invalid" : "")}>

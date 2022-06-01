@@ -7,6 +7,7 @@ import searchApi from "../../api/searchApi";
 import CollectionsSearchResult from "./CollectionSearchResult/CollectionSearchResult";
 import RecipesSearchResult from "./RecipeSearchResult/RecipeSearchResult";
 import Pagination from "../Pagination/Pagination";
+import Loading from "../Loading/Loading";
 
 function SearchPage() {
   const params = useParams();
@@ -15,6 +16,7 @@ function SearchPage() {
   const [isInteractionCollection, setIsInteractionCollection] = useState(false);
   const [currentPage1, setCurrentPage1] = useState(1);
   const [currentPage2, setCurrentPage2] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const limitItemInPage = 12;
 
   const receiveValuePagination1 = (curPage) => {
@@ -25,23 +27,33 @@ function SearchPage() {
   };
 
   useEffect(() => {
+    setIsLoading(true);
     searchApi
       .searchRecipes(params.keyword)
       .then((res) => {
         setRecipesSearchResult([...res.data]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
 
     searchApi
       .searchCollections(params.keyword)
       .then((res) => {
         setCollectionsSearchResult([...res.data]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, [params.keyword, isInteractionCollection]);
 
   return (
     <>
+      {isLoading && <Loading />}
       {!recipesSearchResult[0] && !collectionsSearchResult[0] ? (
         <div className="container">
           <div className="row">
@@ -66,7 +78,7 @@ function SearchPage() {
                     )
                     .map((recipe) => {
                       return (
-                        <div className="col-2" key={recipe.id}>
+                        <div className="col-xl-2 col-lg-3 col-md-4 col-6" key={recipe.id}>
                           <RecipesSearchResult recipe={recipe} />
                         </div>
                       );
@@ -98,7 +110,7 @@ function SearchPage() {
                     )
                     .map((collection) => {
                       return (
-                        <div className="col-2" key={collection.id}>
+                        <div className="col-xl-2 col-lg-3 col-md-4 col-6" key={collection.id}>
                           <CollectionsSearchResult
                             collection={collection}
                             setIsInteractionCollection={

@@ -4,11 +4,13 @@ import "./UserInfo.scss";
 import { getUser } from "./../../features/sessionStorage";
 import { setUserSession } from "./../../features/sessionStorage";
 import userApi from "../../api/userApi";
+import Loading from "../Loading/Loading";
 
 function UserInfo() {
   const token = getToken();
   const [userInfo, setUserInfo] = useState(getUser());
   const [userHeader, setUserHeader] = useState("Thông tin cá nhân");
+  const [isLoading, setIsLoading] = useState(false);
   const citys = [
     "Hà Nội",
     "Hà Giang",
@@ -75,16 +77,19 @@ function UserInfo() {
     "Cà Mau",
   ].sort();
   const handleSubmitUserForm = (e) => {
+    setIsLoading(true);
     userApi
       .changeUserInfo(token, userInfo)
       .then((res) => {
         if (res.data.user) {
           setUserSession(token, res.data.user);
+          setIsLoading(false);
           setUserInfo({ ...getUser() });
         }
       })
       .catch((err) => {
         console.log("F: ", err);
+        setIsLoading(false);
       });
     e.preventDefault();
   };
@@ -135,6 +140,7 @@ function UserInfo() {
   };
   return (
     <>
+      {isLoading && <Loading />}
       <h3 className="user-header">{userHeader}</h3>
       <form className="user-info" onSubmit={handleSubmitUserForm}>
         <div className="user-content">

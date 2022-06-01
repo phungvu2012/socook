@@ -12,6 +12,7 @@ import {
   faHeart,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import Loading from "../../Loading/Loading";
 
 function Collection() {
   const [userCollection, setUserCollection] = useState([]);
@@ -26,6 +27,7 @@ function Collection() {
   const [userHeader, setUserHeader] = useState("Bộ sưu tập");
   const [currentPage, setCurrentPage] = useState(1);
   const limitItemInPage = 8;
+  const [isLoading, setIsLoading] = useState(true);
   const token = getToken();
   const capitalize = (str) => {
     if (!str) return str;
@@ -54,8 +56,12 @@ function Collection() {
       .then((res) => {
         setIsDeleteCollection(false);
         setIdCollectionDelete("");
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   const handleCancelUpdateCollection = (e) => {
@@ -68,6 +74,7 @@ function Collection() {
 
   const handleUpdateCollection = (e) => {
     e.preventDefault();
+    setIsLoading(true);
     async function updateCollection() {
       if (isCreateCollection) {
         await collection
@@ -80,6 +87,11 @@ function Collection() {
             setCollectionNameUpdate("");
             setCollectionPrivacy(1);
             setIsCreateCollection(false);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
           });
       } else {
         await collection
@@ -92,6 +104,11 @@ function Collection() {
             setCollectionNameUpdate("");
             setCollectionPrivacy(1);
             setIsCreateCollection(false);
+            setIsLoading(false);
+          })
+          .catch((err) => {
+            console.log(err);
+            setIsLoading(false);
           });
       }
     }
@@ -100,20 +117,29 @@ function Collection() {
 
   const handleSaveCollection = (e, collectionId) => {
     e.preventDefault();
+    setIsLoading(true);
     if (e.target.dataset.isSave === "1") {
       collection
         .unsaveCollection(token, collectionId)
         .then((res) => {
           setIsInteractionCollection((prevState) => !prevState);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     } else {
       collection
         .saveCollection(token, collectionId)
         .then((res) => {
           setIsInteractionCollection((prevState) => !prevState);
+          setIsLoading(false);
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
   };
 
@@ -125,6 +151,7 @@ function Collection() {
     async function getCollection() {
       const res = await collection.getCollection(token);
       setUserCollection([...res.data]);
+      setIsLoading(false);
     }
     getCollection();
   }, [
@@ -145,6 +172,7 @@ function Collection() {
 
   return (
     <>
+      {isLoading && <Loading />}
       <h3 className="user-header">{userHeader}</h3>
       <div className="collection-container">
         <button
@@ -165,7 +193,7 @@ function Collection() {
                 return (
                   <Link
                     to={`${collection.id}`}
-                    className="col-3"
+                    className="col-xxl-3 col-xl-4 col-lg-6 col-12"
                     key={collection.id}
                     state={{
                       collectionName: capitalize(collection.name),

@@ -11,6 +11,7 @@ import {
   faCircleXmark,
 } from "@fortawesome/free-regular-svg-icons";
 import Pagination from "../../Pagination/Pagination";
+import Loading from "../../Loading/Loading";
 
 function CollectionDisplay() {
   const [recipes, setRecipes] = useState([]);
@@ -20,6 +21,7 @@ function CollectionDisplay() {
   const { collectionId } = useParams();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const limitItemInPage = 8;
 
   const receiveValuePagination = (curPage) => {
@@ -37,15 +39,20 @@ function CollectionDisplay() {
 
   const confirmDeleteRecipeCollection = () => {
     async function deleteRecipe() {
+      setIsLoading(true);
       collection
         .deleteRecipeInCollection(token, collectionId, idRecipeDelete)
         .then((res) => {
           if (res.data === "Success") {
             setIdRecipeDelete(0);
             setIsReRender((prevState) => !prevState);
+            setIsLoading(false);
           }
         })
-        .catch((err) => console.log(err));
+        .catch((err) => {
+          console.log(err);
+          setIsLoading(false);
+        });
     }
     deleteRecipe();
   };
@@ -54,13 +61,20 @@ function CollectionDisplay() {
     async function getRecipes() {
       await recipeApi
         .getRecipeInCollection(collectionId)
-        .then((res) => setRecipes([...res.data.data]))
-        .catch((err) => console.log("F: ", err));
+        .then((res) => {
+          setRecipes([...res.data.data]);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log("F: ", err);
+          setIsLoading(false);
+        });
     }
     getRecipes();
   }, [isReRender]);
   return (
     <>
+      {isLoading && <Loading />}
       <div className="collection-display-container">
         <div className="container">
           <h3 className="collection-display-title">
@@ -77,7 +91,7 @@ function CollectionDisplay() {
                 )
                 .map((recipe) => {
                   return (
-                    <div className="col-3" key={recipe.id}>
+                    <div className="col-xxl-3 col-xl-4 col-lg-6 col-12" key={recipe.id}>
                       <div className="collection-recipe-container">
                         <Link
                           to={`/recipe/${recipe.id}`}

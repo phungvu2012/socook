@@ -3,6 +3,7 @@ import { getToken } from "../../../features/sessionStorage";
 import recipeApi from "../../../api/recipeApi";
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+import Loading from "../../Loading/Loading";
 
 function RecipeReject() {
   const token = getToken();
@@ -10,6 +11,7 @@ function RecipeReject() {
   const [recipeRejectList, setRecipeRejectList] = useState([]);
   const [isDeleteRecipe, setIsDeleteRecipe] = useState(0);
   const [isGetRejectRecipeList, setIsGetRejectRecipeList] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const handleDeleteRecipe = (e, id) => {
     e.preventDefault();
@@ -24,13 +26,18 @@ function RecipeReject() {
   };
 
   const confirmDeletePendingRecipe = () => {
+    setIsLoading(true);
     recipeApi
       .deleteRecipe(token, isDeleteRecipe)
       .then((res) => {
         setIsDeleteRecipe(0);
         setIsGetRejectRecipeList((prev) => !prev);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   };
 
   const cancelDeleteRecipeCollection = () => {
@@ -42,16 +49,23 @@ function RecipeReject() {
       .getMyRejectRecipe(token)
       .then((res) => {
         setRecipeRejectList([...res.data.data]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
   }, [isGetRejectRecipeList]);
   return (
     <div className="pending-recipe-container">
+      {isLoading && <Loading />}
       <h5>Công thức bị từ chối</h5>
-      <div className="pending-recipe-wrapper">
+      <div className="pending-recipe-wrapper reject-recipe-header">
         <div className="reject-recipe-info">
           <span className="reject-recipe-title">Tên công thức</span>
-          <span className="reject-recipe-reason reject-recipe-reason-header">Lý do từ chối</span>
+          <span className="reject-recipe-reason reject-recipe-reason-header">
+            Lý do từ chối
+          </span>
         </div>
       </div>
       {recipeRejectList?.map((recipe) => {

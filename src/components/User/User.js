@@ -14,9 +14,12 @@ import {
   faBookmark,
   faBan,
   faWater,
-  faComment
+  faComment,
+  faBars,
+  faX,
 } from "@fortawesome/free-solid-svg-icons";
 import CoverImage from "./CoverImage/CoverImage";
+import Loading from "../Loading/Loading";
 
 function User() {
   const token = getToken();
@@ -25,6 +28,9 @@ function User() {
     setUserHeader(mapUserHeader(location.pathname.split("/").at(-1)));
   };
   const [userInfo, setUserInfo] = useState(getUser());
+  const [isLoading, setIsLoading] = useState(false);
+  const [isDisplayUserInfoSidebar, setIsDisplayUserInfoSidebar] =
+    useState(false);
   const mapUserHeader = (header) => {
     switch (header) {
       case "cover-image":
@@ -37,12 +43,12 @@ function User() {
         return "Công thức của tôi";
       case "collection-save":
         return "Bộ sưu tập đã lưu";
-      case "recipe-pending": 
+      case "recipe-pending":
         return "Công thức chờ duyệt";
       case "recipe-reject":
-        return "Công thức bị từ chối"
-      case "my-comment": 
-        return "Lịch sử bình luận"
+        return "Công thức bị từ chối";
+      case "my-comment":
+        return "Lịch sử bình luận";
       default:
         return "Thông tin cá nhân";
     }
@@ -53,18 +59,33 @@ function User() {
   const handleChangeAvatar = (e) => {
     const fd = new FormData();
     fd.append("image", e.target.files[0]);
-    userApi
-      .changeAvatar(token, fd)
-      .then((res) => {
-        if (res.data.user) {
-          setUserSession(token, res.data.user);
-          setUserInfo({ ...getUser() });
-        }
-      })
-      .catch((err) => console.log("F: ", err));
+    if (
+      e.target.files[0]?.type === "image/png" ||
+      e.target.files[0]?.type === "image/jpeg" ||
+      e.target.files[0]?.type === "image/jpg" ||
+      e.target.files[0]?.type === "image/svg"
+    ) {
+      setIsLoading(true);
+      userApi
+        .changeAvatar(token, fd)
+        .then((res) => {
+          if (res.data.user) {
+            setUserSession(token, res.data.user);
+            setUserInfo({ ...getUser() });
+            setIsLoading(false);
+          }
+        })
+        .catch((err) => {
+          console.log("F: ", err);
+          setIsLoading(false);
+        });
+    } else {
+      alert("Ảnh chỉ có thể là tệp .png, .jpg, .jpeg, .svg");
+    }
   };
   return (
     <div className=" user-info-container">
+      {isLoading && <Loading />}
       <div className="container">
         <div className="row">
           <div className="user-info-header-image">
@@ -74,6 +95,7 @@ function User() {
                   type="file"
                   id="upload-avatar"
                   onChange={handleChangeAvatar}
+                  accept="image/png, image/jpg, image/jpeg, image/svg"
                 />
                 <img
                   id="avatar"
@@ -92,8 +114,19 @@ function User() {
       </div>
       <div className="container">
         <div className="row">
-          <div className="col-3">
-            <div className="user-info-sidebar">
+          <div className="col-lg-3 col-12">
+            <button
+              className="user-info-sidebar-button-display"
+              onClick={() => setIsDisplayUserInfoSidebar((prev) => !prev)}
+            >
+              <FontAwesomeIcon icon={isDisplayUserInfoSidebar ? faX : faBars} />
+            </button>
+            <div
+              className={`user-info-sidebar ${
+                isDisplayUserInfoSidebar ? "user-info-sidebar--display" : ""
+              }`}
+            >
+              {console.log(isDisplayUserInfoSidebar)}
               <div className="user-function">
                 <div
                   className={`user-function-button ${
@@ -110,6 +143,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Thông tin cá nhân
@@ -134,6 +168,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Đổi mật khẩu
@@ -155,6 +190,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Bộ sưu tập
@@ -176,6 +212,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức của tôi
@@ -200,6 +237,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Bộ sưu tập đã lưu
@@ -224,6 +262,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức đang chờ duyệt
@@ -249,6 +288,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Công thức bị từ chối
@@ -263,10 +303,7 @@ function User() {
                       : ""
                   }`}
                 >
-                  <Link
-                    to="my-comment"
-                    className="user-function-button-link"
-                  >
+                  <Link to="my-comment" className="user-function-button-link">
                     <FontAwesomeIcon
                       className="user-function-button-icon"
                       icon={faComment}
@@ -274,6 +311,7 @@ function User() {
                     <span
                       onClick={(e) => {
                         setUserHeader(e.target.innerHTML);
+                        setIsDisplayUserInfoSidebar(false);
                       }}
                     >
                       Lịch sử bình luận
@@ -284,7 +322,7 @@ function User() {
             </div>
           </div>
 
-          <div className="col-9">
+          <div className="col-lg-9 col-12">
             <div className="user-container">
               <Outlet />
             </div>

@@ -7,6 +7,7 @@ import CollectionsSearchResult from "../SearchPage/CollectionSearchResult/Collec
 import RankRecipe from "./RankRecipe/RankRecipe";
 import RankUser from "./RankUser/RankUser";
 import SliderHome from "./slider";
+import Loading from "../Loading/Loading";
 
 const Home = () => {
   const [categoryGroups, setCategoryGroups] = useState([]);
@@ -18,6 +19,7 @@ const Home = () => {
     useState(false);
   const [isInteractionCollection2, setIsInteractionCollection2] =
     useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     homePage
@@ -31,8 +33,12 @@ const Home = () => {
       .getTopViewRecipe()
       .then((res) => {
         setTopViewRecipe([...res.data.data]);
+        setIsLoading(false);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsLoading(false);
+      });
 
     homePage
       .getTopNewRecipe()
@@ -46,6 +52,7 @@ const Home = () => {
     homePage
       .getTopSaveCollecion()
       .then((res) => {
+        console.log("res SC: ", res);
         setTopSaveCollection([...res.data]);
       })
       .catch((err) => console.log("SC F:", err));
@@ -59,6 +66,7 @@ const Home = () => {
 
   return (
     <div className="home-page">
+      {isLoading && <Loading />}
       <div className="container">
         <div className="row mt-1 mt-xl-2">
           <SliderHome />
@@ -78,14 +86,17 @@ const Home = () => {
               );
             })}
           </div>
-          <div className="col-9">
+          <div className="col-xl-9 col-lg-8">
             <div className="top-view-recipe">
               <h4>Công thức nổi bật</h4>
               <div className="container">
                 <div className="row">
                   {topViewRecipe?.map((recipe) => {
                     return (
-                      <div className="col-3" key={recipe.id}>
+                      <div
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
+                        key={recipe.id}
+                      >
                         <RecipesSearchResult recipe={recipe} />
                       </div>
                     );
@@ -100,7 +111,10 @@ const Home = () => {
                 <div className="row">
                   {topNewRecipe?.slice(0, 8).map((recipe) => {
                     return (
-                      <div className="col-3" key={recipe.id}>
+                      <div
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
+                        key={recipe.id}
+                      >
                         <RecipesSearchResult recipe={recipe} />
                       </div>
                     );
@@ -112,10 +126,14 @@ const Home = () => {
             <div className="top-save-collection">
               <h4>Bộ sưu tập nổi bật</h4>
               <div className="container">
+                {console.log("save col: ", topSaveCollection)}
                 <div className="row">
                   {topSaveCollection?.map((collection) => {
                     return (
-                      <div className="col-3" key={collection.id}>
+                      <div
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
+                        key={collection.id}
+                      >
                         <CollectionsSearchResult
                           collection={collection}
                           setIsInteractionCollection={
@@ -136,7 +154,10 @@ const Home = () => {
                 <div className="row">
                   {topNewCollection?.slice(0, 8).map((collection) => {
                     return (
-                      <div className="col-3" key={collection.id}>
+                      <div
+                        className="col-xl-3 col-lg-4 col-md-4 col-6"
+                        key={collection.id}
+                      >
                         <CollectionsSearchResult
                           collection={collection}
                           setIsInteractionCollection={
@@ -151,7 +172,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-          <div className="col-3">
+          <div className="col-xl-3 col-lg-4">
             <RankUser />
             <RankRecipe />
           </div>

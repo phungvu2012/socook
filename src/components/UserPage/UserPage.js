@@ -231,7 +231,7 @@ function UserPage() {
                           )
                           .map((recipe) => {
                             return (
-                              <div className="col-2" key={recipe.id}>
+                              <div className="col-xl-2 col-lg-3 col-md-4 col-6" key={recipe.id}>
                                 <RecipeSearchResult
                                   recipe={{
                                     ...recipe,
@@ -249,7 +249,7 @@ function UserPage() {
                           )
                           .map((collection) => {
                             return (
-                              <div className="col-2" key={collection.id}>
+                              <div className="col-xl-2 col-lg-3 col-md-4 col-6" key={collection.id}>
                                 <CollectionsSearchResult
                                   collection={collection}
                                   setIsInteractionCollection={

@@ -16,6 +16,10 @@
   border-radius: 8px;
 }
 
+.user-info-sidebar-button-display {
+  display: none;
+}
+
 .user-info-header-image {
   height: 320px;
   display: flex;
@@ -126,4 +130,53 @@
 
 .user-header {
   font-size: 1.25rem;
+  margin: 12px 0;
+}
+
+@media (max-width: 992px) {
+  .user-info-sidebar {
+    display: none;
+    position: absolute;
+    width: 80%;
+    z-index: 80;
+    &--display {
+      display: flex;
+    }
+  }
+
+  .user-info-sidebar-button-display {
+    outline: none;
+    border: none;
+    position: relative;
+    transform: translateY(calc(100% + 4px));
+    left: 4px;
+    z-index: 100;
+    background-color: #fff;
+    display: block;
+    text-align: left;
+  }
+
+  .user-field-name {
+    width: 120px !important;
+  }
+
+  .user-avatar label {
+    width: 120px;
+    height: 120px;
+  }
+}
+
+@media (max-width: 768px) {
+  .user-info-header-image {
+    display: flex;
+    flex-direction: column-reverse;
+    min-height: 440px;
+  }
+  .user-info-cover-image {
+    height: 240px;
+  }
+
+  .user-avatar {
+    padding-top: 12px;
+  }
 }

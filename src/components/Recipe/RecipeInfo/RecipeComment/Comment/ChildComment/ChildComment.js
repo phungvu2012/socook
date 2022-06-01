@@ -10,6 +10,7 @@ function ChildComment({
   childComment,
   convertTimeToDate,
   triggerRenderParentComment,
+  isAdmin,
 }) {
   const token = getToken();
   const userInfo = getUser();
@@ -164,7 +165,26 @@ function ChildComment({
                   >
                     x
                   </li>
-                  {userInfo?.user_id === childComment.user_id ? (
+                  {isAdmin && userInfo?.user_id !== childComment.user_id ? (
+                    <>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setIsDeleteComment(true);
+                          setIsDisplayCommentAction(false);
+                        }}
+                      >
+                        Xóa
+                      </li>
+                      <li
+                        className="comment-actions-delete"
+                        onClick={handleGetIdRecipeReport}
+                      >
+                        Báo cáo
+                      </li>
+                    </>
+                  ) : userInfo?.user_id === childComment.user_id ? (
                     <>
                       <li
                         className="comment-actions-update"

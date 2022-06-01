@@ -1,0 +1,80 @@
+.recipe-save-collection-container {
+  color: #333;
+  position: relative;
+  text-align: right;
+  transform: translateY(-160%);
+}
+
+.recipe-save-collection-btn {
+  border: none;
+  outline: none;
+  width: 60px;
+  background-color: #fff;
+  font-size: 1.5rem;
+  color: blue;
+}
+
+.recipe-save-collection-my-collection-list {  
+  list-style-type: none;
+  box-shadow: 0 7px 25px rgba(0, 0, 0, 0.08);
+  padding: 16px;
+  margin: 0;
+  width: 280px;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  text-align: right;
+  background-color: #fff;
+  height: 240px;
+  padding-bottom: 8px;
+  &--overflow-y {
+    overflow-y: scroll;
+  }
+}
+
+.recipe-save-collection-my-collection-item {
+  padding: 4px 8px;
+  height: 36px;
+  a {
+    color: #333;
+    display: flex;
+    span {
+      margin-left: 4px;
+    }
+    .recipe-save-collection-my-collection-item-name {
+      width: 240px;
+      text-align: left;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      overflow: hidden;
+      margin: auto 0;
+      font-weight: 500;
+    }
+    .recipe-save-collection-my-collection-item-icon {
+      flex: 1;
+      font-size: 1.25rem;
+      &--check {
+        color: #17e717;
+      }
+      &--add {
+        color: #958282;
+      }
+    }
+  }
+}
+
+.recipe-save-collection-my-collection-item:not(:last-child) {
+  border-bottom: 1px solid #ccc;
+}
+
+.recipe-save-collection-my-collection-list::-webkit-scrollbar {
+  width: 8px;
+  background-color: #fff;
+}
+
+.recipe-save-collection-my-collection-list::-webkit-scrollbar-thumb {
+  border-radius: 10px;
+  box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,.3);
+  background-color: #555;
+}

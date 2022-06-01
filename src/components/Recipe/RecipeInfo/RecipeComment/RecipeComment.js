@@ -4,6 +4,7 @@ import Comment from "./Comment/Comment";
 import { getToken } from "./../../../../features/sessionStorage";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import adminApi from '../../../../api/adminApi'
 
 function RecipeComment({ recipeId }) {
   const token = getToken();
@@ -13,6 +14,7 @@ function RecipeComment({ recipeId }) {
   const [isGetCommentList, setIsGetCommentList] = useState(false);
   const [sortCondition, setSortCondition] = useState("newest");
   const [loadMoreValue, setLoadMoreValue] = useState();
+  const [isAdmin, setIsAdmin] = useState(false)
 
   const handlePostComment = (e) => {
     e.preventDefault();
@@ -64,6 +66,19 @@ function RecipeComment({ recipeId }) {
       })
       .catch((err) => console.log(err));
   }, [recipeId, isGetCommentList]);
+
+  useEffect(() => {
+    adminApi.checkToken(token)
+      .then(res => {
+        console.log('Check token: ', res)
+        if(res.data.user.role === "admin") {
+          setIsAdmin(true)
+        }
+      })
+      .catch(err => {
+        console.log(err)
+      })
+  }, [])
 
   return (
     <div className="recipe-comment-container">
@@ -117,6 +132,7 @@ function RecipeComment({ recipeId }) {
               key={comment.id}
               isGetCommentList={isGetCommentList}
               setIsGetCommentList={(data) => setIsGetCommentList(data)}
+              isAdmin={isAdmin}
             />
           ))}
       </div>

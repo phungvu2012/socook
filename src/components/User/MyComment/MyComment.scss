@@ -48,5 +48,17 @@
   }
 }
 
+@media (max-width: 992px) {
+  .my-comment-history-wrapper {
+    width: 100% !important;
+  }
+}
+
+@media (max-width: 768px) {
+  .my-comment-history-more-text {
+    display: none;
+  }
+}
+
 
 

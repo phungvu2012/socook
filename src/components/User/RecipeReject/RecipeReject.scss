@@ -3,6 +3,17 @@
   display: flex;
 }
 
+.reject-recipe-header {
+  min-height: 24px;
+  .reject-recipe-info {
+    display: flex;
+    justify-content: flex-start !important;
+    span {
+      text-align: left;
+    }
+  }
+}
+
 .reject-recipe-title {
   width: 160px;
   font-weight: 700;
@@ -19,5 +30,16 @@
   padding: 0 8px;
   &-header {
     font-weight: 700;
+  }
+} 
+
+@media (max-width: 992px) {
+  .reject-recipe-info {
+    width: 100%;
+  }
+  .reject-recipe-title {
+    width: 80px;
+    padding: 0 8px;
+    text-align: left;
   }
 }

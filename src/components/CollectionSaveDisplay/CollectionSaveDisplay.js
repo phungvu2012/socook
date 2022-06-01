@@ -6,12 +6,13 @@ import recipeApi from "../../api/recipeApi";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faClock } from "@fortawesome/free-regular-svg-icons";
 import Pagination from "../Pagination/Pagination";
-
+import Loading from "../Loading/Loading";
 function CollectionSaveDisplay() {
   const [recipes, setRecipes] = useState([]);
   const { collectionId } = useParams();
   const location = useLocation();
   const [currentPage, setCurrentPage] = useState(1);
+  const [isLoading, setIsLoading] = useState(true);
   const limitItemInPage = 18;
 
   const receiveValuePagination = (curPage) => {
@@ -21,13 +22,20 @@ function CollectionSaveDisplay() {
     async function getRecipes() {
       await recipeApi
         .getRecipeInCollection(collectionId)
-        .then((res) => setRecipes([...res.data.data]))
-        .catch((err) => console.log("F: ", err));
+        .then((res) => {
+          setRecipes([...res.data.data]);
+          setIsLoading(false);
+        })
+        .catch((err) => {
+          console.log("F: ", err);
+          setIsLoading(false);
+        });
     }
     getRecipes();
   }, []);
   return (
     <>
+      {isLoading && <Loading />}
       <div className="collection-display-container">
         <div className="container">
           <h3 className="collection-display-title">
