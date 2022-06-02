@@ -1,7 +1,7 @@
 import axiosHost2 from "./axiosHost2";
 class Collection {
   getCollection = (token) => {
-    const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL;
+    const COLLECTION_URL = "/collections";
     return axiosHost2.get(COLLECTION_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -10,7 +10,7 @@ class Collection {
   };
   deleteCollection = (token, idCollectionDelete) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_COLLECTION_URL + `/${idCollectionDelete}`;
+      "/collections" + `/${idCollectionDelete}`;
     return axiosHost2.delete(COLLECTION_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -19,7 +19,7 @@ class Collection {
   };
   updateCollection = (token, idCollectionUpdate, collectionObj) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_COLLECTION_URL + `/${idCollectionUpdate}`;
+      "/collections" + `/${idCollectionUpdate}`;
     return axiosHost2.put(COLLECTION_URL, collectionObj, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -27,7 +27,7 @@ class Collection {
     });
   };
   createCollection = (token, collectionObj) => {
-    const COLLECTION_URL = process.env.REACT_APP_COLLECTION_URL;
+    const COLLECTION_URL = "/collections";
     return axiosHost2.post(COLLECTION_URL, collectionObj, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -37,7 +37,7 @@ class Collection {
 
   addRecipeToCollection = (token, idCollection, idRecipeDelete) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_COLLECTION_URL +
+      "/collections" +
       `/${idCollection}/${idRecipeDelete}`;
     return axiosHost2.post(
       COLLECTION_URL,
@@ -54,7 +54,7 @@ class Collection {
 
   deleteRecipeInCollection = (token, idCollection, idRecipeDelete) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_COLLECTION_URL +
+      "/collections" +
       `/${idCollection}/${idRecipeDelete}`;
     return axiosHost2.delete(COLLECTION_URL, {
       headers: {
@@ -64,7 +64,7 @@ class Collection {
   };
 
   getCollectionSave = (token) => {
-    const COLLECTION_URL = process.env.REACT_APP_INTERACTION_URL;
+    const COLLECTION_URL = "/interaction/collections";
     return axiosHost2.get(COLLECTION_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -74,7 +74,7 @@ class Collection {
 
   saveCollection = (token, collectionId) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
+      "/interaction/collections" + `/${collectionId}`;
     const fakeData = {
       id: collectionId,
     };
@@ -87,7 +87,7 @@ class Collection {
 
   unsaveCollection = (token, collectionId) => {
     const COLLECTION_URL =
-      process.env.REACT_APP_INTERACTION_URL + `/${collectionId}`;
+      "/interaction/collections" + `/${collectionId}`;
     return axiosHost2.delete(COLLECTION_URL, {
       headers: {
         Authorization: `Bearer ${token}`,

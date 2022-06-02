@@ -2,49 +2,49 @@ import axiosHost1 from "./axiosHost1";
 import axiosHost2 from "./axiosHost2";
 class HomePage {
   getCategory = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_CATEGORY_URL;
+    const COLLECTION_URL = "/categories/groups";
     return axiosHost2.get(COLLECTION_URL);
   };
   getTopViewRecipe = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_RECIPE_VIEW_URL + `?limit=8`;
+    const COLLECTION_URL = "/api/recipe/top-recipe" + `?limit=8`;
     return axiosHost1.get(COLLECTION_URL);
   };
   getTopNewRecipe = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_NEW_RECIPE_URL;
+    const COLLECTION_URL = "/rank/recipes/top10new";
     return axiosHost2.get(COLLECTION_URL);
   };
   getTopSaveCollecion = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_COLLECTION_SAVE_URL + `?limit=8`;
+    const COLLECTION_URL = "/rank/collections/toplike" + `?limit=8`;
     return axiosHost2.get(COLLECTION_URL);
   };
   getTopNewCollection = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_NEW_COLLECTION_URL;
+    const COLLECTION_URL = "/rank/collections/top10new";
     return axiosHost2.get(COLLECTION_URL);
   };
 
   getTopViewRecipeInWeek = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_10_VIEW_RECIPE_IN_WEEK_URL;
+    const COLLECTION_URL = "/rank/recipes/week/top10view";
     return axiosHost2.get(COLLECTION_URL);
   }
 
   getTopUserDependTotalRecipe = () => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_TOP_USER_DEPEND_TOTAL_RECIPE_URL + '?Limit=5';
+    const COLLECTION_URL = "/api/user/topuser-recipe" + '?Limit=5';
     return axiosHost1.get(COLLECTION_URL);
   }
   getCategoryInGroup = (idCategoryGroup) => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_CATEGORY_FROM_GROUP_URL + `/${idCategoryGroup}`;
+    const COLLECTION_URL = "/categories/groups" + `/${idCategoryGroup}`;
     return axiosHost2.get(COLLECTION_URL);
   }
   getAllRecipeFromCategoryGroup = (idCategoryGroup) => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_ALL_RECIPE_FROM_CATEGORY_GROUP_URL + `/${idCategoryGroup}`;
+    const COLLECTION_URL = "/categories/recipes/groups" + `/${idCategoryGroup}`;
     return axiosHost2.get(COLLECTION_URL);
   }
   getAllRecipeFromCategory = (idCategory) => {
-    const COLLECTION_URL = process.env.REACT_APP_GET_ALL_RECIPE_FROM_CATEGORY_URL + `/${idCategory}`;
+    const COLLECTION_URL = "/categories" + `/${idCategory}`;
     return axiosHost2.get(COLLECTION_URL);
   }
   getNotificationList = (token) => {
-    const GET_NOTIFICATION_URL = process.env.REACT_APP_GET_NOTIFICATION_URL;
+    const GET_NOTIFICATION_URL = "/api/interac/notification";
     return axiosHost1.get(GET_NOTIFICATION_URL, {
       headers: {
         token: `Bearer ${token}`,
@@ -52,7 +52,7 @@ class HomePage {
     });
   };
   setViewNotification = (token, idNoti) => {
-    const SET_VIEW_NOTIFICATION_URL = process.env.REACT_APP_CHECK_VIEW_NOTIFICATION_URL;
+    const SET_VIEW_NOTIFICATION_URL = "/api/interac/notification";
     return axiosHost1.put(SET_VIEW_NOTIFICATION_URL, {
       id: idNoti
     }, {
@@ -63,7 +63,7 @@ class HomePage {
   };
 
   setViewAllNotification = (token) => {
-    const SET_VIEW_ALL_NOTIFICATION_URL = process.env.REACT_APP_CHECK_VIEW_ALL_NOTIFICATION_URL;
+    const SET_VIEW_ALL_NOTIFICATION_URL = "/api/interac/allnotification";
     return axiosHost1.put(SET_VIEW_ALL_NOTIFICATION_URL, {
       data: "Hi",
     }, {

@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosHost1 = axios.create({
-    baseURL: process.env.REACT_APP_HOST_1,
+    baseURL: 'http://13.213.74.100:8080',
     headers: {
         'content-type': 'application/json',
     }

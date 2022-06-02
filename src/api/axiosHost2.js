@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const axiosHost2 = axios.create({
-    baseURL: process.env.REACT_APP_HOST_2,
+    baseURL: 'http://recipeweb-env-1.eba-yjmhmymp.ap-southeast-1.elasticbeanstalk.com',
     headers: {
         'content-type': 'application/json',
     }

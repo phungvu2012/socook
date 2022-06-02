@@ -1,7 +1,7 @@
 import axiosHost1 from "./axiosHost1";
 class Auth {
   login = (user, pwd) => {
-    const LOGIN_URL = process.env.REACT_APP_LOGIN_URL;
+    const LOGIN_URL = '/api/auth/login';
     return axiosHost1.post(
       LOGIN_URL,
       JSON.stringify({ email: user, password: pwd })
@@ -9,7 +9,7 @@ class Auth {
   };
 
   register = (user, email, pwd) => {
-    const REGISTER_URL = process.env.REACT_APP_REGISTER_URL;
+    const REGISTER_URL = '/api/auth/register';
     return axiosHost1.post(
       REGISTER_URL,
       JSON.stringify({ email: email, user_name: user, password: pwd })
@@ -17,7 +17,7 @@ class Auth {
   };
 
   activeEmail = (accessActiveToken) => {
-    const ACTIVE_URL = process.env.REACT_APP_ACTIVE_URL;
+    const ACTIVE_URL = '/api/auth/verify';
     return axiosHost1.put(
       ACTIVE_URL,
       JSON.stringify({ access: accessActiveToken })
@@ -25,7 +25,7 @@ class Auth {
   };
 
   resendActiveEmail = (resendToken) => {
-    const RESENDEMAIL_URL = process.env.REACT_APP_RESENDEMAIL_URL;
+    const RESENDEMAIL_URL = "/api/auth/resentlink";
     return axiosHost1.post(
       RESENDEMAIL_URL,
       {},
@@ -38,12 +38,12 @@ class Auth {
   };
 
   resetPassword = (email) => {
-    const RESET_PWD_URL = process.env.REACT_APP_RESET_PWD_URL;
+    const RESET_PWD_URL = "/api/auth/resetpassword";
     return axiosHost1.put(RESET_PWD_URL, JSON.stringify({ email: email }));
   };
 
   saveRSPassword = (newPwd, accessToken) => {
-    const SAVEPWD_URL = process.env.REACT_APP_SAVEPWD;
+    const SAVEPWD_URL = "/api/auth/savepassword";
     return axiosHost1.put(
       SAVEPWD_URL,
       JSON.stringify({ newPassword: newPwd, access: accessToken })
@@ -51,14 +51,14 @@ class Auth {
   };
 
   responseGoogle = (data) => {
-    const LOGIN_GOOGLE_URL = process.env.REACT_APP_LOGIN_GOOGLE;
+    const LOGIN_GOOGLE_URL = '/api/auth/login-google';
     return axiosHost1.post(LOGIN_GOOGLE_URL, {
       token: data.tokenId
     })
   }
 
   responseFacebook = (data) => {
-    const LOGIN_FACEBOOK_URL = process.env.REACT_APP_LOGIN_FACEBOOK;
+    const LOGIN_FACEBOOK_URL = '/api/auth/login-facebook';
     return axiosHost1.post(LOGIN_FACEBOOK_URL, {
       token: data.accessToken
     })
