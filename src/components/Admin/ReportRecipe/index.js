@@ -60,7 +60,7 @@ const ReportRecipe = () => {
     const deleteRecipe = (recipeId) => {
       if (isDelete || isDisable) return;
       setIsLoadingDelete(true);
-      if (!confirm("Bạn có muốn xoá công thức: " + value?.title)) {
+      if (!window.confirm("Bạn có muốn xoá công thức: " + value?.title)) {
         setIsLoadingDelete(false);
         return;
       }

@@ -121,7 +121,7 @@ function AdvanceSearchPage() {
               <div className="advance-search-keyword-area">
                 <p>Nguyên liệu đã chọn</p>
                 {!keywords[0] ? (
-                  <span>Bạn chưa chọn nguyên liệu nào</span>
+                  <span>Bạn chưa chọn nguyên liệu nào (Có thể chọn nhiều nguyên liệu để tìm)</span>
                 ) : (
                   <ul className="advance-search-keyword-list">
                     {keywords?.map((keyword) => {
