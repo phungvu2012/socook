@@ -70,7 +70,7 @@ const ReportComment = () => {
               "section-button section-button--delete" +
               (isDisable ? " active" : "")
             }
-            onClick={(event) => deleteRecipe(value?.id)}
+            onClick={(event) => adminApi.deleteRecipe(value?.id)}
           >
             {isLoadingDelete ? (
               <React.Fragment>
