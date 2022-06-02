@@ -52,8 +52,7 @@ import NotFound from "./components/NotFound";
 import ReportComment from "./components/Admin/ReportComment";
 import ReportUser from "./components/Admin/ReportUser";
 import ReportRecipe from "./components/Admin/ReportRecipe";
-
-// import ThemeTest from './ThemeTest'
+import Profile from "./components/Admin/Profile";
 
 function App() {
   const [authLoading, setAutoLoading] = useState(true);
@@ -76,10 +75,6 @@ function App() {
         setAutoLoading(false);
       });
   }, []);
-  // Loading when authentication
-  // if(authLoading && getToken()) {
-  //   return <div className='content'>Checking Authentication...</div>
-  // }
 
   return (
     <GlobalStyles>
@@ -160,6 +155,7 @@ function App() {
                 <Route path="reportUser" element={<ReportUser />} />
                 <Route path="reportComment" element={<ReportComment />} />
                 <Route path="reportRecipe" element={<ReportRecipe />} />
+                <Route path="profile" element={<Profile />} />
               </Route>
             </Route>
             {/* Các định tuyến khác  */}

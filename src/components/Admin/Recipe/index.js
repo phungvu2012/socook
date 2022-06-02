@@ -15,7 +15,7 @@ const Recipe = ({ parentCallback, index }) => {
     setUrlPage("recipe");
 
     adminApi
-      .getWaitRecipe(getToken())
+      .getWaitRecipe(token)
       .then((res) => {
         console.log(res?.data);
         if (res?.status === 200) {

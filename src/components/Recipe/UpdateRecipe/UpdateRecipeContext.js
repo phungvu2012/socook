@@ -246,11 +246,13 @@ function RecipeProvider({ children }) {
       } else {
         console.log(false);
         setValidMainImageUrl(false);
+        alert("Dung lượng ảnh không được vượt quá 15MB");
         setErrMainImageUrl("Dung lượng ảnh không được vượt quá 15MB");
       }
     } else {
       console.log(false);
       setValidMainImageUrl(false);
+      alert("Chỉ chấp nhận ảnh có đuôi jpg, jpeg, svg, png!");
       setErrMainImageUrl("Chỉ chấp nhận ảnh có đuôi jpg, jpeg, svg, png!");
     }
   };
@@ -340,7 +342,7 @@ function RecipeProvider({ children }) {
       setErrIngredient("Vui có 1 bước");
     }
 
-    if (category.length === 0) {
+    if (category.length < 2) {
       setValidCategory(false);
       setErrCategory("Vui lòng chọn ít nhất 2 category");
     }

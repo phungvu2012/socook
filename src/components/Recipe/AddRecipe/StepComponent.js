@@ -180,6 +180,7 @@ const StepComponent = () => {
         <input
           type="file"
           multiple
+          accept="image/jpg, image/jpeg, image/png, image/svg"
           id={"image" + index}
           style={{display: 'none'}}
           onChange={(event) => {

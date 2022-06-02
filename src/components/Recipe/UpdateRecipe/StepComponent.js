@@ -185,6 +185,7 @@ const StepComponent = () => {
           onChange={(event) => {
             handleChangeStepImage(index, event.target.files);
           }}
+          accept="image/jpg, image/jpeg, image/png, image/svg"
         />
         <h6>Bước {index + 1}:</h6>
         <div className="recipe-step">

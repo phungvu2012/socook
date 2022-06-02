@@ -13,30 +13,37 @@ const list = [
   {
     tilte: "Dashboard",
     url: "",
-  },
-  {
-    tilte: "Report Comment",
-    url: "reportComment",
-  },
-  {
-    tilte: "Report User",
-    url: "reportUser",
-  },
-  {
-    tilte: "Report Recipe",
-    url: "reportRecipe",
+    icon: 'bx bx-grid-alt'
   },
   {
     tilte: "Profile",
-    url: "#",
+    url: "profile",
+    icon: 'bx bx-user'
   },
   {
     tilte: "Recipe",
     url: "recipe",
+    icon: 'bx bx-file-blank'
+  },
+  {
+    tilte: "Report Comment",
+    url: "reportComment",
+    icon: 'bx bxs-report'
+  },
+  {
+    tilte: "Report User",
+    url: "reportUser",
+    icon: 'bx bxs-report'
+  },
+  {
+    tilte: "Report Recipe",
+    url: "reportRecipe",
+    icon: 'bx bxs-report'
   },
   {
     tilte: "Setting",
     url: "#",
+    icon: 'bx bxs-customize'
   },
 ];
 
@@ -94,7 +101,7 @@ const Admin = () => {
                     className={value.url === urlPage ? "active" : ""}
                     key={index}
                   >
-                    <i className="bx bx-grid-alt"></i>
+                    <i className={value?.icon}></i>
                     <span className="links_name">{value.tilte}</span>
                   </Link>
                 </li>
@@ -114,14 +121,14 @@ const Admin = () => {
           <div className="toggle">
             <i className="bx bx-menu" id="btn" onClick={handleOpenSideBar}></i>
           </div>
-          <div className="search_wrapper">
+          {/* <div className="search_wrapper">
             <label>
               <span>
                 <i className="bx bx-search"></i>
               </span>
               <input type="search" placeholder="Search..." />
             </label>
-          </div>
+          </div> */}
           <a href="/user" className="user_wrapper">
             <img src={user.avatar_image} alt="" />
           </a>
