@@ -65,12 +65,15 @@ function App() {
     userApi
       .userInfo(token)
       .then((response) => {
+        if(response === undefined) return;
+        console.log("Authentication: ", response)
         const userInfo = response?.data?.user;
         if (response?.data?.messageCode !== 1 || !userInfo) throw { response };
         setAutoLoading(false);
         setUser(userInfo);
       })
       .catch((err) => {
+        console.log('remove session user')
         removeUserSession();
         setAutoLoading(false);
       });

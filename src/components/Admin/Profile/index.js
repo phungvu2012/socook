@@ -7,24 +7,32 @@ const ReportComment = () => {
   const token = getToken();
   const [data, setData] = useState();
   const [urlPage, setUrlPage] = useOutletContext();
-  const [textSearch, setTextSearch] = useState('');
+  const [textSearch, setTextSearch] = useState("");
+  const [loading, setLoading] = useState("");
 
   useEffect(() => {
     setUrlPage("profile");
   }, []);
 
   useEffect(() => {
-    console.log(textSearch)
-  }, [textSearch])
+    console.log(textSearch);
+  }, [textSearch]);
 
-  const handleSubmit = () => {
-    adminApi.searchUser(token, textSearch)
-    .then(response => {
-      console.log(response)
-      if(response?.status !== 200) throw { response }
-      setData(response?.data)
-    })
-  }
+  const handleSubmit = (event) => {
+    event.preventDefault();
+
+    adminApi
+      .searchUser(token, textSearch)
+      .then((response) => {
+        console.log(response);
+        if (response?.status !== 200) throw { response };
+        setLoading(false);
+        setData(response?.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
+  };
 
   const TableComponent = ({ data }) => {
     if (!Array.isArray(data)) return;
@@ -39,14 +47,56 @@ const ReportComment = () => {
   };
 
   const RowComponent = ({ value, stt }) => {
+    const [isLoadingBanUser, setIsLoadingBanUser] = useState();
+    const [isBanUser, setIsBanUser] = useState();
+
+    const handleBanUser = (userId) => {
+      if (isBanUser) return;
+      setIsLoadingBanUser(true);
+      // if(window.confirm(`Bạn có muốn xoá ${userId?.}`))
+      adminApi
+        .banUser(token, userId)
+        .then((response) => {
+          if (response?.status !== 200) throw { response };
+          console.log(response);
+          setIsBanUser(true);
+          setIsLoadingBanUser(false);
+        })
+        .catch((err) => {
+          alert(`Không thể khoá: ${value?.userId}
+        Vui lòng thử lại sau!`);
+          setIsLoadingBanUser(false);
+        });
+    };
     return (
       <tr key={stt}>
         <td style={{ textAlign: "center" }}>{stt}</td>
         <td style={{ textAlign: "center" }}>{value?.userName}</td>
-        <td style={{ textAlign: "center" }}>{value?.userId}</td>
-        <td style={{ textAlign: "center" }}>{value?.response}</td>
-        <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td>
-        <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td>
+        <td style={{ textAlign: "center" }}>{value?.fullName}</td>
+        <button
+          className={
+            "section-button section-button--delete" +
+            (isBanUser ? " active" : "")
+          }
+          onClick={(event) => handleBanUser(value?.id)}
+        >
+          {isLoadingBanUser ? (
+            <React.Fragment>
+              <div
+                className="spinner-border text-light"
+                style={{ width: "1rem", height: "1rem" }}
+                role="status"
+              >
+                <span className="visually-hidden">Loading...</span>
+              </div>
+              <span> Loading...</span>
+            </React.Fragment>
+          ) : (
+            <React.Fragment>{isBanUser ? "Đã Xoá" : "Xoá"}</React.Fragment>
+          )}
+        </button>
+        {/* <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td> */}
+        {/* <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td> */}
       </tr>
     );
   };
@@ -54,15 +104,29 @@ const ReportComment = () => {
   return (
     <React.Fragment>
       <div className="user_section section-box justify-content-start">
-        <div className="search_wrapper">
-          <label>
-            <span>
-              <i className="bx bx-search"></i>
-            </span>
-            <input type="search" placeholder="Search..." value={textSearch} onChange={event => setTextSearch(event.target.value)} autoFocus/>
-          </label>
-        </div>
-        <input type="submit" className="btn-primary px-4 py-2 rounded-pill mx-3 border-light shadow" onClick={handleSubmit}/>
+        <form onSubmit={handleSubmit}>
+          <div className="search_wrapper">
+            <label>
+              <span>
+                <i className="bx bx-search"></i>
+              </span>
+              <input
+                type="search"
+                placeholder="Search..."
+                value={textSearch}
+                onChange={(event) => setTextSearch(event.target.value)}
+                autoFocus
+              />
+            </label>
+          </div>
+          <button
+            type="submit"
+            className="btn-primary px-4 py-2 rounded-pill mx-3 mt-3 border-light shadow text-white"
+            onClick={(event) => setLoading(true)}
+          >
+            {loading ? "Loading..." : "Tìm kiếm"}
+          </button>
+        </form>
       </div>
       <div className="section-box">
         <div className="recent_project">

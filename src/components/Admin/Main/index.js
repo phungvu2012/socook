@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { useOutletContext, Link } from "react-router-dom";
 import adminApi from "../../../api/adminApi";
+import recipeApi from "../../../api/recipeApi";
 import { getToken } from "../../../features/sessionStorage";
 
 const Main = () => {
   const token = getToken();
   const [urlPage, setUrlPage] = useOutletContext();
   const [newUsers, setNewUsers] = useState();
+  const [newRecipe, setNewRecipe] = useState();
 
   useEffect(() => {
     setUrlPage("");
@@ -16,6 +18,17 @@ const Main = () => {
       if (res?.status !== 200) throw { res };
       setNewUsers(res?.data?.data);
     });
+
+    recipeApi
+      .top10NewRecipe()
+      .then((res) => {
+        if (res?.status !== 200) throw { res };
+        console.log(res);
+        setNewRecipe(res?.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   }, []);
 
   return (
@@ -61,13 +74,35 @@ const Main = () => {
             <thead>
               <tr>
                 <td>Tên công thức</td>
-                <td>Thời gian nấu</td>
-                <td>Độ khó</td>
+                <td>Lượt xem</td>
+                <td>Yêu thích</td>
                 <td>Đóng góp</td>
               </tr>
             </thead>
             <tbody>
-              <tr>
+              {newRecipe &&
+                newRecipe.map((value, index) => {
+                  return (
+                    <tr key={index}>
+                      <td>
+                        <Link to={`/recipe/${value?.id}`}>{value?.title}</Link>
+                      </td>
+                      <td>{value?.total_views}</td>
+                      <td style={{ textAlign: "center" }}>
+                        <span>{value?.total_likes}</span>
+                      </td>
+                      <td>
+                        <Link
+                          to={`/user-page/${value?.owner_id}`}
+                          className="img_group"
+                        >
+                          {value?.user_name}
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })}
+              {/* <tr>
                 <td>Trứng luộc</td>
                 <td>20</td>
                 <td>
@@ -156,7 +191,7 @@ const Main = () => {
                     />
                   </span>
                 </td>
-              </tr>
+              </tr> */}
             </tbody>
           </table>
         </div>
@@ -172,9 +207,7 @@ const Main = () => {
                     <tr key={index}>
                       <td>
                         <div className="info_img">
-                          <img
-                            src={value?.avatar_image}
-                          />
+                          <img src={value?.avatar_image} />
                         </div>
                       </td>
                       <td>

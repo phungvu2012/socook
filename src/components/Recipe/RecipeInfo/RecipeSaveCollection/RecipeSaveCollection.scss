@@ -2,13 +2,16 @@
   color: #333;
   position: relative;
   text-align: right;
-  transform: translateY(-160%);
 }
 
 .recipe-save-collection-btn {
+  position: absolute;
+  top: 0;
+  right: 0;
   border: none;
   outline: none;
   width: 60px;
+  transform: translateX(32px);
   background-color: #fff;
   font-size: 1.5rem;
   color: blue;

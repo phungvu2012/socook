@@ -45,9 +45,11 @@ const RepiceInfo = () => {
   const [step, setStep] = useState();
   const [category, setCategory] = useState("");
   const [ingredient, setIngredient] = useState();
+  const [requiredRecipe, setRequiredRecipe] = useState();
   const [numberLikes, setNumberLikes] = useState();
   const [collectionSaved, setCollectionSaved] = useState([]);
-  const [isGetCollectionSaveListAgain, setIsGetCollectionListAgain] = useState(false)
+  const [isGetCollectionSaveListAgain, setIsGetCollectionListAgain] =
+    useState(false);
 
   useEffect(() => {
     recipeApi
@@ -67,6 +69,7 @@ const RepiceInfo = () => {
         setStep(data?.step);
         setCategory(data?.category);
         setIngredient(data?.ingredient);
+        setRequiredRecipe(data?.recipe?.required_result);
         setNumberLikes(data?.likes);
         document.title = data?.recipe?.title + " | Socook";
         setCollectionSaved([...data.collections]);
@@ -110,6 +113,14 @@ const RepiceInfo = () => {
           </div>
           <div className="recipe-header__right">
             <div className="recipe-header__right-top">
+              <RecipeSaveCollection
+                collectionSaved={collectionSaved}
+                recipeId={id}
+                isGetCollectionSaveListAgain={isGetCollectionSaveListAgain}
+                setIsGetCollectionListAgain={(data) =>
+                  setIsGetCollectionListAgain(data)
+                }
+              />
               <h1
                 className={
                   `recipe-header__title` +
@@ -118,12 +129,6 @@ const RepiceInfo = () => {
               >
                 {title ? title : <span>&nbsp;</span>}
               </h1>
-              <RecipeSaveCollection
-                collectionSaved={collectionSaved}
-                recipeId={id}
-                isGetCollectionSaveListAgain={isGetCollectionSaveListAgain}
-                setIsGetCollectionListAgain={(data) => setIsGetCollectionListAgain(data)}
-              />
               {shortDescription ? (
                 <p className="recipe-header__description">
                   <ReadMore maxLine={3}>{shortDescription}</ReadMore>
@@ -144,16 +149,29 @@ const RepiceInfo = () => {
               amount={amountOfPeople}
               numberLikes={numberLikes}
             />
-            <span
-              className="recipe-report-icon"
-              onClick={handleGetIdRecipeReport}
-            >
-              <FontAwesomeIcon icon={faFlag} />
-            </span>
+            <div className="recipe-header__right-info">
+              <div className="recipe-header__owner">
+                <a href="#" className="recipe-header__owner-link">
+                  <img
+                    src={mainImageUrl}
+                    className="recipe-header__owner-image"
+                  />
+                </a>
+                <a href="#" className="recipe-header__owner-name">
+                  Vũ Minh Phụng
+                </a>
+              </div>
+              <span
+                className="recipe-report-icon"
+                onClick={handleGetIdRecipeReport}
+              >
+                <FontAwesomeIcon icon={faFlag} />
+              </span>
+            </div>
           </div>
         </div>
         <div className="recipe-body">
-          <Ingredient loading={!recipeInfo} list={ingredient} />
+          <Ingredient loading={!recipeInfo} list={ingredient} requiredRecipe={requiredRecipe}/>
           <div className="recipe-body__section shadow">
             <div className="recipe-body__step-list">
               <h3 className="recipe-body__title">Cách làm</h3>

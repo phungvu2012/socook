@@ -45,8 +45,6 @@ function Category({index}) {
               <div className="recipe-category__list-item">
                 {
                   value?.category?.length && value?.category?.map((item) => {
-                    // console.log('name: ', item?.name)
-                    // console.log('nameIndexOf: ', name)
                     return (
                       (name?.length && item?.name && name?.indexOf(item?.name) !== -1) ?
                         <span className="recipe-category__item active" key={item?.id} onClick={() => handleRemoveCategoryItem(item?.name)}>{item?.name}</span> :

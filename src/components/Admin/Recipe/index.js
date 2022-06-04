@@ -68,7 +68,7 @@ const Recipe = ({ parentCallback, index }) => {
     const [isDisable, setIsDisable] = useState();
     const [owner, setOwner] = useState();
     const [show, setShow] = useState();
-    let feedback = '';
+    let feedback = "";
 
     useEffect(() => {
       userPageApi
@@ -177,20 +177,19 @@ const Recipe = ({ parentCallback, index }) => {
 
       useEffect(() => {
         feedback = input;
-      })
+      });
 
       return (
         <div className="recipe-feedback">
           <h3>Góp ý</h3>
-          { !isReject && (
+          {!isReject && (
             <textarea
               placeholder="Điền góp ý hoặc lý do từ chối?"
-              className='recipe-feedback__input'
+              className="recipe-feedback__input"
               value={input}
               onChange={(event) => setInput(event.target.value)}
             ></textarea>
-          )
-          }
+          )}
           <div className="d-flex justify-content-evenly flex-wrap flex-column">
             <button
               className={
@@ -270,13 +269,9 @@ const Recipe = ({ parentCallback, index }) => {
     return (
       <tr key={index} data-index={index} className={isDisable && "opacity-50"}>
         <td style={{ textTransform: "capitalize" }}>
-          {isDisable ? (
-            <span className="section-link">{value?.title}</span>
-          ) : (
-            <Link to={`/recipe/${value?.id}`} className="section-link">
-              {value?.title}
-            </Link>
-          )}
+          <Link to={`/recipe/${value?.id}`} className="section-link">
+            {value?.title}
+          </Link>
         </td>
         <td style={{ textAlign: "center" }}>{value?.cooking_time}</td>
         <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td>

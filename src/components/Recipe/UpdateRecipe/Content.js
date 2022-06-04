@@ -51,7 +51,7 @@ const Content = () => {
                   }
                   style={{ display: "none" }}
                   id="main-image"
-                  name='main-image'
+                  name="main-image"
                 />
               </div>
               <label
@@ -123,7 +123,7 @@ const Content = () => {
                     "recipe-info__field recipe-input" +
                     (context.validCookingTime === undefined
                       ? ""
-                      : (context.validCookingTime || context.cookingTime)
+                      : context.validCookingTime || context.cookingTime
                       ? " success"
                       : " error")
                   }
@@ -152,7 +152,7 @@ const Content = () => {
                     "recipe-info__field recipe-input" +
                     (context.validAmountOfPeople === undefined
                       ? ""
-                      : (context.validAmountOfPeople || context.amountOfPeople)
+                      : context.validAmountOfPeople || context.amountOfPeople
                       ? " success"
                       : " error")
                   }
@@ -183,17 +183,27 @@ const Content = () => {
             <Ingredient />
             <StepComponent />
           </div>
-          <div className={"category-body shadow" + ((context.validCategory === false) ? ' error' : '')}>
-            <h3 className="recipe-body__title">Category</h3>
-            {(context.validCategory === false) && <p className="text-danger">- {context.errCategory}</p>}
+          <div
+            className={
+              "category-body shadow" +
+              (context.validCategory === false ? " error" : "")
+            }
+          >
+            <h3 className="recipe-body__title">
+              Danh mục món ăn<span className="text-danger">*</span>
+            </h3>
+            {context.validCategory === false && (
+              <p className="text-danger">- {context.errCategory}</p>
+            )}
             <Category />
           </div>
           <div style={{ textAlign: "right" }}>
-            {(context.success === false) && <p className="fs-4 text-danger">*Có lỗi xảy ra vui lòng thử lại sau</p>}
-            <button
-              onClick={context.checkValidAll}
-              className="button"
-            >
+            {context.success === false && (
+              <p className="fs-4 text-danger">
+                *Có lỗi xảy ra vui lòng thử lại sau
+              </p>
+            )}
+            <button onClick={context.checkValidAll} className="button">
               {context.loading ? (
                 <React.Fragment>
                   <div

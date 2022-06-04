@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
 import Viewer from "react-viewer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faUser, faHeart as solidHeart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faUser,
+  faHeart as solidHeart,
+} from "@fortawesome/free-solid-svg-icons";
 import { faClock, faHeart } from "@fortawesome/free-regular-svg-icons";
 import recipeApi from "../../../api/recipeApi";
 
@@ -33,72 +36,94 @@ export function RecipeBreadcrumb({ list = [{ src: "/", name: "Trang chủ" }] })
   );
 }
 
-export function RecipeIcontList({token, recipeId, loading, time, amount, numberLikes }) {
+export function RecipeIcontList({
+  token,
+  recipeId,
+  loading,
+  time,
+  amount,
+  numberLikes,
+}) {
   return (
     <React.Fragment>
-      {
-        (loading) ? (
-          <p className="placeholder-paragraph placeholder-paragraph--lg"></p>
-        ) : (
-          <RecipeIcons token={token} recipeId={recipeId} loading={loading} time={time} amount={amount} numberLikesInitial={numberLikes}/>
-        )
-      }
+      {loading ? (
+        <p className="placeholder-paragraph placeholder-paragraph--lg"></p>
+      ) : (
+        <RecipeIcons
+          token={token}
+          recipeId={recipeId}
+          loading={loading}
+          time={time}
+          amount={amount}
+          numberLikesInitial={numberLikes}
+        />
+      )}
     </React.Fragment>
-  )
+  );
 }
 
-function RecipeIcons({token, recipeId, time, amount, numberLikesInitial }) {
+function RecipeIcons({ token, recipeId, time, amount, numberLikesInitial }) {
   const [like, setLike] = useState();
-  const [likeNumber, setLikeNumber] = useState(numberLikesInitial)
+  const [likeNumber, setLikeNumber] = useState(numberLikesInitial);
 
   useEffect(() => {
-    if(!token) return;
-    recipeApi.checkLike(token, recipeId)
-    .then((res) => {
-      console.log(res)
-      if(res?.data?.messageCode !== 1) throw {res} 
-      if(res?.data?.like === 1) setLike(true);
-      else setLike(false);
-      // setLikeNumber(res?.data?.li)
-    })
-    .catch((err) => {
-      console.log('response ', err)
-    })
-  }, [])
-  
-  const handleClick = () => {
-    if(!like) {
-      recipeApi.likeRecipe(token, recipeId).then((res) => {
-        console.log('res', res);
-        if(res?.data?.messageCode !== 1) throw { res };
-        setLike(true);
-        setLikeNumber(pre => pre + 1);
-      }).catch((err) => {
-        console.log(err)
-      })      
-    }
-    else {
-      recipeApi.dislikeRecipe(token, recipeId).then((res) => {
+    if (!token) return;
+    recipeApi
+      .checkLike(token, recipeId)
+      .then((res) => {
         console.log(res);
-        if(res?.data?.messageCode !== 1) throw { res };
-        setLike(false);
-        setLikeNumber(pre => pre - 1);
-      }).catch((err) => {
-        console.log(err)
+        if (res?.data?.messageCode !== 1) throw { res };
+        if (res?.data?.like === 1) setLike(true);
+        else setLike(false);
+        // setLikeNumber(res?.data?.li)
       })
+      .catch((err) => {
+        console.log("response ", err);
+      });
+  }, []);
+
+  const handleClick = () => {
+    if (!like) {
+      recipeApi
+        .likeRecipe(token, recipeId)
+        .then((res) => {
+          console.log("res", res);
+          if (res?.data?.messageCode !== 1) throw { res };
+          setLike(true);
+          setLikeNumber((pre) => pre + 1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    } else {
+      recipeApi
+        .dislikeRecipe(token, recipeId)
+        .then((res) => {
+          console.log(res);
+          if (res?.data?.messageCode !== 1) throw { res };
+          setLike(false);
+          setLikeNumber((pre) => pre - 1);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
     }
-  }
-  
+  };
+
   return (
     <div className={time && amount ? "recipe-info" : "placeholder-paragraph"}>
-      <div className="recipe-info__item recipe-info__item--love" onClick={handleClick}>
-        {
-          like ? (
-            <FontAwesomeIcon icon={solidHeart} className="recipe-info__icon active" />
-            ): (
-              <FontAwesomeIcon icon={faHeart} className="recipe-info__icon" />
-          )
-        }
+      <div
+        className="recipe-info__item recipe-info__item--love"
+        onClick={handleClick}
+      >
+        {like ? (
+          <FontAwesomeIcon
+            icon={solidHeart}
+            className="recipe-info__icon active"
+          />
+        ) : (
+          <FontAwesomeIcon icon={faHeart} className="recipe-info__icon" />
+        )}
         <span className="recipe-info__title">Yêu thích</span>
         <span>{likeNumber}</span>
       </div>
@@ -133,7 +158,7 @@ const LazyLoadingIngredient = () => {
   );
 };
 
-export function Ingredient({ loading, list }) {
+export function Ingredient({ loading, list, requiredRecipe }) {
   return (
     <div className="recipe-body__section recipe-body__section--ingredient shadow">
       <h3 className="recipe-body__title">Nguyên liệu</h3>
@@ -148,6 +173,12 @@ export function Ingredient({ loading, list }) {
       ) : (
         <LazyLoadingIngredient />
       )}
+      <div>
+        <h3 className="recipe-body__title fs-4 mt-5">Yêu cầu thành phẩm</h3>
+        <div className="recipe-step-box border-start-0 border-end-0 rounded-0 mt-2">
+          <p>{requiredRecipe}</p>
+        </div>
+      </div>
     </div>
   );
 }
@@ -172,7 +203,7 @@ const LazyLoadingStepImage = () => {
 
 export function StepListImages({ loading, stepNumber, images = [] }) {
   const [visible, setVisible] = useState(false);
-  if(!Array.isArray(images))  return;
+  if (!Array.isArray(images)) return;
   return (
     <div className="recipe-body__repice-image">
       {loading ? (

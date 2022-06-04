@@ -2,7 +2,8 @@
 
 .recipe-page {
   background-color: var(--bg-color-1);
-
+  scroll-behavior: smooth;
+  
   .recipe-header {
     display: flex;
     align-items: flex-start;
@@ -53,7 +54,7 @@
     &__right {
       position: relative;
       padding: 1rem 2rem;
-      margin: 0 2rem;
+      margin-left: 2rem;
 
       border-radius: 1rem;
       box-shadow: 0 0.5rem 1rem rgb(0 0 0 / 15%);
@@ -72,6 +73,34 @@
       }
     }
 
+    &__right-info {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid var(--bs-gray-300);
+      border-bottom: 1px solid var(--bs-gray-300);
+      padding-top: 0.5rem;
+      padding-bottom: 0.5rem;
+    }
+
+    &__owner {
+
+      &-link {
+        
+      }
+
+      &-image {
+        width: 40px;
+        height: 40px;
+        border-radius: 50%;
+      }
+
+      &-name {
+        color: var(--bs-blue);
+        padding-left: 12px;
+        right: 12px;
+      }
+    }
+
     &__title {
       letter-spacing: 4px;
       font-weight: 600;
@@ -82,6 +111,7 @@
     &__description {
       font-weight: 400;
       font-family: 1rem;
+      margin-bottom: 2rem;
     }
   }
 
@@ -96,7 +126,7 @@
     justify-content: space-evenly;
     flex-wrap: wrap;
 
-    padding: 1.5rem 0;
+    padding: 1rem 0 1.5rem;
 
     &__item {
       display: flex;
@@ -289,10 +319,7 @@
 }
 
 .recipe-report-icon {
-  position: absolute;
   font-size: 1.5rem;
-  right: 32px;
-  bottom: 80px;
   color: red;
   cursor: pointer;
 }

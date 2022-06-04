@@ -215,6 +215,11 @@ class RecipeApi {
       }
     })
   }
+
+  top10NewRecipe = () => {
+    const top10Url = process.env.REACT_APP_GET_TOP_NEW_RECIPE_URL;
+    return axiosHost2.get(top10Url);
+  }
 }
 
 const recipeApi = new RecipeApi();

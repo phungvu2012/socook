@@ -119,6 +119,31 @@ class AdminApi {
       }
     );
   };
+
+  responseReportComment = (token, reportId, response='') => {
+    const RESPONSE_REPORT_COMMENT = '/admin/reports/comments/' + reportId;
+    return axiosHost2.put(RESPONSE_REPORT_COMMENT, {
+      status: 1,
+      response: response,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
+  responseReportUser = (token, userId, responseContent='') => {
+    const RESPONSE_REPORT_USER = '/admin/reports/users/' + userId;
+    return axiosHost2.put(RESPONSE_REPORT_USER, {
+      status: 1,
+      response: responseContent,
+    }, {
+      headers: {
+        Authorization: `Bearer ${token}`
+      }
+    })
+  }
+
 }
 
 const adminApi = new AdminApi();

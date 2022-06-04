@@ -81,7 +81,7 @@ function RecipeComment({ recipeId }) {
   }, [])
 
   return (
-    <div className="recipe-comment-container">
+    <div className="recipe-comment-container" id='recipe-comment'>
       <div className="recipe-comment-sort">
         <h5>Bình luận ({recipeComment.length})</h5>
         <div className="recipe-comment-sort-area">
