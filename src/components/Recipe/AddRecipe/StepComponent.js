@@ -17,7 +17,7 @@ const StepComponent = () => {
   const handleAddButton = (event) => {
     if (Array.isArray(context?.stepContent)) {
       const stepContentArray = [...context?.stepContent];
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       stepContentArray.splice(index + 1, 0, "");
 
       context.setStepContent([...stepContentArray]);
@@ -51,7 +51,7 @@ const StepComponent = () => {
     if (context?.stepContent?.length === 1) return;
     if (Array.isArray(context?.stepContent)) {
       const stepContentArray = [...context?.stepContent];
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       stepContentArray.splice(index, 1);
 
       context.setStepContent([...stepContentArray]);
@@ -131,8 +131,13 @@ const StepComponent = () => {
     };
 
     const handleChangeStepImage = (step, ImageObject) => {
-      console.log(ImageObject);
-      const imageObj = ImageObject;
+      // console.log(step);
+      // console.log(context?.images[step]);
+      const oldImageList = context?.images[step] ? [...context?.images[step]] : [];
+      const imageObj = [
+        ...oldImageList,
+        ...ImageObject
+      ];
 
       context.setImages({
         ...context?.images,

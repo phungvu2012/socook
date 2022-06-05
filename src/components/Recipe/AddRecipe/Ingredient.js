@@ -38,7 +38,7 @@ const Ingredient = () => {
     const newIngredient = { name: "", amount: "", unit: "" };
     if (Array.isArray(context?.ingredient)) {
       const ingredientArray = context?.ingredient;
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       ingredientArray.splice(index + 1, 0, newIngredient);
 
       context.setIngredient([...ingredientArray]);
@@ -51,7 +51,7 @@ const Ingredient = () => {
     if (context?.ingredient?.length === 1) return;
     if (Array.isArray(context?.ingredient)) {
       const ingredientArray = context?.ingredient;
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       ingredientArray.splice(index, 1);
 
       context.setIngredient([...ingredientArray]);
@@ -63,7 +63,7 @@ const Ingredient = () => {
     const newIngredient = { name: "", amount: "", unit: "" };
     if (Array.isArray(context?.ingredient)) {
       const ingredientArray = context?.ingredient;
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       if (ingredientArray[Number(index) - 1] === undefined) return;
 
       const slideArray = ingredientArray.splice(index - 1, 2);
@@ -78,7 +78,7 @@ const Ingredient = () => {
     const newIngredient = { name: "", amount: "", unit: "" };
     if (Array.isArray(context?.ingredient)) {
       const ingredientArray = context?.ingredient;
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       if (ingredientArray[Number(index) + 1] === undefined) return;
 
       const slideArray = ingredientArray.splice(index, 2);

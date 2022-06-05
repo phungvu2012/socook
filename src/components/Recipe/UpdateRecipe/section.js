@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { RecipeContext } from "./AddRecipeContext";
+import { RecipeContext } from "./UpdateRecipeContext";
 import Viewer from "react-viewer";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faCircleXmark } from "@fortawesome/free-solid-svg-icons";
@@ -82,7 +82,7 @@ export function StepListImages({ loading, stepNumber, images = [] }) {
                   index={index}
                   stepNumber={stepNumber}
                   key={index}
-                  setVisible={(value) => setVisible(value)}
+                  setVisible={(visible) => setVisible(value)}
                 />
               );
             })}

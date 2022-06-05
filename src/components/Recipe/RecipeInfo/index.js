@@ -12,11 +12,13 @@ import TagRecipe, {
   RecipeIcontList,
   Ingredient,
 } from "./section";
-import { useParams } from "react-router-dom";
+import { useParams, Link } from "react-router-dom";
 import "./recipe.scss";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFlag, faBookmark } from "@fortawesome/free-regular-svg-icons";
 import RecipeSaveCollection from "./RecipeSaveCollection/RecipeSaveCollection";
+import userPageApi from "../../../api/userPageApi";
+import NotFound from "../../NotFound";
 
 const RepiceInfo = () => {
   const params = useParams();
@@ -36,6 +38,8 @@ const RepiceInfo = () => {
     setIdRecipeReport(data);
   };
 
+  const [notFoundRecipe, setNotFoundRecipe] = useState();
+
   const [id, setId] = useState();
   const [title, setTitle] = useState("");
   const [shortDescription, setShortDescription] = useState("");
@@ -50,6 +54,8 @@ const RepiceInfo = () => {
   const [collectionSaved, setCollectionSaved] = useState([]);
   const [isGetCollectionSaveListAgain, setIsGetCollectionListAgain] =
     useState(false);
+  const [username, setUserName] = useState();
+  const [owner, setOwner] = useState();
 
   useEffect(() => {
     recipeApi
@@ -71,16 +77,36 @@ const RepiceInfo = () => {
         setIngredient(data?.ingredient);
         setRequiredRecipe(data?.recipe?.required_result);
         setNumberLikes(data?.likes);
-        document.title = data?.recipe?.title + " | Socook";
         setCollectionSaved([...data.collections]);
+        document.title = data?.recipe?.title + " | Socook";
+        setUserName(data?.recipe?.user_name);
+        setNotFoundRecipe(false);
       })
       .catch((err) => {
+        setNotFoundRecipe(true);
         console.log(err);
       });
+
     return () => {
       document.title = "Socook";
     };
   }, [recipeId, isGetCollectionSaveListAgain]);
+
+  useEffect(() => {
+    console.log(username);
+    userPageApi
+      .getUserInfo("", username)
+      .then((response) => {
+        if (response?.data?.messageCode !== 1) throw { response };
+        console.log(response?.data?.user);
+        setOwner(response?.data?.user);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [username]);
+
+  if(notFoundRecipe) return <NotFound />
 
   return (
     <div className="recipe-page" style={{ backgroundColor: "" }}>
@@ -151,15 +177,15 @@ const RepiceInfo = () => {
             />
             <div className="recipe-header__right-info">
               <div className="recipe-header__owner">
-                <a href="#" className="recipe-header__owner-link">
+                <Link to={`/user-page/${owner?.user_name}`} className="recipe-header__owner-link">
                   <img
-                    src={mainImageUrl}
+                    src={owner?.avatar_image}
                     className="recipe-header__owner-image"
                   />
-                </a>
-                <a href="#" className="recipe-header__owner-name">
-                  Vũ Minh Phụng
-                </a>
+                </Link>
+                <Link to={`/user-page/${owner?.user_name}`} className="recipe-header__owner-name">
+                  {owner?.full_name}
+                </Link>
               </div>
               <span
                 className="recipe-report-icon"
@@ -171,7 +197,11 @@ const RepiceInfo = () => {
           </div>
         </div>
         <div className="recipe-body">
-          <Ingredient loading={!recipeInfo} list={ingredient} requiredRecipe={requiredRecipe}/>
+          <Ingredient
+            loading={!recipeInfo}
+            list={ingredient}
+            requiredRecipe={requiredRecipe}
+          />
           <div className="recipe-body__section shadow">
             <div className="recipe-body__step-list">
               <h3 className="recipe-body__title">Cách làm</h3>

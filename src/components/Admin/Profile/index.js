@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { getToken } from "../../../features/sessionStorage";
 import adminApi from "../../../api/adminApi";
 
@@ -12,6 +12,17 @@ const ReportComment = () => {
 
   useEffect(() => {
     setUrlPage("profile");
+    adminApi
+      .searchUser(token, '')
+      .then((response) => {
+        console.log(response);
+        if (response?.status !== 200) throw { response };
+        setLoading(false);
+        setData(response?.data);
+      })
+      .catch((err) => {
+        setLoading(false);
+      });
   }, []);
 
   useEffect(() => {
@@ -48,53 +59,107 @@ const ReportComment = () => {
 
   const RowComponent = ({ value, stt }) => {
     const [isLoadingBanUser, setIsLoadingBanUser] = useState();
-    const [isBanUser, setIsBanUser] = useState();
-
+    const [isBanUser, setIsBanUser] = useState(value?.status === 2);
+    
+    const [isLoadingUnlockUser, setIsLoadingUnlockUser] = useState();
+    const [isUnlockUser, setIsUnlockUser] = useState(value?.status === 1);
+    
     const handleBanUser = (userId) => {
       if (isBanUser) return;
       setIsLoadingBanUser(true);
-      // if(window.confirm(`Bạn có muốn xoá ${userId?.}`))
+      
       adminApi
         .banUser(token, userId)
         .then((response) => {
           if (response?.status !== 200) throw { response };
           console.log(response);
           setIsBanUser(true);
+          setIsUnlockUser(false);
           setIsLoadingBanUser(false);
         })
         .catch((err) => {
           alert(`Không thể khoá: ${value?.userId}
-        Vui lòng thử lại sau!`);
+          Vui lòng thử lại sau!`);
           setIsLoadingBanUser(false);
+        });
+    };
+    
+    const handleUnlockUser = (userId) => {
+      if (isUnlockUser) return;
+      setIsLoadingUnlockUser(true);
+      
+      adminApi
+        .unlockUser(token, userId)
+        .then((response) => {
+          if (response?.status !== 200) throw { response };
+          console.log(response);
+          setIsUnlockUser(true);
+          setIsBanUser(false);
+          setIsLoadingUnlockUser(false);
+        })
+        .catch((err) => {
+          alert(`Không thể khoá: ${value?.userId}
+          Vui lòng thử lại sau!`);
+          setIsLoadingUnlockUser(false);
         });
     };
     return (
       <tr key={stt}>
         <td style={{ textAlign: "center" }}>{stt}</td>
-        <td style={{ textAlign: "center" }}>{value?.userName}</td>
+        <td style={{ textAlign: "center" }}>
+          <Link to={`/user-page/${value?.userName}`}>
+          {value?.userName}
+          </Link>
+          </td>
         <td style={{ textAlign: "center" }}>{value?.fullName}</td>
-        <button
-          className={
-            "section-button section-button--delete" +
-            (isBanUser ? " active" : "")
-          }
-          onClick={(event) => handleBanUser(value?.id)}
-        >
-          {isLoadingBanUser ? (
-            <React.Fragment>
-              <div
-                className="spinner-border text-light"
-                style={{ width: "1rem", height: "1rem" }}
-                role="status"
-              >
-                <span className="visually-hidden">Loading...</span>
-              </div>
-              <span> Loading...</span>
-            </React.Fragment>
-          ) : (
-            <React.Fragment>{isBanUser ? "Đã Xoá" : "Xoá"}</React.Fragment>
-          )}
-        </button>
+        <td style={{ textAlign: "center" }}>
+          <button
+            className={
+              "section-button section-button--delete" +
+              (isBanUser ? " active" : "")
+            }
+            onClick={(event) => handleBanUser(value?.id)}
+          >
+            {isLoadingBanUser ? (
+              <React.Fragment>
+                <div
+                  className="spinner-border text-light"
+                  style={{ width: "1rem", height: "1rem" }}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <span> Loading...</span>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>{isBanUser ? "Đã Khoá" : "Khoá"}</React.Fragment>
+            )}
+          </button>
+        </td>
+        <td style={{ textAlign: "center" }}>
+          <button
+            className={
+              "section-button section-button--publish" +
+              (isUnlockUser ? " active" : "")
+            }
+            onClick={(event) => handleUnlockUser(value?.id)}
+          >
+            {isLoadingUnlockUser ? (
+              <React.Fragment>
+                <div
+                  className="spinner-border text-light"
+                  style={{ width: "1rem", height: "1rem" }}
+                  role="status"
+                >
+                  <span className="visually-hidden">Loading...</span>
+                </div>
+                <span> Loading...</span>
+              </React.Fragment>
+            ) : (
+              <React.Fragment>{isUnlockUser ? "Đã Mở Khoá" : "Mở Khoá"}</React.Fragment>
+            )}
+          </button>
+        </td>
         {/* <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td> */}
         {/* <td style={{ textAlign: "center" }}>{value?.amount_of_people}</td> */}
       </tr>
@@ -139,9 +204,8 @@ const ReportComment = () => {
                 <td style={{ textAlign: "center" }}>Số thứ tự</td>
                 <td style={{ textAlign: "center" }}>UserName</td>
                 <td style={{ textAlign: "center" }}>Tên người dùng</td>
-                {/* <td style={{ textAlign: "center" }}>Quê Quán</td> */}
-                {/* <td style={{ textAlign: "center" }}></td> */}
                 <td style={{ textAlign: "center" }}>Khoá người dùng </td>
+                <td style={{ textAlign: "center" }}>Mở khoá người dùng </td>
               </tr>
             </thead>
             <TableComponent data={data} />

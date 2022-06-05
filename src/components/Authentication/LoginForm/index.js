@@ -6,7 +6,7 @@ import {
   faInfoCircle,
   faEnvelope,
 } from "@fortawesome/free-solid-svg-icons";
-import { setUserSession } from "../../../features/sessionStorage";
+import { getUser, setUserSession } from "../../../features/sessionStorage";
 import FacebookLogin from "react-facebook-login";
 import { GoogleLogin } from "react-google-login";
 
@@ -34,6 +34,8 @@ const LoginForm = () => {
   const [success, setSuccess] = useState();
   const [errMsg, setErrMsg] = useState("");
 
+  let isActive = false;
+
   useEffect(() => {
     document.title = "Đăng nhập | Socook";
     userRef.current.focus();
@@ -51,6 +53,13 @@ const LoginForm = () => {
   }, [email, pwd]);
 
   useEffect(() => {
+    console.log(!isActive && success);
+    console.log(!isActive);
+    if(!isActive && success) {
+      console.log('enter')
+      navigate('/activeEmail');
+      return;
+    }
     if (success) {
       navigate("/" + backPage);
     }
@@ -77,6 +86,9 @@ const LoginForm = () => {
         }
         setSuccess(true);
         setLoading(false);
+        console.log(response?.data?.user?.status)
+        console.log(response?.data?.user?.status !== 0)
+        isActive = response?.data?.user?.status !== 0
         setUserSession(response?.data?.accessToken, response?.data?.user);
         // clear state and controlled inputs
         setEmail("");

@@ -54,7 +54,7 @@ function RecipeProvider({ children }) {
   const [errIngredient, setErrIngredient] = useState();
   const ingredientRecipeRef = useRef(null);
 
-  const [requiredRecipe, setRequiredRecipe] = useState();
+  const [requiredRecipe, setRequiredRecipe] = useState('');
 
   // [{stepNumber, previewLink}]
   const [previewImageLinks, setPreviewImageLinks] = useState([]);
@@ -79,7 +79,6 @@ function RecipeProvider({ children }) {
   //Tạo links preview
   useEffect(() => {
     // console.log("content ", stepContent, ' ', stepContent.length)
-    console.log("ingredient ", ingredient);
     const linkImageList = [];
     for (let key in images) {
       linkImageList[key] = {

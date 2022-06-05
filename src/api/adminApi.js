@@ -3,7 +3,7 @@ import axiosHost2 from "./axiosHost2";
 
 class AdminApi {
   checkToken = (token) => {
-    const CHECK_TOKEN_URL = "/api/auth/checktoken";
+    const CHECK_TOKEN_URL = process.env.REACT_APP_ADMIN_CHECK_TOKEN_URL;
     return axiosHost1.get(CHECK_TOKEN_URL, {
       headers: {
         token: `Bearer ${token}`,
@@ -12,7 +12,7 @@ class AdminApi {
   };
 
   getWaitRecipe = (token) => {
-    const WAIT_RECIPE_URL = "/recipes/isallowedfalse";
+    const WAIT_RECIPE_URL = process.env.REACT_APP_ADMIN_WAIT_RECIPE_URL;
 
     return axiosHost2.get(WAIT_RECIPE_URL, {
       headers: {
@@ -22,7 +22,7 @@ class AdminApi {
   };
 
   publishRecipe = (token, recipeId) => {
-    const PUBLISH_RECIPE_URL = "/api/recipe/allowed-recipe";
+    const PUBLISH_RECIPE_URL = process.env.REACT_APP_ADMIN_PUBLISH_RECIPE_URL;
     return axiosHost1.put(
       PUBLISH_RECIPE_URL,
       {
@@ -37,7 +37,7 @@ class AdminApi {
   };
 
   deleteRecipe = (token, recipeId) => {
-    const DELETE_RECIPE_URL = "/api/recipe/delete-recipe?id=" + recipeId;
+    const DELETE_RECIPE_URL = process.env.REACT_APP_ADMIN_DELETE_RECIPE_URL + '?id=' + recipeId;
     return axiosHost1.delete(DELETE_RECIPE_URL, {
       headers: {
         token: `Bearer ${token}`,
@@ -46,7 +46,7 @@ class AdminApi {
   };
 
   rejectRecipe = (token, recipeId, reason) => {
-    const REJECT_RECIPE_URL = "/api/recipe/reject-recipe";
+    const REJECT_RECIPE_URL = process.env.REACT_APP_ADMIN_REJECT_RECIPE_URL;
     return axiosHost1.put(
       REJECT_RECIPE_URL,
       {
@@ -62,7 +62,7 @@ class AdminApi {
   };
 
   getReportRecipe = (token) => {
-    const GET_REPORT_RECIPE_URL = "/admin/reports/recipes";
+    const GET_REPORT_RECIPE_URL = process.env.REACT_APP_ADMIN_GET_REPORT_RECIPE_URL;
     return axiosHost2.get(GET_REPORT_RECIPE_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -71,8 +71,8 @@ class AdminApi {
   };
 
   getReportUser = (token) => {
-    const GET_REPORT_RECIPE_URL = "/admin/reports/users";
-    return axiosHost2.get(GET_REPORT_RECIPE_URL, {
+    const GET_REPORT_USER_URL = process.env.REACT_APP_ADMIN_GET_REPORT_USER_URL;
+    return axiosHost2.get(GET_REPORT_USER_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -80,7 +80,7 @@ class AdminApi {
   };
 
   getReportComment = (token) => {
-    const GET_REPORT_COMMENT_URL = "/admin/reports/comments";
+    const GET_REPORT_COMMENT_URL = process.env.REACT_APP_ADMIN_GET_REPORT_COMMENT_URL;
     return axiosHost2.get(GET_REPORT_COMMENT_URL, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -89,8 +89,8 @@ class AdminApi {
   };
 
   getUserActive = (token) => {
-    const DELETE_RECIPE_URL = "/api/user/all-user";
-    return axiosHost1.get(DELETE_RECIPE_URL, {
+    const GET_ALL_USER_ACTIVE = process.env.REACT_APP_ADMIN_GET_ALL_USER_ACTIVE;
+    return axiosHost1.get(GET_ALL_USER_ACTIVE, {
       headers: {
         token: `Bearer ${token}`,
       },
@@ -98,7 +98,7 @@ class AdminApi {
   };
 
   searchUser = (token, keyword) => {
-    const SEARCH_USER = '/admin/users/search?keyword=' + keyword;
+    const SEARCH_USER = process.env.REACT_APP_ADMIN_SEARCH_USER + '?keyword=' + keyword;
     return axiosHost2.get(SEARCH_USER, {
       headers: {
         Authorization: `Bearer ${token}`,
@@ -107,7 +107,7 @@ class AdminApi {
   }
 
   banUser = (token, userId) => {
-    const BAN_USER = "/admin/users";
+    const BAN_USER = process.env.REACT_APP_ADMIN_BAN_USER;
     return axiosHost2.put(BAN_USER, {
         id: userId,
         status: 2,
@@ -119,9 +119,23 @@ class AdminApi {
       }
     );
   };
+  
+  unlockUser = (token, userId) => {
+    const BAN_USER = process.env.REACT_APP_ADMIN_BAN_USER;
+    return axiosHost2.put(BAN_USER, {
+        id: userId,
+        status: 1,
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  };
 
   responseReportComment = (token, reportId, response='') => {
-    const RESPONSE_REPORT_COMMENT = '/admin/reports/comments/' + reportId;
+    const RESPONSE_REPORT_COMMENT = process.env.REACT_APP_ADMIN_RESPONSE_REPORT_COMMENT + '/' + reportId;
     return axiosHost2.put(RESPONSE_REPORT_COMMENT, {
       status: 1,
       response: response,
@@ -132,8 +146,8 @@ class AdminApi {
     })
   }
 
-  responseReportUser = (token, userId, responseContent='') => {
-    const RESPONSE_REPORT_USER = '/admin/reports/users/' + userId;
+  responseReportUser = (token, reportId, responseContent='') => {
+    const RESPONSE_REPORT_USER = process.env.REACT_APP_ADMIN_RESPONSE_REPORT_USER + '/' + reportId;
     return axiosHost2.put(RESPONSE_REPORT_USER, {
       status: 1,
       response: responseContent,

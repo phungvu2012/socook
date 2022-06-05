@@ -30,7 +30,7 @@
     }
 
     @include screenLG() {
-      font-size: 0,75rem;
+      font-size: 0, 75rem;
       margin: 0 0 2rem;
     }
   }
@@ -54,7 +54,7 @@
       font-size: 1rem;
       font-weight: 500;
       cursor: pointer;
-      
+
       @include screenXL() {
         margin: 1rem 0 1rem;
       }
@@ -202,9 +202,7 @@
     font-size: 1rem;
 
 
-    &__unit-list {
-
-    }
+    &__unit-list {}
 
     &__input {
       width: 100%;
@@ -288,6 +286,19 @@
     @include screenMD() {
       padding: 1.5rem 2rem;
       margin: 2 -1rem 0;
+    }
+  }
+
+  .recipe-body {
+    &__step-close {
+      position: absolute;
+      top: 5%;
+      right: 5%;
+      color: var(--color-1);
+      font-weight: 600;
+      font-size: 1.5rem;
+      box-shadow: var(--box-shadow-lg);
+      cursor: pointer;
     }
   }
 

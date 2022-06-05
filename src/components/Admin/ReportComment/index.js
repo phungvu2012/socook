@@ -89,7 +89,7 @@ const ReportComment = () => {
         </td>
         <td style={{ textAlign: "center" }}>{value?.content}</td>
         <td style={{ textAlign: "center" }}>
-          <Link to={`/user-page/${value?.userId}`}>{value?.userId}</Link>
+          <Link to={`/user-page/${value?.userName}`}>{value?.userName}</Link>
         </td>
         <td style={{ textAlign: "center" }}>
           <button
@@ -117,7 +117,6 @@ const ReportComment = () => {
             )}
           </button>
         </td>
-        {/* <td style={{ textAlign: "center" }}>{value?.response}</td> */}
         <td style={{ textAlign: "center" }}>
           <button
             className={

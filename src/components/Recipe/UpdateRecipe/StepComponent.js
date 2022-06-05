@@ -9,7 +9,7 @@ import {
   faCircleMinus,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { StepListImages } from "../RecipeInfo/section";
+import { StepListImages } from "./section";
 
 const StepComponent = () => {
   const context = useContext(RecipeContext);
@@ -18,7 +18,7 @@ const StepComponent = () => {
     console.log("add", context?.stepContent);
     if (Array.isArray(context?.stepContent)) {
       const stepContentArray = [...context?.stepContent];
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       stepContentArray.splice(index + 1, 0, "");
 
       context.setStepContent([...stepContentArray]);
@@ -52,7 +52,7 @@ const StepComponent = () => {
     if (context?.stepContent?.length === 1) return;
     if (Array.isArray(context?.stepContent)) {
       const stepContentArray = [...context?.stepContent];
-      const index = event.currentTarget.getAttribute("data-index");
+      const index = Number(event.currentTarget.getAttribute("data-index"));
       stepContentArray.splice(index, 1);
 
       context.setStepContent([...stepContentArray]);
@@ -77,7 +77,7 @@ const StepComponent = () => {
   };
 
   const handleUpButton = (event) => {
-    const index = event.currentTarget.getAttribute("data-index");
+    const index = Number(event.currentTarget.getAttribute("data-index"));
     if (index === context.stepContent.length - 1) return;
     if (Array.isArray(context?.stepContent)) {
       const stepContentArray = context?.stepContent;
@@ -132,8 +132,13 @@ const StepComponent = () => {
     };
 
     const handleChangeStepImage = (step, ImageObject) => {
-      console.log(ImageObject);
-      const imageObj = ImageObject;
+      console.log(step);
+      console.log(context?.images[step]);
+      const oldImageList = context?.images[step] ? [...context?.images[step]] : [];
+      const imageObj = [
+        ...oldImageList,
+        ...ImageObject
+      ];
 
       context.setImages({
         ...context?.images,

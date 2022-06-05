@@ -4,6 +4,7 @@ import recipeApi from "../../../api/recipeApi";
 import userApi from "../../../api/userApi";
 import adminApi from "../../../api/adminApi";
 import { useNavigate, useParams } from "react-router-dom";
+import NotFound from "../../NotFound";
 
 const RecipeContext = createContext();
 const NUMBER_REGEX = /^\d+$/;
@@ -59,7 +60,7 @@ function RecipeProvider({ children }) {
   const [errIngredient, setErrIngredient] = useState();
   const ingredientRecipeRef = useRef(null);
 
-  const [requiredRecipe, setRequiredRecipe] = useState();
+  const [requiredRecipe, setRequiredRecipe] = useState('');
 
   // [{stepNumber, previewLink}]
   const [previewImageLinks, setPreviewImageLinks] = useState([]);
@@ -69,10 +70,12 @@ function RecipeProvider({ children }) {
   const [success, setSuccess] = useState();
 
   const [categoryList, setCategoryList] = useState();
-  const [authentication, setAuthentication] = useState();
+  const [authentication, setAuthentication] = useState(true);
+
+  const [notFound, setNotFound] = useState();
 
   useEffect(() => {
-    if (recipeId === undefined) navigate("/not-found");
+    if (recipeId === undefined) setNotFound(true);
 
     recipeApi.getCategory().then((response) => {
       setCategoryList(response?.data?.data);
@@ -97,6 +100,8 @@ function RecipeProvider({ children }) {
 
         if (username !== response?.data?.data?.recipe?.user_name) {
           setAuthentication(false);
+          console.log('userName', username)
+          console.log('userName', response?.data?.data?.recipe?.user_name)
         }
 
         const data = response?.data?.data;
@@ -135,7 +140,7 @@ function RecipeProvider({ children }) {
           if (res?.data?.user?.role !== "admin") throw { res };
         })
         .catch((err) => {
-          navigate("/not-found");
+          setNotFound(true)
         });
     }
   }, [authentication]);
@@ -145,13 +150,16 @@ function RecipeProvider({ children }) {
     console.log("images", images);
     const linkImageList = [];
     for (let key in images) {
-      console.log(images[key][0]);
+      console.log(images[key]);
       linkImageList[key] = {
         stepNumber: key,
-        links:
-          images[key][0] instanceof File
-            ? handlePreviewAvatar(images[key])
-            : images[key].map((value) => value?.url),
+        links: images[key] === undefined ? [] : images[key].map((value) => {
+          console.log('value', value)
+          console.log('value', value instanceof File)
+          return (value instanceof File) ? handlePreviewAvatar([value])[0] : value?.url;
+        }),
+
+        // ? handlePreviewAvatar(images[key])
       };
       console.log(linkImageList);
     }
@@ -201,7 +209,7 @@ function RecipeProvider({ children }) {
       newArr.push({
         name: item.name.trim(),
         amount: item.quantity.split(" ")[0],
-        unit: item.quantity.split(" ")[0],
+        unit: item.quantity.split(" ")[1],
       });
     }
     return newArr;
@@ -213,7 +221,7 @@ function RecipeProvider({ children }) {
     console.log("arr: ", arr);
     for (let i = 0; i < arr.length; ++i) {
       newObj[i] =
-        arr[i]?.image_url_list.trim().split(" ")[0].length === 0
+        arr[i]?.image_url_list.trim().split(" ").length === 0
           ? []
           : arr[i]?.image_url_list.trim().split(" ");
     }
@@ -221,12 +229,14 @@ function RecipeProvider({ children }) {
     const oldKeyObj = {};
     for (let i = 0; i < arr.length; ++i) {
       console.log("arr: ", arr[i]);
-      console.log("arr key: ", arr[i].key);
+      console.log("arr key: ", arr[i]?.key.split(" ")[0].length);
       oldKeyObj[i] =
-        arr[i]?.key && arr[i]?.key.split(" ")[0].length !== 0
-        ? arr[i]?.key.trim().split(" ")
-        : [];
+        arr[i]?.key && arr[i]?.key.split(" ").length !== 0
+          ? arr[i]?.key.trim().split(" ")
+          : [];
     }
+
+    console.log('oldKeyObj: ', oldKeyObj)
 
     const addOldKeyArr = {};
     for (let i in newObj) {
@@ -539,6 +549,8 @@ function RecipeProvider({ children }) {
     setRequiredRecipe,
     ingredientRecipeRef,
   };
+
+  if(notFound) return <NotFound />
 
   return (
     <RecipeContext.Provider value={value}>{children}</RecipeContext.Provider>
