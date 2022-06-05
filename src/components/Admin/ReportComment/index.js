@@ -4,7 +4,6 @@ import { HashLink } from "react-router-hash-link";
 import { getToken } from "../../../features/sessionStorage";
 import adminApi from "../../../api/adminApi";
 import recipeApi from "../../../api/recipeApi";
-import { is } from "immutable";
 
 const ReportComment = () => {
   const token = getToken();

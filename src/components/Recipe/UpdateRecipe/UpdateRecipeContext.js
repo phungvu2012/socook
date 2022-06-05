@@ -18,36 +18,36 @@ function RecipeProvider({ children }) {
   const [title, setTitle] = useState("");
   const [validTitle, setValidTitle] = useState();
   const [errTitle, setErrTitle] = useState("");
-  
+
   const [shortDescription, setShortDescription] = useState("");
   const [validShortDescription, setValidShortDescription] = useState();
   const [errShortDescription, setErrShortDescription] = useState("");
-  
+
   const [amountOfPeople, setAmountOfPeople] = useState("");
   const [validAmountOfPeople, setValidAmountOfPeople] = useState();
   const [errAmountOfPeople, setErrAmountOfPeople] = useState();
-  
+
   const [cookingTime, setCookingTime] = useState("");
   const [validCookingTime, setValidCookingTime] = useState();
   const [errCookingTime, setErrCookingTime] = useState();
-  
+
   const [mainImageUrl, setMainImageUrl] = useState();
   const [validMainImageUrl, setValidMainImageUrl] = useState();
   const [errMainImageUrl, setErrMainImageUrl] = useState();
-  
+
   const [stepContent, setStepContent] = useState(["", ""]);
   const [validStepContent, setValidStepContent] = useState(["", ""]);
   const [errStepContent, setErrStepContent] = useState();
-  
+
   // {1: imageList, 2: imageList}
   const [images, setImages] = useState({});
   const [validImages, setValidImages] = useState({});
   const [errImages, setErrImages] = useState();
-  
+
   const [category, setCategory] = useState([]);
   const [validCategory, setValidCategory] = useState([]);
   const [errCategory, setErrCategory] = useState();
-  
+
   const [ingredient, setIngredient] = useState([
     { name: "", amount: "", unit: "" },
     { name: "", amount: "", unit: "" },
@@ -60,41 +60,38 @@ function RecipeProvider({ children }) {
   const ingredientRecipeRef = useRef(null);
 
   const [requiredRecipe, setRequiredRecipe] = useState();
-  
+
   // [{stepNumber, previewLink}]
   const [previewImageLinks, setPreviewImageLinks] = useState([]);
-  
+
   // State
   const [loading, setLoading] = useState();
   const [success, setSuccess] = useState();
-  
+
   const [categoryList, setCategoryList] = useState();
   const [authentication, setAuthentication] = useState();
-  
+
   useEffect(() => {
     if (recipeId === undefined) navigate("/not-found");
-    
+
     recipeApi.getCategory().then((response) => {
       setCategoryList(response?.data?.data);
     });
-    
+
     let username;
     userApi
-    .userInfo(token)
-    .then((response) => {
-      username = response?.data?.user?.user_name;
-      console.log(username);
-    })
-    .catch((err) => {});
-    
+      .userInfo(token)
+      .then((response) => {
+        username = response?.data?.user?.user_name;
+        console.log(username);
+      })
+      .catch((err) => {});
+
     console.log(window.referrer);
     recipeApi
-    .getRecipe(token, recipeId)
-    .then((response) => {
-      console.log(
-        "recipe info",
-          response
-        );
+      .getRecipe(token, recipeId)
+      .then((response) => {
+        console.log("recipe info", response);
 
         if (response?.data?.messageCode !== 1) throw { response };
 
@@ -114,15 +111,15 @@ function RecipeProvider({ children }) {
         setCategory(
           data?.category?.length && data?.category.map((value) => value.name)
         );
-        setRequiredRecipe(data?.recipe?.required_result || '')
-        console.log(data?.recipe?.required_result )
+        setRequiredRecipe(data?.recipe?.required_result || "");
+        console.log(data?.recipe?.required_result);
         setIngredient(formatIngredient(data?.ingredient));
         const arrStepContent = data?.step?.length
           ? data?.step.map((value) => value?.content)
           : [""];
         console.log("arrStepContent: ", arrStepContent);
         setStepContent(arrStepContent);
-        setImages(formatImages(data?.step))
+        setImages(formatImages(data?.step));
       })
       .catch((err) => {
         console.log(err);
@@ -135,7 +132,7 @@ function RecipeProvider({ children }) {
         .checkToken(token)
         .then((res) => {
           if (res.data.messageCode !== 1) throw { res };
-          if(res?.data?.user?.role !== "admin") throw { res };
+          if (res?.data?.user?.role !== "admin") throw { res };
         })
         .catch((err) => {
           navigate("/not-found");
@@ -145,17 +142,17 @@ function RecipeProvider({ children }) {
 
   //Tạo links preview
   useEffect(() => {
-    console.log('images', images)
+    console.log("images", images);
     const linkImageList = [];
     for (let key in images) {
       console.log(images[key][0]);
-        linkImageList[key] = {
-          stepNumber: key,
-          links:
-            images[key][0] instanceof File
-              ? handlePreviewAvatar(images[key])
-              : images[key].map(value => value?.url),
-      }
+      linkImageList[key] = {
+        stepNumber: key,
+        links:
+          images[key][0] instanceof File
+            ? handlePreviewAvatar(images[key])
+            : images[key].map((value) => value?.url),
+      };
       console.log(linkImageList);
     }
 
@@ -174,8 +171,8 @@ function RecipeProvider({ children }) {
   }, [previewImageLinks]);
 
   useEffect(() => {
-    console.log(requiredRecipe)
-  }, [requiredRecipe])
+    console.log(requiredRecipe);
+  }, [requiredRecipe]);
 
   useEffect(() => {
     // console.log('category', category)
@@ -220,19 +217,22 @@ function RecipeProvider({ children }) {
           ? []
           : arr[i]?.image_url_list.trim().split(" ");
     }
+
     const oldKeyObj = {};
     for (let i = 0; i < arr.length; ++i) {
+      console.log("arr: ", arr[i]);
+      console.log("arr key: ", arr[i].key);
       oldKeyObj[i] =
-        arr[i]?.key.trim().split(" ")[0].length === 0
-          ? []
-          : arr[i]?.key.trim().split(" ");
+        arr[i]?.key && arr[i]?.key.split(" ")[0].length !== 0
+        ? arr[i]?.key.trim().split(" ")
+        : [];
     }
-    
-    const addOldKeyArr = {}
+
+    const addOldKeyArr = {};
     for (let i in newObj) {
       addOldKeyArr[i] = [];
-      for(let j in newObj[i]) {
-        addOldKeyArr[i].push({url: newObj[i][j], key: oldKeyObj[i][j]});
+      for (let j in newObj[i]) {
+        addOldKeyArr[i].push({ url: newObj[i][j], key: oldKeyObj[i][j] });
       }
     }
 
@@ -263,7 +263,7 @@ function RecipeProvider({ children }) {
       ImageObject[0]?.type === "image/jpeg" ||
       ImageObject[0]?.type === "image/svg"
     ) {
-      if ((ImageObject[0].size < 15728640)) {
+      if (ImageObject[0].size < 15728640) {
         const imageObj = ImageObject[0];
         imageObj.preview = URL.createObjectURL(imageObj);
         setValidMainImageUrl(true);
@@ -353,9 +353,21 @@ function RecipeProvider({ children }) {
 
     for (let item in ingredient) {
       for (let i in ingredient) {
-        console.log(ingredient[item].name === ingredient[i].name, '-', i !==  item, '-', ingredient[item].name, '-', ingredient[i].name)
-        if ((ingredient[item].name.trim().toLocaleLowerCase() === ingredient[i].name.trim().toLocaleLowerCase()) && (i !== item)) {
-          console.log('trùng')
+        console.log(
+          ingredient[item].name === ingredient[i].name,
+          "-",
+          i !== item,
+          "-",
+          ingredient[item].name,
+          "-",
+          ingredient[i].name
+        );
+        if (
+          ingredient[item].name.trim().toLocaleLowerCase() ===
+            ingredient[i].name.trim().toLocaleLowerCase() &&
+          i !== item
+        ) {
+          console.log("trùng");
           setValidIngredient(false);
           setErrIngredient("Không diền trùng tên nguyên liệu");
           ingredientRecipeRef.current.scrollIntoView();
@@ -363,8 +375,18 @@ function RecipeProvider({ children }) {
         }
       }
 
-      if (!ingredient[item].name || !ingredient[item].amount || !ingredient[item].unit) {
-        console.log(ingredient[item].name, " ", ingredient[item].amount, " ", ingredient[item].unit);
+      if (
+        !ingredient[item].name ||
+        !ingredient[item].amount ||
+        !ingredient[item].unit
+      ) {
+        console.log(
+          ingredient[item].name,
+          " ",
+          ingredient[item].amount,
+          " ",
+          ingredient[item].unit
+        );
         setValidIngredient(false);
         setErrIngredient("Vui lòng điền đầy đủ các trường");
         break;
@@ -394,30 +416,30 @@ function RecipeProvider({ children }) {
     formData.append("amount_of_people", amountOfPeople);
     formData.append("cooking_time", cookingTime);
     formData.append("main_image_url", mainImageUrl);
-    console.log(requiredRecipe)
+    console.log(requiredRecipe);
     formData.append("required_result", requiredRecipe);
     stepContent?.length &&
       stepContent.forEach((value) => {
         formData.append("stepcontent", value);
       });
-      console.log("stepContent", images);
-      for (let i = 0; i < stepContent.length; ++i) {
-        console.log("stepContentItem", images[i]);
-        for (let j = 0; j < images[i]?.length; ++j) {
-          console.log(`imagestep${i + 1}`, images[i][j]);
-          formData.append(`imagestep${i + 1}`, images[i][j]);
+    console.log("stepContent", images);
+    for (let i = 0; i < stepContent.length; ++i) {
+      console.log("stepContentItem", images[i]);
+      for (let j = 0; j < images[i]?.length; ++j) {
+        console.log(`imagestep${i + 1}`, images[i][j]);
+        formData.append(`imagestep${i + 1}`, images[i][j]);
       }
 
       for (let i = 0; i < stepContent.length; ++i) {
         console.log("stepContentItem", images[i]);
-        let oldKeyString = '';
+        let oldKeyString = "";
         for (let j = 0; j < images[i]?.length; ++j) {
-          if(images[i][j].key) {
-            oldKeyString += ' ' + images[i][j].key;
+          if (images[i][j].key) {
+            oldKeyString += " " + images[i][j].key;
           }
         }
-        console.log('images[i][j]: ', oldKeyString.trim())
-        formData.append('oldKey', oldKeyString.trim())
+        console.log("images[i][j]: ", oldKeyString.trim());
+        formData.append("oldKey", oldKeyString.trim());
       }
     }
 

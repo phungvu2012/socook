@@ -9,7 +9,7 @@ import {
   faCircleMinus,
   faImage,
 } from "@fortawesome/free-solid-svg-icons";
-import { StepListImages } from "../RecipeInfo/section";
+import { StepListImages } from "./section";
 
 const StepComponent = () => {
   const context = useContext(RecipeContext);

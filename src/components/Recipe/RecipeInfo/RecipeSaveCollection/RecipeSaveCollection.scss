@@ -28,7 +28,8 @@
   right: 0;
   text-align: right;
   background-color: #fff;
-  height: 240px;
+  min-height: 40px;
+  max-height: 240px;
   padding-bottom: 8px;
   &--overflow-y {
     overflow-y: scroll;
