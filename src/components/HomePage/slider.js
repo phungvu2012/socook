@@ -24,7 +24,6 @@ export default function SliderHome({
     >
       <div className="carousel-indicators slider__indicators">
         {arr?.length && arr.map((value, index) => {
-          console.log("slide: ", arr.length);
           return (index === activeNumber) ?
             (
               <button

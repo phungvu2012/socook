@@ -461,7 +461,7 @@ const Header = () => {
                         )}
                       </div>
                     </div>
-                    <div className={styles.featureItem} onClick={hanlePopup}>
+                    {/* <div className={styles.featureItem} onClick={hanlePopup}>
                       <div className={styles.featureItem__IconBox}>
                         <FontAwesomeIcon
                           icon={faStickyNote}
@@ -481,7 +481,7 @@ const Header = () => {
                           </div>
                         </a>
                       </div>
-                    </div>
+                    </div> */}
                   </React.Fragment>
                 ) : (
                   <Link

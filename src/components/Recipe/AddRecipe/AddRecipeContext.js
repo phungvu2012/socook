@@ -113,7 +113,7 @@ function RecipeProvider({ children }) {
   }, [mainImageUrl]);
 
   useEffect(() => {
-    console.log("success", success);
+    // console.log("success", success);
     if (success === true) {
       navigate(`/user/recipe-pending`);
     }
@@ -133,7 +133,7 @@ function RecipeProvider({ children }) {
   }
   //Thay đổi ảnh chính Công thức
   const handleChangeMainImage = (ImageObject) => {
-    console.log(ImageObject[0]);
+    // console.log(ImageObject[0]);
     if (
       ImageObject[0]?.type === "image/png" ||
       ImageObject[0]?.type === "image/jpg" ||
@@ -146,13 +146,13 @@ function RecipeProvider({ children }) {
         setValidMainImageUrl(true);
         setMainImageUrl(imageObj);
       } else {
-        console.log(false);
+        // console.log(false);
         setValidMainImageUrl(false);
         alert("Dung lượng ảnh không được vượt quá 15MB");
         setErrMainImageUrl("Dung lượng ảnh không được vượt quá 15MB");
       }
     } else {
-      console.log(false);
+      // console.log(false);
       setValidMainImageUrl(false);
       alert("Chỉ chấp nhận ảnh có đuôi jpg, jpeg, svg, png!");
       setErrMainImageUrl("Chỉ chấp nhận ảnh có đuôi jpg, jpeg, svg, png!");
@@ -187,7 +187,7 @@ function RecipeProvider({ children }) {
   };
 
   const checkValidAll = () => {
-    console.log("click");
+    // console.log("click");
 
     setTitle((preValue) => preValue.trim());
     if (title.trim().length === 0) {
@@ -223,16 +223,14 @@ function RecipeProvider({ children }) {
 
     if (ingredient.length === 0) {
       setValidIngredient(false);
-      console.log("hello");
 
       setErrIngredient("Vui lòng điền ít nhất 1 nguyên liệu");
     }
 
     for (let item in ingredient) {
       for (let i in ingredient) {
-        console.log(ingredient[item].name === ingredient[i].name, '-', i !==  item, '-', ingredient[item].name, '-', ingredient[i].name)
+        // console.log(ingredient[item].name === ingredient[i].name, '-', i !==  item, '-', ingredient[item].name, '-', ingredient[i].name)
         if ((ingredient[item].name.trim().toLocaleLowerCase() === ingredient[i].name.trim().toLocaleLowerCase()) && (i !== item)) {
-          console.log('trùng')
           setValidIngredient(false);
           setErrIngredient("Không diền trùng tên nguyên liệu");
           ingredientRecipeRef.current.scrollIntoView();
@@ -241,7 +239,7 @@ function RecipeProvider({ children }) {
       }
 
       if (!ingredient[item].name || !ingredient[item].amount || !ingredient[item].unit) {
-        console.log(ingredient[item].name, " ", ingredient[item].amount, " ", ingredient[item].unit);
+        // console.log(ingredient[item].name, " ", ingredient[item].amount, " ", ingredient[item].unit);
         setValidIngredient(false);
         setErrIngredient("Vui lòng điền đầy đủ các trường");
         break;
@@ -274,43 +272,37 @@ function RecipeProvider({ children }) {
       stepContent.forEach((value) => {
         formData.append("stepcontent", value);
       });
-    console.log("stepContent", images);
     for (let i = 0; i < stepContent.length; ++i) {
-      console.log("stepContentItem", images[i]);
       for (let j = 0; j < images[i]?.length; ++j) {
-        console.log(`imagestep${i + 1}`, images[i][j]);
         formData.append(`imagestep${i + 1}`, images[i][j]);
       }
     }
 
     for (let item of category) {
-      console.log("category ", item);
       formData.append("category", item);
     }
 
-    console.log(ingredient);
-
     for (let i = ingredient.length - 1; i >= 0; --i) {
-      console.log(
-        `${ingredient[i].amount} ${ingredient[i]?.unit} ${ingredient[i]?.name}`
-      );
+      // console.log(
+      //   `${ingredient[i].amount} ${ingredient[i]?.unit} ${ingredient[i]?.name}`
+      // );
       formData.append(
         "ingredient",
         `${ingredient[i]?.amount} ${ingredient[i]?.unit} ${ingredient[i]?.name}`
       );
     }
 
-    console.log(formData);
+    // console.log(formData);
     recipeApi
       .createRecipe(token, formData)
       .then((response) => {
-        console.log(response);
+        // console.log(response);
         if (response?.data?.data?.messageCode !== 1) throw { response };
         setSuccess(true);
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err?.response);
+        // console.log(err?.response);
         setLoading(false);
         if(err?.response?.status === 404) setSuccess(false);
       });

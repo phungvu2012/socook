@@ -52,7 +52,7 @@ const Home = () => {
     homePage
       .getTopSaveCollecion()
       .then((res) => {
-        console.log("res SC: ", res);
+        // console.log("res SC: ", res);
         setTopSaveCollection([...res.data]);
       })
       .catch((err) => console.log("SC F:", err));
@@ -126,7 +126,6 @@ const Home = () => {
             <div className="top-save-collection">
               <h4>Bộ sưu tập nổi bật</h4>
               <div className="container">
-                {console.log("save col: ", topSaveCollection)}
                 <div className="row">
                   {topSaveCollection?.map((collection) => {
                     return (

@@ -2,12 +2,13 @@ import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Modal } from "react-bootstrap";
 
-import { getToken, isActive } from "../../../features/sessionStorage";
+import { getToken, isActive, getUser } from "../../../features/sessionStorage";
 import auth from "../../../api/auth";
 import "./../../GlobalStyles/_animation.scss";
 
 const ActiveEmail = () => {
   const token = getToken();
+  const userInfo = getUser();
   const navigate = useNavigate();
   const [show, setShow] = useState(true);
 
@@ -78,23 +79,39 @@ const ActiveEmail = () => {
     };
 
     return (
-      <div className="d-flex flex-column align-items-center">
-        <h3> Tài khoản chưa được kích hoạt </h3>
-        <p> Vui lòng kiểm tra gmail để kích hoạt tài khoản </p>
-        <p className="form-auth__text-gray pb-3 text-center">
-          Nếu chưa nhận được email kích hoạt. <br />
-          <span
-            className={"textlink-blue" + (validClick ? "" : "text-muted")}
-            onClick={handleClick}
-          >
-            {countdown ? `Đã gửi lại Email (${countdown}s)` : "Gửi lại Email."}
-          </span>
-        </p>
-        {messErr && <p className="text-danger m-0"> {messErr} </p>}
-        <p className="form-auth__text-gray p-3 m-0 text-center">
-          Chuyển đến <Link to="/"> trang chủ </Link>
-        </p>
-      </div>
+      <React.Fragment>
+        {userInfo?.status === 2 ? (
+          <div className="d-flex flex-column align-items-center">
+          <h3> Tài khoản của bạn đã bị khoá </h3>
+          <p> Vui lòng liên hệ để được hỗ trợ </p>
+          
+          {messErr && <p className="text-danger m-0"> {messErr} </p>}
+          <p className="form-auth__text-gray p-3 m-0 text-center">
+            Chuyển đến <Link to="/"> trang chủ </Link>
+          </p>
+        </div>
+        ) : (
+          <div className="d-flex flex-column align-items-center">
+            <h3> Tài khoản chưa được kích hoạt </h3>
+            <p> Vui lòng kiểm tra gmail để kích hoạt tài khoản </p>
+            <p className="form-auth__text-gray pb-3 text-center">
+              Nếu chưa nhận được email kích hoạt. <br />
+              <span
+                className={"textlink-blue" + (validClick ? "" : "text-muted")}
+                onClick={handleClick}
+              >
+                {countdown
+                  ? `Đã gửi lại Email (${countdown}s)`
+                  : "Gửi lại Email."}
+              </span>
+            </p>
+            {messErr && <p className="text-danger m-0"> {messErr} </p>}
+            <p className="form-auth__text-gray p-3 m-0 text-center">
+              Chuyển đến <Link to="/"> trang chủ </Link>
+            </p>
+          </div>
+        )}
+      </React.Fragment>
     );
   }
 

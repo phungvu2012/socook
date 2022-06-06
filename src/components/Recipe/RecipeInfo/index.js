@@ -62,8 +62,10 @@ const RepiceInfo = () => {
       .getRecipe(tokenAccess, recipeId)
       .then((response) => {
         console.log(response?.data?.data);
-        if (response?.data?.messageCode !== 1) throw { response };
-
+        if (response?.data?.messageCode !== 1) {
+          setNotFoundRecipe(true);
+          throw { response };
+        }
         const data = response?.data?.data;
         setRecipeInfo(true);
         setId(data?.recipe?.id);
@@ -83,7 +85,6 @@ const RepiceInfo = () => {
         setNotFoundRecipe(false);
       })
       .catch((err) => {
-        setNotFoundRecipe(true);
         console.log(err);
       });
 
@@ -106,7 +107,7 @@ const RepiceInfo = () => {
       });
   }, [username]);
 
-  if(notFoundRecipe) return <NotFound />
+  if (notFoundRecipe === true) return <NotFound />;
 
   return (
     <div className="recipe-page" style={{ backgroundColor: "" }}>
@@ -177,13 +178,19 @@ const RepiceInfo = () => {
             />
             <div className="recipe-header__right-info">
               <div className="recipe-header__owner">
-                <Link to={`/user-page/${owner?.user_name}`} className="recipe-header__owner-link">
+                <Link
+                  to={`/user-page/${owner?.user_name}`}
+                  className="recipe-header__owner-link"
+                >
                   <img
                     src={owner?.avatar_image}
                     className="recipe-header__owner-image"
                   />
                 </Link>
-                <Link to={`/user-page/${owner?.user_name}`} className="recipe-header__owner-name">
+                <Link
+                  to={`/user-page/${owner?.user_name}`}
+                  className="recipe-header__owner-name"
+                >
                   {owner?.full_name}
                 </Link>
               </div>

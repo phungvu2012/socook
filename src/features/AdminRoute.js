@@ -15,14 +15,14 @@ const AdminRoute = () => {
     }
     adminApi.checkToken(getToken())
       .then(res => {
-        if(res.data.messageCode !== 1) throw {res};
+        if(res?.data?.messageCode !== 1) throw {res};
 
-        console.log(res);
-        setIsAdmin(res.data.user.role === 'admin');
+        // console.log(res);
+        setIsAdmin(res?.data?.user?.role === 'admin');
         setAutoLoading(false);
       })
       .catch(err => {
-        console.log("err ", err);
+        // console.log("err ", err);
         setIsAdmin(false);
         setAutoLoading(false);
       })
@@ -32,8 +32,6 @@ const AdminRoute = () => {
       return <div className='content'>Checking Authentication...</div>
     }
     
-    
-    console.log(isAdmin);
   // If authorized, return an outlet that will render child elements
   // If not, return element that will navigate to login page
   return (isAdmin) ? <Outlet /> : <Navigate to={{ pathname: "/" }} />;
