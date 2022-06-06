@@ -61,7 +61,7 @@ const RepiceInfo = () => {
     recipeApi
       .getRecipe(tokenAccess, recipeId)
       .then((response) => {
-        console.log(response?.data?.data);
+        console.log('recipe: ', response?.data?.data);
         if (response?.data?.messageCode !== 1) throw { response };
 
         const data = response?.data?.data;
@@ -77,7 +77,9 @@ const RepiceInfo = () => {
         setIngredient(data?.ingredient);
         setRequiredRecipe(data?.recipe?.required_result);
         setNumberLikes(data?.likes);
-        setCollectionSaved([...data.collections]);
+        if(data.collectionSaved) {
+          setCollectionSaved([...data.collections]);
+        }
         document.title = data?.recipe?.title + " | Socook";
         setUserName(data?.recipe?.user_name);
         setNotFoundRecipe(false);
