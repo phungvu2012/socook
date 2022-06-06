@@ -66,6 +66,7 @@ const RepiceInfo = () => {
           setNotFoundRecipe(true);
           throw { response };
         }
+
         const data = response?.data?.data;
         setRecipeInfo(true);
         setId(data?.recipe?.id);
@@ -79,7 +80,9 @@ const RepiceInfo = () => {
         setIngredient(data?.ingredient);
         setRequiredRecipe(data?.recipe?.required_result);
         setNumberLikes(data?.likes);
-        setCollectionSaved([...data.collections]);
+        if(data.collectionSaved) {
+          setCollectionSaved([...data.collections]);
+        }
         document.title = data?.recipe?.title + " | Socook";
         setUserName(data?.recipe?.user_name);
         setNotFoundRecipe(false);

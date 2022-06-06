@@ -54,14 +54,16 @@ function RecipeSaveCollection({
   };
 
   useEffect(() => {
-    collection
-      .getCollection(token)
-      .then((res) => {
-        setUserCollectionList([...res.data]);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
+    if (token) {
+      collection
+        .getCollection(token)
+        .then((res) => {
+          setUserCollectionList([...res.data]);
+        })
+        .catch((err) => {
+          console.log(err);
+        });
+    }
   }, []);
 
   return (
@@ -80,46 +82,58 @@ function RecipeSaveCollection({
               : ""
           }`}
         >
-          {userCollectionList?.map((collection) => {
-            return (
-              <li
-                key={collection.id}
-                className="recipe-save-collection-my-collection-item"
-              >
-                <Link
-                  to={`/user/collection/${collection.id}`}
-                  state={{
-                    collectionName: capitalize(collection.name),
-                  }}
+          {!token ? (
+            <li className="recipe-save-collection-my-collection-text-message">
+              Bạn hiện chưa đăng nhập, hãy <Link to="/login">đăng nhập</Link> để
+              thêm công thức này vào bộ sưu tập{" "}
+            </li>
+          ) : userCollectionList?.length < 1 ? (
+            <li className="recipe-save-collection-my-collection-text-message">
+              Bạn chưa có bộ sưu tập nào, hãy tạo bộ sưu tập tại đây{" "}
+              <Link to="/user/collection">đây</Link>
+            </li>
+          ) : (
+            userCollectionList?.map((collection) => {
+              return (
+                <li
+                  key={collection.id}
+                  className="recipe-save-collection-my-collection-item"
                 >
-                  <span className="recipe-save-collection-my-collection-item-name">
-                    {collection.name}
-                  </span>
-                  <span className="recipe-save-collection-my-collection-item-icon">
-                    {collectionSaved?.find(
-                      (colSaved) => colSaved.id === collection.id
-                    ) ? (
-                      <FontAwesomeIcon
-                        icon={faCheck}
-                        className="recipe-save-collection-my-collection-item-icon--check"
-                        onClick={(e) =>
-                          unSaveRecipeToCollection(e, collection.id)
-                        }
-                      />
-                    ) : (
-                      <FontAwesomeIcon
-                        icon={faCirclePlus}
-                        className="recipe-save-collection-my-collection-item-icon--add"
-                        onClick={(e) =>
-                          saveRecipeToCollection(e, collection.id)
-                        }
-                      />
-                    )}
-                  </span>
-                </Link>
-              </li>
-            );
-          })}
+                  <Link
+                    to={`/user/collection/${collection.id}`}
+                    state={{
+                      collectionName: capitalize(collection.name),
+                    }}
+                  >
+                    <span className="recipe-save-collection-my-collection-item-name">
+                      {collection.name}
+                    </span>
+                    <span className="recipe-save-collection-my-collection-item-icon">
+                      {collectionSaved?.find(
+                        (colSaved) => colSaved.id === collection.id
+                      ) ? (
+                        <FontAwesomeIcon
+                          icon={faCheck}
+                          className="recipe-save-collection-my-collection-item-icon--check"
+                          onClick={(e) =>
+                            unSaveRecipeToCollection(e, collection.id)
+                          }
+                        />
+                      ) : (
+                        <FontAwesomeIcon
+                          icon={faCirclePlus}
+                          className="recipe-save-collection-my-collection-item-icon--add"
+                          onClick={(e) =>
+                            saveRecipeToCollection(e, collection.id)
+                          }
+                        />
+                      )}
+                    </span>
+                  </Link>
+                </li>
+              );
+            })
+          )}
         </ul>
       )}
     </div>
