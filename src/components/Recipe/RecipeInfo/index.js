@@ -80,7 +80,7 @@ const RepiceInfo = () => {
         setIngredient(data?.ingredient);
         setRequiredRecipe(data?.recipe?.required_result);
         setNumberLikes(data?.likes);
-        if(data.collectionSaved) {
+        if(data.collections) {
           setCollectionSaved([...data.collections]);
         }
         document.title = data?.recipe?.title + " | Socook";

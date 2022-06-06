@@ -120,7 +120,7 @@ const Header = () => {
                   id: notification.id,
                   avatar: notification.avatar_image,
                   notiContent: `${notification.create_user_name} đã từ chối duyệt bài viết của bạn`,
-                  urlRedirect: `/recipe/${notification.recipe_id}`,
+                  urlRedirect: `/user/recipe-reject`,
                   time: new Date(notification.create_time),
                   isView: notification.is_viewed,
                 };
